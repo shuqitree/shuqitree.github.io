@@ -13,7 +13,23 @@ const minify_css = async _ => {
 const dosite = async _ => {
 	const md = await(Deno.readTextFile('site.md'))
 	const json = await md2json(md)
+
+	// Generate the json file for debug
+  await Deno.writeTextFile('docs/json/site_intermediate.json', JSON.stringify(json, null, 2)); // 使用两个空格进行缩进
+  console.log('Saved intermediate JSON to docs/site_intermediate.json');
+
 	return generate_site(json)
 }
 
 await Promise.all([minify_css(), dosite()])
+
+// Modify all html file into a tidy format
+const files = await Deno.readDir("docs");
+for await (const file of files) {
+  if (file.name.endsWith(".html")) {
+    const p = Deno.run({
+      cmd: ["tidy", "-m", "-i", `docs/${file.name}`],
+    });
+    await p.status();
+  }
+}

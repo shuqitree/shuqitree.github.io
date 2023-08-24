@@ -7,8 +7,8 @@ const IS_PHOTOGRAPHY = ISIN('photography')
 const IS_SINGLE = ISIN('about')
 const IS_WRITING = ISIN('writing')
 
-Array.prototype.to_h = function() { return Object.fromEntries(this) }
-Object.prototype.to_a = function() { return Object.entries(this) }
+Array.prototype.to_h = function () { return Object.fromEntries(this) }
+Object.prototype.to_a = function () { return Object.entries(this) }
 
 const pandoc_markdown = async md => {
 	const p = Deno.run({ cmd: ['pandoc'], stdout: 'piped', stdin: 'piped' })
@@ -20,7 +20,7 @@ const pandoc_markdown = async md => {
 }
 
 const PAGEGEN =
-	[ [IS_FILM, (html, { title, yt, md, stills }) => {
+	[[IS_FILM, (html, { title, yt, md, stills }) => {
 		const yt_disp = yt
 			? `<iframe class=film-yt src="https://www.youtube.com/embed/${yt}" title="YouTube player for ${title}" frameborder=0 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`
 			: ''
@@ -31,24 +31,24 @@ const PAGEGEN =
 		return `<div class=film-intro><h2 class=film-title>${title}</h2><div class=film-medium>${md}</div>${html}</div>`
 			+ yt_disp + stills_disp
 	}]
-	, [IS_PHOTOGRAPHY, (html, { title, stills }) => {
-		const stills_disp = stills.length === 0
-			? ''
-			: `<div class=stills>${stills.map(src => `<img class=still src='${src}'>`).join('')}</div>`
+		, [IS_PHOTOGRAPHY, (html, { title, stills }) => {
+			const stills_disp = stills.length === 0
+				? ''
+				: `<div class=stills>${stills.map(src => `<img class=still src='${src}'>`).join('')}</div>`
 
-		return `<div class=photography-intro><h2 class=photography-title>${title}</h2>${html}</div>`
-			+ stills_disp
-	}]
-	, [IS_WRITING, async (html, { title, date, writing }) => {
-		if (!writing) throw `writing has no writing: ${title}`
-		const writing_content = await pandoc_markdown(writing)
-		return `<div class=story>
+			return `<div class=photography-intro><h2 class=photography-title>${title}</h2>${html}</div>`
+				+ stills_disp
+		}]
+		, [IS_WRITING, async (html, { title, date, writing }) => {
+			if (!writing) throw `writing has no writing: ${title}`
+			const writing_content = await pandoc_markdown(writing)
+			return `<div class=story>
 		<h2>${title}</h2>
 		<span class=story-date>${date}</span>
 		<hr>${writing_content}</div>`
-	}]
-	, [g => g === 'about', (html, {title}) => `<div><h2>${title}</h2></div>${html}`]
-	, [g => g === 'index', (html) => html]
+		}]
+		, [g => g === 'about', (html, { title }) => `<div><h2>${title}</h2></div>${html}`]
+		, [g => g === 'index', (html) => html]
 	]
 
 const page2page = async p => {
@@ -80,7 +80,7 @@ const navstuff = ({ pages, navs }) => curr => navs.map(g => {
 	return `<details group='${g}'${g === curr.group ? ' open' : ''}>
 		<summary>${g}</summary>
 		<ul>
-		${pages.filter(({group}) => g === group)
+		${pages.filter(({ group }) => g === group)
 			.map(({ sidebar, title, short, md, stills }) => {
 				const thumbnail = md
 					? `<img class=thumb src='${stills[0]}'>`
@@ -96,7 +96,7 @@ const navstuff = ({ pages, navs }) => curr => navs.map(g => {
 }).filter(x => x).join('')
 
 const page2ogdescription = p => {
-	const {group} = p
+	const { group } = p
 	if (group === 'experimental')
 		return `An experimental film by Jolinna Li`
 	if (group === 'narrative')
@@ -118,7 +118,7 @@ gtag('js', new Date());
 gtag('config', 'G-5RJJVBLRBV');
 </script>
 
-<title>${p.short === 'index' ? 'Jolinna Li' : p.title}</title>
+<title>${p.short === 'index' ? "Shuqi's Forest" : p.title}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
 
@@ -140,7 +140,7 @@ ${!IS_FILM(p.group) && !IS_PHOTOGRAPHY(p.group) ? `` : `<meta property='og:title
 			${navstuff(site)(p)}
 		</nav>
 	</div>
-	<div id=content${p.short==='index' ? ' class=index-content' : ''}>
+	<div id=content${p.short === 'index' ? ' class=index-content' : ''}>
 		${p.page}
 	</div>
 </body>
@@ -159,7 +159,7 @@ const generate_site = async pages => {
 	const navs = [...new Set(pages.map(x => x.group))]
 
 	const generated = await Promise.all(
-		pages.map(async p => ({...p, page: await page2page(p)}))
+		pages.map(async p => ({ ...p, page: await page2page(p) }))
 	)
 
 	const dynamic = generated
@@ -181,4 +181,4 @@ const generate_site = async pages => {
 	console.log('OK')
 }
 
-export {generate_site}
+export { generate_site }

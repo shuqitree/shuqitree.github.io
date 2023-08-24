@@ -1,8 +1,11 @@
 # website
 
 ## read this if u dont know where to start
-Before you start rebuild the files, remember to install deno and pandoc
-use brew install for both of them
+Before you start rebuild the files, remember to install
+brew install tidy-html5
+brew install pandoc
+brew install deno
+
 hello friend. do u need to edit the website now? no problem. let's step through the process!
 
 here are the essential tools you will need:

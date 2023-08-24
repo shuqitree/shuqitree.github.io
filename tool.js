@@ -18,7 +18,7 @@ const run_cmd = cmd => {
 }
 
 // [a] -> (a -> bool) -> [[a], [a]]
-Array.prototype.partition = function(f) {
+Array.prototype.partition = function (f) {
 	const xs = []
 	const ys = []
 	for (const x of this) {
@@ -167,8 +167,7 @@ async function stills2webp() {
 }
 
 // code simplified from https://deno.land/std@0.178.0/http/file_server.ts?s=serveDir
-function host_local()
-{
+function runsite() {
 	serve(req => {
 		const path = new URL(req.url).pathname
 		if (!path.match(/^\/$|\.\w+$/)) {
@@ -180,8 +179,7 @@ function host_local()
 	})
 }
 
-function dump_stills()
-{
+function dump_stills() {
 	console.error("DUMPING STILLS HEHE")
 	const fs = [...expandGlobSync(`docs/media/*/*`)]
 		.map(({ path }) => {
@@ -196,12 +194,13 @@ function dump_stills()
 }
 
 const cmd_lookup =
-	{ clean
+{
+	clean
 	, rename_stills
-	, host_local
+	, runsite
 	, stills2webp
 	, dump_stills
-	}
+}
 
 const f = cmd_lookup[Deno.args[0]]
 

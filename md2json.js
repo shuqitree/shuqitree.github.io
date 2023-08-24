@@ -2,7 +2,7 @@
 
 import { expandGlobSync } from "https://deno.land/std@0.170.0/fs/expand_glob.ts";
 
-Array.prototype.last = function() {
+Array.prototype.last = function () {
 	return this[this.length - 1]
 }
 
@@ -22,12 +22,12 @@ const md2json = async md => {
 	let group = 'index'
 	const vals = new Set()
 	// [{ group, short, title, content }]
-	const pages = [{ group: 'index', title: 'Jolinna Li', short: 'index', content: [] }]
+	const pages = [{ group: 'index', title: 'Shuqi', short: 'index', content: [] }]
 	for (const line of md.split('\n')) {
 		let m = null
 		if (m = line.match(/^## (.+)/)) {
 			pages.push({ group, title: m[1].trim(), content: [] })
-		} else if (m = line.match(/^# (.+)/)){
+		} else if (m = line.match(/^# (.+)/)) {
 			group = m[1].trim()
 		} else if (m = line.match(/^!(\w+):(.+)/)) {
 			const last = pages.last()

@@ -28,20 +28,20 @@ DETAILS.forEach((d, i) => {
 // dynamically display page content from short code
 const display = short =>
 	json.then(j => {
-		CONTENT.style.transition='opacity ease-in 0.1s'
-		CONTENT.style.opacity=0
+		CONTENT.style.transition = 'opacity ease-in 0.1s'
+		CONTENT.style.opacity = 0
 
 		CONTENT.addEventListener('transitionend', e => {
 			document.title = j[short].title
 			CONTENT.innerHTML = j[short].page
-			if(short === 'index') {
+			if (short === 'index') {
 				set_up_fun()
 			} else {
 				document.querySelector('#content').classList.remove('index-content')
 			}
 
-			CONTENT.style.transition='opacity ease-in 0.15s'
-			CONTENT.style.opacity=1
+			CONTENT.style.transition = 'opacity ease-in 0.15s'
+			CONTENT.style.opacity = 1
 		}, { once: true })
 	})
 
@@ -74,7 +74,7 @@ for (const a of NAVAS) {
 window.addEventListener('popstate', e => display(e.state?.short ?? short_base))
 
 /* SEARCH STUFF */
-function clear_search(){
+function clear_search() {
 	SEARCH.value = ''
 	// this is probably doing this duplicate in some cases but oh well?.
 	json.then(j => {
@@ -118,15 +118,15 @@ SEARCH.addEventListener('input', _ => {
 
 /* GRAPH STUFF */
 
-const stills = ["111-film/2.webp","barbies-bitch-bites-back/1.webp","barbies-bitch-bites-back/2.webp","barbies-bitch-bites-back/3.webp","barbies-bitch-bites-back/4.webp","barbies-bitch-bites-back/5.webp","brunch/2.webp","col-and-olga/2.webp","crosswalk/1.webp","crosswalk/2.webp","crosswalk/3.webp","crosswalk/4.webp","crosswalk/5.webp","crosswalk/6.webp","crosswalk/7.webp","crosswalk/8.webp","fairytale/1.webp","fairytale/2.webp","fairytale/3.webp","fairytale/4.webp","fairytale/5.webp","fairytale/6.webp","fairytale/7.webp","finding-eden/4.webp","finding-eden/9.webp","flaming-fists/1.webp","flaming-fists/2.webp","flaming-fists/3.webp","flaming-fists/5.webp","good-goods/1.webp","good-goods/7.webp","good-goods/9.webp","good-goods/11.webp","jazz-club/7.webp","kettle-boils-while-watched/1.webp","me-and-my-babysitter/1.webp","me-and-my-babysitter/2.webp","me-and-my-babysitter/3.webp","me-and-my-babysitter/4.webp","me-and-my-babysitter/5.webp","me-and-my-babysitter/6.webp","me-and-my-babysitter/7.webp","me-and-my-babysitter/8.webp","me-and-my-babysitter/9.webp","me-and-my-babysitter/10.webp","me-and-my-babysitter/11.webp","me-and-my-babysitter/12.webp","me-and-my-babysitter/13.webp","me-and-my-babysitter/14.webp","me-and-my-babysitter/15.webp","me-and-my-babysitter/16.webp","me-and-my-babysitter/17.webp","me-and-my-babysitter/18.webp","me-and-my-babysitter/19.webp","me-and-my-babysitter/20.webp","the-redemption-of-mr-greg/2.webp","the-redemption-of-mr-greg/3.webp","wreck/1.webp","wreck/2.webp","wreck/3.webp","wreck/4.webp","wreck/5.webp","wreck/6.webp","wreck/7.webp","wreck/8.webp","a-rolling-stone-gathers-no-moss/1.webp","a-rolling-stone-gathers-no-moss/10.webp","a-rolling-stone-gathers-no-moss/11.webp","a-rolling-stone-gathers-no-moss/2.webp","a-rolling-stone-gathers-no-moss/3.webp","a-rolling-stone-gathers-no-moss/4.webp","a-rolling-stone-gathers-no-moss/5.webp","a-rolling-stone-gathers-no-moss/6.webp","a-rolling-stone-gathers-no-moss/7.webp","a-rolling-stone-gathers-no-moss/8.webp","a-rolling-stone-gathers-no-moss/9.webp"]
+const stills = ["a-rolling-stone-gathers-no-moss/1.webp", "a-rolling-stone-gathers-no-moss/10.webp", "a-rolling-stone-gathers-no-moss/11.webp", "a-rolling-stone-gathers-no-moss/2.webp", "a-rolling-stone-gathers-no-moss/3.webp", "a-rolling-stone-gathers-no-moss/4.webp", "a-rolling-stone-gathers-no-moss/5.webp", "a-rolling-stone-gathers-no-moss/6.webp", "a-rolling-stone-gathers-no-moss/7.webp", "a-rolling-stone-gathers-no-moss/8.webp", "a-rolling-stone-gathers-no-moss/9.webp"]
 	.map(x => `media/${x}`)
 
-Array.prototype.rande = function() {
+Array.prototype.rande = function () {
 	return this[Math.floor(Math.random() * this.length)]
 }
 
 // may explode
-Array.prototype.randes = function(n) {
+Array.prototype.randes = function (n) {
 	const res = new Set()
 	while (res.size < n) res.add(this.rande())
 	return [...res]
@@ -158,18 +158,21 @@ function drag(simulation) {
 }
 
 const nodes =
-	[ {id:"a", height: 280, x: -526.7114978358869,   y: -27.954213546407182          , up: '-12%', over: '-90%'}
-	, {id:"b", height: 320, x:    8.059866961236306, y: -481.31970185434225          , up: '-88%', over: '-50%'}
-	, {id:'c', height: 360, x:  519.2927754935764,   y:  505.2944150332749          , up: '-12%', over: '-40%'}
+	[
+		{ id: "a", height: 280, x: -526.7114978358869, y: -27.954213546407182, up: '-12%', over: '-90%' },
+		{ id: "b", height: 320, x: 8.059866961236306, y: -481.31970185434225, up: '-88%', over: '-50%' },
+		{ id: 'c', height: 360, x: 519.2927754935764, y: 505.2944150332749, up: '-12%', over: '-40%' },
+		{ id: 'd', height: 300, x: 300, y: 300, up: '-10%', over: '-60%' }
 	]
 const links =
-	[ { source: "a", target: "b", distance: 700, thick: 8, xShift: -33, back_dx: -30, back_dy: 0 }
-	, { source: "b", target: "c", distance: 1110, thick: 8, xShift: 33, back_dx: -30, back_dy: 0 }
+	[{ source: "a", target: "b", distance: 700, thick: 8, xShift: -33, back_dx: -30, back_dy: 0 }
+		, { source: "b", target: "c", distance: 1110, thick: 8, xShift: 33, back_dx: -30, back_dy: 0 },
+	{ source: "a", target: "d", distance: 800, thick: 8, xShift: 25, back_dx: -20, back_dy: 0 }
 	]
 
 const change_images = _ => {
 	const imgs = stills.randes(nodes.length)
-	for (let i=0;i<imgs.length; i+=1) {
+	for (let i = 0; i < imgs.length; i += 1) {
 		nodes[i].img = imgs[i]
 	}
 }
@@ -183,8 +186,7 @@ document.querySelector('#name').addEventListener('click', _ => {
 
 let floati = 0
 
-function set_up_fun()
-{
+function set_up_fun() {
 	// note: should be here rn.
 	document.querySelector('#content').classList.add('index-content')
 
@@ -232,7 +234,7 @@ function set_up_fun()
 			.style('left', '50%')
 			.style('transform-box', 'fill-box')
 			.style('transform', x => `translate(${x.over}, ${x.up})`)
-		, update => update, exit => exit.remove())
+			, update => update, exit => exit.remove())
 		.call(drag(simulation))
 
 	const link = svg.append("g")
@@ -246,7 +248,7 @@ function set_up_fun()
 	function ticked() {
 		umm.attr("x", d => d.x)
 		umm.attr("y", d => d.y)
-		.attr('xlink:href', x => x.img)
+			.attr('xlink:href', x => x.img)
 
 		link
 			.attr("x1", d => d.source.x + d.xShift)
@@ -263,4 +265,4 @@ function set_up_fun()
 
 }
 
-if(curr_short === 'index') set_up_fun()
+if (curr_short === 'index') set_up_fun()
