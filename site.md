@@ -7,11 +7,6 @@
 !yt: W8Jgeo6rx6k
 Class project shot on film. Night at the jazz club gone wrong.
 
-## The Redemption of Mr. Greg
-!md: Digital
-!yt: nDNND5ocIZg
-An old bitter soul has a magical encounter that pushes him to reconnect with his daughter.
-
 
 # experimental
 
@@ -36,9 +31,9 @@ Autumn Samone, in her series of images in _Rooted_, taken by Jolinna Li, creates
 
 ## About Me
 
-<div id=about-pictures><img src=media/profile/whu.jpg><img src=media/profile/2.jpg></div>
+<div id=about-pictures><img src=media/profile/gradpic.jpg><img src=media/profile/walking.jpg><img src=media/profile/sitting.jpg><img src=media/profile/reading.jpg></div>
 
-Shuqi Jiang is a filmmaker based in Charlottesville, Virginia. She is a current Studio Art student at the University of Virginia concentrating in Cinematography. With experience in working with both traditional film and HD cameras, Jolinna likes exploring realism, cultural identity, relationship dynamics, and love in her work. Films she has worked on have been selected by the Virginia Film Festival and screened at the McGuffey Art center. She has also been involved in the Adrenaline project and works with Lighthouse Studios as a freelance editor.
+Hey! I'm Shuqi Jiang, currently immersed in a Master's program in Computer Science at the University of Virginia. My academic foundation is built upon a Bachelor's in Network Security from Wuhan University. Outside the classroom, I am deeply passionate about photography. While I appreciate digital cameras and have had the privilege to work with some of the finest models like the _Hasselblad X2D_, _BMPCC 6K_, and the _Fujifilm XT2_, I also have a profound love for film. In fact, I've nearly tried every film camera the world has to offer. My personal favorite remains the _Mamiya RB67_, especially when loaded with the 120 format _Kodak Portra 400_ film. Whether I'm behind the lens or sipping on a latte, life is a quest for beauty and moments. This quest is evident not just in my photos, but also in my loyalty to Starbucks, reflected by the over _1500_ stars I've accumulated in their rewards program. Every star is a testament to my love for their brews and my penchant for seeking out life's little pleasures!!!
 
 <p>
 Contact:  <a href='mailto:shuqitree@gmail.com'><u>  shuqitree@gmail.com</u></a>
