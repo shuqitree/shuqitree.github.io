@@ -89,11 +89,11 @@ h2 {
 
 :root {
   --main-text-color: black;
-  --idk-color: black;
+  --idk-color: #8ab9f1;
   --main-bg-color: #ededed;
   font-family: "Times New Roman", times-backup, serif;
-  background-image: url(bg.jpg);
-  background-size: contain
+  background-image: url(background_pic.jpg);
+  background-size: 100vw auto
 }
 
 a, html {
@@ -300,8 +300,7 @@ details[group=photography] summary {
   }
 }
 
-#clustrmaps-container {
-  margin-top: 20px;
-  width: 160px;
-  height: 160px
+.clustrmaps-container {
+  width: 200px;
+  height: 200px
 }
