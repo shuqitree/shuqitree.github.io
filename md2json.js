@@ -8,9 +8,29 @@ Array.prototype.last = function () {
 
 const title2short = x => x.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, '-')
 
-const short2stills = short => [...expandGlobSync(`docs/media/${short}/*`)]
-	.sort((x, y) => +x.name.match(/\d+/)[0] - +y.name.match(/\d+/)[0])
-	.map(f => `media/${short}/${f.name}`)
+// const short2stills = short => [...expandGlobSync(`docs/media/${short}/*`)]
+// 	// .sort((x, y) => +x.name.match(/\d+/)[0] - +y.name.match(/\d+/)[0])
+// 	.sort((x, y) => {
+// 		const xMatch = x.name.match(/\d+/);
+// 		const yMatch = y.name.match(/\d+/);
+// 		const xNum = xMatch ? parseInt(xMatch[0], 10) : -1;
+// 		const yNum = yMatch ? parseInt(yMatch[0], 10) : -1;
+// 		return xNum - yNum;
+// 	})
+// 	.map(f => `media/${short}/${f.name}`)
+
+const short2stills = short =>
+	[...expandGlobSync(`docs/media/${short}/*`)]
+		.filter(f => f.name !== '.DS_Store')
+		.sort((x, y) => {
+			const xMatch = x.name.match(/\d+/);
+			const yMatch = y.name.match(/\d+/);
+			const xNum = xMatch ? parseInt(xMatch[0], 10) : -1;
+			const yNum = yMatch ? parseInt(yMatch[0], 10) : -1;
+			return xNum - yNum;
+		})
+		.map(f => `media/${short}/${f.name}`);
+
 
 const short2writing = async short => {
 	const got = [...expandGlobSync(`writing/${short}.md`)]
