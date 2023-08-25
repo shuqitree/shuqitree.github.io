@@ -300,7 +300,7 @@ details[group=photography] summary {
   }
 }
 
-.clustrmaps-container {
+#clustrmaps-container {
   margin-top: 20px;
   width: 160px;
   height: 160px
