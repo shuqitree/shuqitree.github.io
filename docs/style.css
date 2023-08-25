@@ -301,6 +301,7 @@ details[group=photography] summary {
 }
 
 .clustrmaps-container {
-  width: 200px;
-  height: 200px
+  margin-top: 20px;
+  width: 160px;
+  height: 160px
 }
