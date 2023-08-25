@@ -2,7 +2,7 @@
 
 const ISIN = (...groups) => group => groups.includes(group)
 // str (group) => bool
-const IS_FILM = ISIN('narrative', 'experimental')
+const IS_FILM = ISIN('photography', 'narrative', 'experimental', 'photography')
 const IS_PHOTOGRAPHY = ISIN('photography')
 const IS_SINGLE = ISIN('about')
 const IS_WRITING = ISIN('writing')
@@ -97,12 +97,12 @@ const navstuff = ({ pages, navs }) => curr => navs.map(g => {
 
 const page2ogdescription = p => {
 	const { group } = p
-	if (group === 'experimental')
-		return `An experimental film by Jolinna Li`
-	if (group === 'narrative')
-		return `A narrative film by Jolinna Li`
+	// if (group === 'experimental')
+	// 	return `An experimental film by Shuqi Jiang`
+	// if (group === 'narrative')
+	// 	return `A narrative film by Shuqi Jiang`
 	if (group === 'photography')
-		return `A series of photos taken by Jolinna Li`
+		return `A series of photos taken by Shuqi Jiang`
 	else
 		throw `page2description error: ${JSON.stringify(p)}`
 }
@@ -124,10 +124,11 @@ gtag('config', 'G-5RJJVBLRBV');
 
 ${!IS_FILM(p.group) && !IS_PHOTOGRAPHY(p.group) ? `` : `<meta property='og:title' content="${p.title /* NOTE: double quoted */}" />
 <meta property='og:description' content="${page2ogdescription(p)}" />
-<meta property='og:image' content="https://jolinnali.github.io/${p.stills[0]}" />`}
+<meta property='og:image' content="https://shuqitree.github.io/${p.stills[0]}" />`}
 
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="ico" href="/favicon.ico">
 
 <link rel=stylesheet href=style.css>
 </head>
@@ -135,7 +136,7 @@ ${!IS_FILM(p.group) && !IS_PHOTOGRAPHY(p.group) ? `` : `<meta property='og:title
 <body>
 	<div id=header>
 		<nav>
-			<a short=index id=name href=${short2path('index')}${p.short === 'index' ? ' class=current-page' : ''}>Jolinna Li</a>
+			<a short=index id=name href=${short2path('index')}${p.short === 'index' ? ' class=current-page' : ''}>Shuqi🌲</a>
 			<input id=search type=text placeholder=search autocomplete=off hidden>
 			${navstuff(site)(p)}
 		</nav>
