@@ -23,25 +23,31 @@ time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;
 }
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+
 body {
 	line-height: 1.6;
 }
+
 ol, ul {
 	list-style: none;
 }
+
 blockquote, q {
 	quotes: none;
 }
+
 blockquote:before, blockquote:after,
 q:before, q:after {
 	content: '';
 	content: none;
 }
+
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
@@ -67,166 +73,287 @@ table {
 	font-display: swap;
 }
 
-i, em { font-style: italic }
-img { max-width: 100% }
+i, em {
+	font-style: italic
+}
 
-#name { font-size: 2.2rem }
-h1 { font-size: 2.2rem; font-weight: bold }
-h2 { font-size: 2rem }
+img {
+	max-width: 100%
+}
 
-.story h2, .story-date { font-style: italic }
-.story { display: flex; flex-direction: column}
-.story-date { text-align: right }
-.story hr { margin: 12pt 0 12pt 0 }
+#name {
+	font-size: 2.2rem
+}
 
-:root
-	{ --main-text-color: black
-	; --idk-color: #f58ea9
-	; --main-bg-color: #ededed
-	; font-family: 'Times New Roman', times-backup, serif
-	; background-image: url(bg.jpg)
-	; background-size: contain
-	}
+h1 {
+	font-size: 2.2rem;
+	font-weight: bold
+}
 
-html { background-color: var(--main-bg-color); color: var(--main-text-color) }
+h2 {
+	font-size: 2rem
+}
 
-svg { height: 100%; width: 100%; overflow: visible; z-index: 1 }
+.story h2, .story-date {
+	font-style: italic
+}
 
-body
-	{ margin: 1rem
-	; display: grid
-	; grid-template-rows: max-content 1fr
-	; gap: 1.8rem
-	}
+.story {
+	display: flex;
+	flex-direction: column
+}
 
-nav details li
-	{ font-family: modern-font-haha, monospace
-	; font-variation-settings: "wght" 350
-	; font-size: 0.8rem
-	; margin-left: 0.5rem
-	; text-indent: -1.6em
-	; padding-left: 1.6em
-	}
+.story-date {
+	text-align: right
+}
 
-#search
-	{ border: none
-	; background-color: rgba(0,0,0,0)
-	; border-bottom: 1px solid #aaa
-	; padding: .5rem
-	; font-family: 'Times New Roman'
-	; font-style: italic
-	}
+.story hr {
+	margin: 12pt 0 12pt 0
+}
 
-.story
-	{ font-size: 12pt
-	; line-height: 2
-	}
+:root {
+	--main-text-color: black;
+	--idk-color: black;
+	--main-bg-color: #ededed;
+	font-family: 'Times New Roman', times-backup, serif;
+	background-image: url(bg.jpg);
+	background-size: contain
+}
 
-.story > p { text-indent: 36pt }
+html {
+	background-color: var(--main-bg-color);
+	color: var(--main-text-color)
+}
 
-.stills { display: grid; gap: 1rem }
+svg {
+	height: 100%;
+	width: 100%;
+	overflow: visible;
+	z-index: 1
+}
 
-.film-medium
-	{ font-family: modern-font-haha, monospace
-	; font-style: italic
-	; margin-bottom: 0.6rem
-	}
+body {
+	margin: 1rem;
+	display: grid;
+	grid-template-rows: max-content 1fr;
+	gap: 1.8rem
+}
 
-h2.film-title { font-family: modern-font-haha, monospace }
+nav details li {
+	font-family: modern-font-haha, monospace;
+	font-variation-settings: "wght"350;
+	font-size: 0.8rem;
+	margin-left: 0.5rem;
+	text-indent: -1.6em;
+	padding-left: 1.6em
+}
 
-p { text-align: justify }
+#search {
+	border: none;
+	background-color: rgba(0, 0, 0, 0);
+	border-bottom: 1px solid #aaa;
+	padding: .5rem;
+	font-family: 'Times New Roman'
+	;
+	font-style: italic
+}
 
-a
-	{ text-decoration: none
-	; color: var(--main-text-color)
-	}
+.story {
+	font-size: 12pt;
+	line-height: 2
+}
 
-#about-pictures { padding: 0 1rem 0 1rem; display: grid; grid-template-columns: 1fr 1fr }
+.story>p {
+	text-indent: 36pt
+}
 
-h1 { position: relative }
+.stills {
+	display: grid;
+	gap: 1rem
+}
 
-.film-yt { width: 100%; aspect-ratio: 16/9 }
+.film-medium {
+	font-family: modern-font-haha, monospace;
+	font-style: italic;
+	margin-bottom: 0.6rem
+}
 
-#content { display: grid; gap: 2rem; grid-auto-rows: max-content }
-#content { transition: opacity ease-in-out 0.3s }
+h2.film-title {
+	font-family: modern-font-haha, monospace
+}
 
-hr { width: 100%; border: none; height: 1px; background-color: var(--main-text-color); opacity: 0.8 }
+p {
+	text-align: justify
+}
 
-nav { font-size: 1.6rem }
-nav { display: flex; flex-direction: column }
+a {
+	text-decoration: none;
+	color: var(--main-text-color)
+}
 
-nav summary
-	{ list-style: none
-	; user-select: none
-	}
-nav summary::marker { content: "" }
-nav summary::-webkit-details-marker { display: none }
+#about-pictures {
+	padding: 0 1rem 0 1rem;
+	display: grid;
+	grid-template-columns: 1fr 1fr
+}
 
-a[short='about-artist']::before { content: '(' }
-a[short='about-artist']::after { content: ')' }
+h1 {
+	position: relative
+}
 
-a[short='index']
-	{ color: var(--idk-color)
-	}
+.film-yt {
+	width: 100%;
+	aspect-ratio: 16/9
+}
+
+#content {
+	display: grid;
+	gap: 2rem;
+	grid-auto-rows: max-content
+}
+
+#content {
+	transition: opacity ease-in-out 0.3s
+}
+
+hr {
+	width: 100%;
+	border: none;
+	height: 1px;
+	background-color: var(--main-text-color);
+	opacity: 0.8
+}
+
+nav {
+	font-size: 1.6rem
+}
+
+nav {
+	display: flex;
+	flex-direction: column
+}
+
+nav summary {
+	list-style: none;
+	user-select: none
+}
+
+nav summary::marker {
+	content: ""
+}
+
+nav summary::-webkit-details-marker {
+	display: none
+}
+
+a[short='about-artist']::before {
+	content: '('
+}
+
+a[short='about-artist']::after {
+	content: ')'
+}
+
+a[short='index'] {
+	color: var(--idk-color)
+}
 
 nav summary:hover, nav details[open] summary,
-a:hover[short='about-artist'], a.current-page[short='about-artist']
-	{ font-family: 'Comic Sans MS', comic-backup, sans-serif
-	}
+a:hover[short='about-artist'], a.current-page[short='about-artist'] {
+	font-family: 'Comic Sans MS', comic-backup, sans-serif
+}
 
-#name.current-page { font-weight: bold }
+#name.current-page {
+	font-weight: bold
+}
 
-p a:hover, details a:hover, details a.current-page
-	{ font-weight: bold
-	; font-variation-settings: "wght" 600
-	; color: var(--idk-color)
-	}
+p a:hover, details a:hover, details a.current-page {
+	font-weight: bold;
+	font-variation-settings: "wght"600;
+	color: var(--idk-color)
+}
 
-details[group='narrative'] summary { font-weight: bold }
-details[group='experimental'] summary { letter-spacing: .2rem }
-details[group='photography'] summary { font-style: italic }
-details[group='writing'] summary { text-decoration: underline }
+details[group='narrative'] summary {
+	font-weight: bold
+}
+
+details[group='photography'] summary {
+	letter-spacing: .2rem
+}
+
+/* details[group='photography'] summary {
+	font-style: italic
+}
+
+details[group='writing'] summary {
+	text-decoration: underline
+} */
 
 
-.index-content { order: -1 }
+.index-content {
+	order: -1
+}
 
 /* desktop */
 @media (min-width: 44rem) {
-	.index-content { order: 0 }
+	.index-content {
+		order: 0
+	}
+
 	/* body { background-color: #aea } */
-	body
-		{ grid-template-columns: 16rem 1fr
-		; width: 60rem
-		; margin: 2rem
-		}
-	html { display: flex; justify-content: center }
+	body {
+		grid-template-columns: 16rem 1fr;
+		width: 60rem;
+		margin: 2rem
+	}
+
+	html {
+		display: flex;
+		justify-content: center
+	}
 }
 
 /* mobile */
 @media (min-width: 56rem) {
-	body { margin: 3rem; gap: 10% }
+	body {
+		margin: 3rem;
+		gap: 10%
+	}
 }
 
 /* thumbnails */
-.thumb { display: none }
+.thumb {
+	display: none
+}
 
 @media (min-width: 78rem) {
-	nav a { position: relative }
-	.thumb
-		{ display: block
-		; max-width: 10rem
-		; max-height: none
-		; position: absolute
-		; left: -12rem
-		; top: 50%
-		; transform: translateY(-50%);
-		; visibility: visible
-		; opacity: 0
-		; pointer-events: none
-		; user-select: none
-		; transition: opacity 0.1s ease-in-out;
-		}
+	nav a {
+		position: relative
+	}
 
-	nav a:hover > .thumb { visibility: visible; opacity: 0.9; transition: opacity 0.1s ease-in-out; }
-	nav .current-page:hover .thumb { opacity: 0 }
+	.thumb {
+		display: block;
+		max-width: 10rem;
+		max-height: none;
+		position: absolute;
+		left: -12rem;
+		top: 50%;
+		transform: translateY(-50%);
+		;
+		visibility: visible;
+		opacity: 0;
+		pointer-events: none;
+		user-select: none;
+		transition: opacity 0.1s ease-in-out;
+	}
+
+	nav a:hover>.thumb {
+		visibility: visible;
+		opacity: 0.9;
+		transition: opacity 0.1s ease-in-out;
+	}
+
+	nav .current-page:hover .thumb {
+		opacity: 0
+	}
 }
