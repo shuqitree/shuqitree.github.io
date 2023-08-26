@@ -29,7 +29,22 @@ const files = await Deno.readDir("docs");
 for await (const file of files) {
   if (file.name.endsWith(".html")) {
     const p = Deno.run({
-      cmd: ["tidy", "-m", "-i", `docs/${file.name}`],
+      cmd: [
+        "tidy", 
+        "-m", 
+        "-i", 
+        "--indent", 
+        "auto", 
+        "--indent-spaces", 
+        "4", 
+        "--tidy-mark", 
+        "n", 
+        "--vertical-space", 
+        "y",
+        "--wrap",
+        "100",
+        `docs/${file.name}`
+      ],
     });
     await p.status();
   }
