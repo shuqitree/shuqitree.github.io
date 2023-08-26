@@ -1,110 +1,82 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-  <meta name="generator" content="HTML Tidy for HTML5 for Apple macOS version 5.8.0">
-  <meta charset="UTF-8">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-5RJJVBLRBV"></script>
-  <script>
-    window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-5RJJVBLRBV');
-  </script>
-  <title>About Me</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5RJJVBLRBV"></script>
+    <script>
+    window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-5RJJVBLRBV'); 
+    </script>
+    <title>About Me</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="icon" type="ico" href="/favicon.ico">
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <div id="header">
-    <nav>
-      <a short="index" id="name" href=".">Shuqi🌲</a><input id="search" type="text" placeholder="search"
-        autocomplete="off" hidden="">
-      <details group='narrative'>
-        <summary>
-          narrative
-        </summary>
-        <ul>
-          <li>
-            <a short='jazz-club' class='title' href='jazz-club'><img class="thumb" src='media/jazz-club/1.webp'><span
-                class="title-searchable" group="narrative" title="Jazz Club">Jazz
-                Club</span></a>
-          </li>
-        </ul>
-      </details>
-      <details group='experimental'>
-        <summary>
-          experimental
-        </summary>
-        <ul>
-          <li>
-            <a short='a-rolling-stone-gathers-no-moss' class='title' href='a-rolling-stone-gathers-no-moss'><img
-                class="thumb" src='media/a-rolling-stone-gathers-no-moss/1.webp'><span class="title-searchable"
-                group="experimental" title="a rolling stone gathers no moss">a rolling stone
-                gathers no moss</span></a>
-          </li>
-        </ul>
-      </details>
-      <details group='photography'>
-        <summary>
-          photography
-        </summary>
-        <ul>
-          <li>
-            <a short='rooted' class='title' href='rooted'><span class="title-searchable" group="photography"
-                title="Rooted">Rooted</span></a>
-          </li>
-        </ul>
-      </details>
-      <details group='writing'>
-        <summary>
-          writing
-        </summary>
-        <ul>
-          <li>
-            <a short='conversations-with-a-phantom-piano' class='title' href='conversations-with-a-phantom-piano'><span
-                class="title-searchable" group="writing" title="Conversations...">Conversations...</span></a>
-          </li>
-        </ul>
-      </details><a short='about-me' href='about-me' class="current-page">about</a>
-    </nav>
-  </div>
-  <div id="content">
-    <div>
-      <h2>About Me</h2>
-    </div>
-    <div id="about-pictures"><img src="media/profile/gradpic.webp"><img src="media/profile/walking.webp"><img
-        src="media/profile/sitting.webp"><img src="media/profile/reading.webp"></div>
-    <p>Hey! I’m Shuqi Jiang, currently immersed in a Master’s
-      program in Computer Science at the University of Virginia. My
-      academic foundation is built upon a Bachelor’s in Network
-      Security from Wuhan University. Outside the classroom, I am
-      deeply passionate about photography. While I appreciate digital
-      cameras and have had the privilege to work with some of the
-      finest models like the <em>Hasselblad X2D</em>,
-      <em>BMPCC6K</em>, and the <em>Fujifilm XT2</em>, I also have a
-      profound love for film. In fact, I’ve nearly tried every film
-      camera the world has tooffer. My personal favorite remains the
-      <em>Mamiya RB67</em>, especially when loaded with the 120 format
-      <em>Kodak Portra 400</em> film. Whether I’m behind the lens or
-      sipping on a latte, life is a quest for beautyand moments. This
-      quest is evident not just in my photos, but also in my loyalty
-      to Starbucks, reflected by the over <em>1500</em> stars
-      I’ve accumulated in their rewards program. Every star is a
-      testament to my love for their brews and my penchant for seeking
-      out life’s little pleasures!!!
-    </p>
-    <p>Contact: <a href='mailto:shuqitree@gmail.com'><u>shuqitree@gmail.com</u></a></p>
-  </div>
-  <script>
-    const short_base = 'about-me'
-  </script>
-  <script src="./d3.v7.min.js"></script>
-  <script src="./d3-dispatch@3.js"></script>
-  <script src="./d3-quadtree@3.js"></script>
-  <script src="./d3-timer@3.js"></script>
-  <script src="./d3-force@3.js"></script>
-  <script src="script.js"></script>
-</body>
+    <img id="watermark" src="logo.png" alt="Shuqi's Logo">
+    <div id="header">
+        <nav>
+            <a short="index" id="name" href=".">Shuqi🌲</a> <input id="search" type="text"
+            placeholder="search" autocomplete="off" hidden="">
+            <details group='photography' open>
+                <summary>
+                    photography
+                </summary>
 
+                <ul>
+                    <li>
+                        <a short='embracing-the-sea-again' class='title' href=
+                        'embracing-the-sea-again'><img class="thumb" src=
+                        'media/embracing-the-sea-again/1.webp'> <span class="title-searchable"
+                        group="photography" title="Embracing the Sea Again">Embracing the Sea
+                        Again</span></a>
+                    </li>
+                </ul>
+            </details>
+            <a short='about-me' href='about-me' class="current-page">about</a>
+        </nav>
+
+        <div id="clustrmaps-container">
+            <script type="text/javascript" id="clstr_globe" src=
+            "//clustrmaps.com/globe.js?d=PCSZy7iScpHn6ahiRsdRNiI01uSCxiXLNSP_9VRszwc"></script>
+        </div>
+    </div>
+
+    <div id="content">
+        <div>
+            <h2>About Me</h2>
+        </div>
+
+        <div id="about-pictures"><img src="media/profile/gradpic.webp"><img src=
+        "media/profile/walking.webp"><img src="media/profile/sitting.webp"><img src=
+        "media/profile/reading.webp">
+        </div>
+
+        <p>Hey! I’m Shuqi Jiang, currently immersed in a Master’s program in Computer Science at
+        the University of Virginia. My academic foundation is built upon a Bachelor’s in Network
+        Security from Wuhan University. Outside the classroom, I am deeply passionate about
+        photography. While I appreciate digital cameras and have had the privilege to work with
+        some of the finest models like the <em>Hasselblad X2D</em>, <em>BMPCC 6K</em>, and the
+        <em>Fujifilm XT-2</em>, I also have a profound love for film. In fact, I’ve nearly tried
+        every film camera the world has to offer. My personal favorite remains the <em>Mamiya
+        RB67</em>, especially when loaded with the 120 format <em>Kodak Portra 400</em> film.
+        Whether I’m behind the lens or sipping on a latte, life is a quest for beauty and moments.
+        This quest is evident not just in my photos, but also in my loyalty to Starbucks, reflected
+        by the over <em>1500</em> stars I’ve accumulated in their rewards program. Every star is a
+        testament to my love for their brews and my penchant for seeking out life’s little
+        pleasures!!!</p>
+
+        <p>Contact: <a href='mailto:shuqitree@gmail.com'><u>shuqitree@gmail.com</u></a></p>
+    </div>
+    <script>
+    const short_base = 'about-me'
+    </script> 
+    <script src="./d3.v7.min.js"></script> 
+    <script src="./d3-dispatch@3.js"></script> 
+    <script src="./d3-quadtree@3.js"></script> 
+    <script src="./d3-timer@3.js"></script> 
+    <script src="./d3-force@3.js"></script> 
+    <script src="script.js"></script>
+</body>
 </html>
