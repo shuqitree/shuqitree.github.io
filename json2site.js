@@ -77,7 +77,10 @@ const navstuff = ({ pages, navs }) => curr => navs.map(g => {
 		return `<a short='${page.short}' href='${short2path(page.short)}'${page.short === curr.short ? ' class=current-page' : ''}>${g}</a>` // alert: bad hack
 	}
 
-	return `<details group='${g}'${g === curr.group ? ' open' : ''}>
+	// The details are only open when you browsing current page
+	// return `<details group='${g}'${g === curr.group ? ' open' : ' open'}>
+	// Keep the detail always open
+	return `<details group='${g}'${g === curr.group ? ' open' : ' open'}>
 		<summary>${g}</summary>
 		<ul>
 		${pages.filter(({ group }) => g === group)
@@ -109,29 +112,30 @@ const page2ogdescription = p => {
 
 // { ...page, page } => string
 const to_html = site => p => `<!DOCTYPE html>
+<html>
+
 <head>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-5RJJVBLRBV"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-5RJJVBLRBV');
-</script>
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-5RJJVBLRBV"></script>
+	<script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-5RJJVBLRBV'); </script>
 
-<title>${p.short === 'index' ? "Shuqi's Forest" : p.title}</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta charset="UTF-8">
+	<title>${p.short === 'index' ? "Shuqi's Forest" : p.title}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
 
-${!IS_FILM(p.group) && !IS_PHOTOGRAPHY(p.group) ? `` : `<meta property='og:title' content="${p.title /* NOTE: double quoted */}" />
-<meta property='og:description' content="${page2ogdescription(p)}" />
-<meta property='og:image' content="https://shuqitree.github.io/${p.stills[0]}" />`}
+	${!IS_FILM(p.group) && !IS_PHOTOGRAPHY(p.group) ? `` : `<meta property='og:title' content="${p.title /* NOTE: double quoted */}" />
+	<meta property='og:description' content="${page2ogdescription(p)}" />
+	<meta property='og:image' content="https://shuqitree.github.io/${p.stills[0]}" />`}
 
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="icon" type="ico" href="/favicon.ico">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="icon" type="ico" href="/favicon.ico">
 
-<link rel=stylesheet href=style.css>
+	<link rel=stylesheet href=style.css>
 </head>
+
+<body>
+    <img id="watermark" src="logo.png" alt="Shuqi's Logo">
+</body>
 
 <body>
 	<div id=header>
@@ -140,11 +144,19 @@ ${!IS_FILM(p.group) && !IS_PHOTOGRAPHY(p.group) ? `` : `<meta property='og:title
 			<input id=search type=text placeholder=search autocomplete=off hidden>
 			${navstuff(site)(p)}
 		</nav>
+
+		<div id="clustrmaps-container">
+      <script type="text/javascript" id="clstr_globe"
+        src="//clustrmaps.com/globe.js?d=PCSZy7iScpHn6ahiRsdRNiI01uSCxiXLNSP_9VRszwc">
+        </script>
+    </div>
 	</div>
+
 	<div id=content${p.short === 'index' ? ' class=index-content' : ''}>
 		${p.page}
 	</div>
 </body>
+
 <script>const short_base = '${p.short}'</script>
 
 <script src="./d3.v7.min.js"></script>
@@ -153,7 +165,9 @@ ${!IS_FILM(p.group) && !IS_PHOTOGRAPHY(p.group) ? `` : `<meta property='og:title
 <script src="./d3-timer@3.js"></script>
 <script src="./d3-force@3.js"></script>
 <script src=script.js></script>
-`.replace(/^\t+/mg, '').replace(/$\n+/mg, '')
+
+</html>
+`
 
 const generate_site = async pages => {
 	// all groups across all pages
