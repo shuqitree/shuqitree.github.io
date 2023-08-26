@@ -305,3 +305,15 @@ details[group=photography] summary {
   width: 160px;
   height: 160px
 }
+
+#watermark {
+  position: fixed;
+  bottom: 0;
+  right: -50px;
+  transform: translateX(-50%);
+  opacity: 0.8;
+  width: 150px;
+  margin: 0;
+  padding: 0;
+  z-index: 1000;
+}
