@@ -4,10 +4,12 @@
 
 ## A Lonely Sentinel
 !md: Fujifilm XT-4, FFUJINON XF16-80mm F4 R OIS WR
+!date: December 18, 2022
 It was more than just a tree; it felt like a reflection of a part of me. Much like how "树" is rooted in my name, this tree, isolated yet powerful, was a testament to the beauty of endurance and the profound stories solitude can tell. As I captured its skeletal frame against the cold backdrop, I felt a bond, a shared understanding with this solitary guardian of the frozen expanse.
 
 ## Embracing the Sea Again
 !md: Fujifilm XT-3, FUJINON XF18-55mm F2.8-4 R LM OIS
+!date: November 24, 2022
 As the world slowly awakened from its COVID slumber, I found myself by the shore, feeling the familiar embrace of the sea. Its timeless waves whispered of perseverance and new beginnings. It was a reunion not just with nature, but with hope itself.
 
 # about
