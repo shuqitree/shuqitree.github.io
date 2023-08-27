@@ -66,7 +66,7 @@ for (const a of NAVAS) {
 			display(short).then(_ => history.pushState({ short }, '', a.href))
 			curr_short = short
 		}
-		e.preventDefault()
+		// e.preventDefault()
 	}
 }
 
