@@ -4,7 +4,7 @@
 
 ## A Lonely Sentinel
 !md: Fujifilm XT-4, FFUJINON XF16-80mm F4 R OIS WR
-!date: December 18, 2022
+!date: <a href="https://www.youtube.com/watch?v=qc2Z-OX9wnc" target="_blank" style="color: #007BFF; text-decoration: none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">December</a> 18, 2022
 It was more than just a tree; it felt like a reflection of a part of me. Much like how "树" is rooted in my name, this tree, isolated yet powerful, was a testament to the beauty of endurance and the profound stories solitude can tell. As I captured its skeletal frame against the cold backdrop, I felt a bond, a shared understanding with this solitary guardian of the frozen expanse.
 
 ## Embracing the Sea Again
