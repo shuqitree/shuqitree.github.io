@@ -2,6 +2,11 @@
 
 # photography
 
+## My Favorite Color
+!md: Fujifilm XT-3, Fujifilm XT-4, FFUJINON XF16-80mm F4 R OIS WR
+!date: February 20 - March 30, 2023
+There are only two seasons in my hometown, winter and summer. Spring is very short, as short as a week, so I've never gotten the full picture of spring. It was only upon my footsteps treading the grounds of UVA that a revelation dawned upon me. My favorite color wasn't just a standard hue like red, blue, or green. It is the vibrant mosaic of _Spring_ !!!
+
 ## A Lonely Sentinel
 !md: Fujifilm XT-4, FFUJINON XF16-80mm F4 R OIS WR
 !date: <a href="https://www.youtube.com/watch?v=qc2Z-OX9wnc" target="_blank" style="color: #007BFF; text-decoration: none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">December</a> 18, 2022
