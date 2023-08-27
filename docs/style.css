@@ -89,7 +89,7 @@ h2 {
 
 :root {
   --main-text-color: black;
-  --idk-color: #8ab9f1;
+  --idk-color: #0018a8;
   --main-bg-color: #ededed;
   font-family: "Times New Roman", times-backup, serif;
   background-image: url(background_pic.webp);
@@ -311,9 +311,9 @@ details[group=photography] summary {
   bottom: 0;
   right: -50px;
   transform: translateX(-50%);
-  opacity: 0.8;
+  opacity: .8;
   width: 150px;
   margin: 0;
   padding: 0;
-  z-index: 1000;
+  z-index: 1000
 }
