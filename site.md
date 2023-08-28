@@ -9,12 +9,12 @@ There are only two seasons in my hometown, winter and summer. Spring is very sho
 
 ## A Lonely Sentinel
 !md: Fujifilm XT-4, FFUJINON XF16-80mm F4 R OIS WR
-!date: <a href="https://www.youtube.com/watch?v=qc2Z-OX9wnc" target="_blank" style="color: #007BFF; text-decoration: none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">December</a> 18, 2022
+!date: <a href="https://www.youtube.com/watch?v=qc2Z-OX9wnc" target="_blank" style="color: #007BFF; text-decoration: none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">December</a> 18, 20<a href="https://www.youtube.com/watch?v=9boiT64sm0Q" target="_blank" style="color: #FF0000; text-decoration: none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">22</a>
 It was more than just a tree; it felt like a reflection of a part of me. Much like how "树" is rooted in my name, this tree, isolated yet powerful, was a testament to the beauty of endurance and the profound stories solitude can tell. As I captured its skeletal frame against the cold backdrop, I felt a bond, a shared understanding with this solitary guardian of the frozen expanse.
 
 ## Embracing the Sea Again
 !md: Fujifilm XT-3, FUJINON XF18-55mm F2.8-4 R LM OIS
-!date: November 24, 2022
+!date: November 24, 20<a href="https://www.youtube.com/watch?v=9boiT64sm0Q" target="_blank" style="color: #FF0000; text-decoration: none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">22</a>
 As the world slowly awakened from its COVID slumber, I found myself by the shore, feeling the familiar embrace of the sea. Its timeless waves whispered of perseverance and new beginnings. It was a reunion not just with nature, but with hope itself.
 
 # about
