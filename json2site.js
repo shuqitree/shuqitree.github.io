@@ -140,7 +140,7 @@ const to_html = site => p => `<!DOCTYPE html>
 <body>
 	<div id=header>
 		<nav>
-			<a short=index id=name href=${short2path('index')}${p.short === 'index' ? ' class=current-page' : ''}>Shuqi🌲</a>
+			<a short=index id=name href=${short2path('index')}${p.short === 'index' ? ' class=current-page' : ''}>Shuqi🎄🌲🌳🌴</a>
 			<input id=search type=text placeholder=search autocomplete=off hidden>
 			${navstuff(site)(p)}
 		</nav>
