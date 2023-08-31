@@ -29,7 +29,7 @@ const PAGEGEN =
 			: `<div class=stills>${stills.map(src => `<img class=still src='${src}'>`).join('')}</div>`
 
 		return `<div class=film-intro><h2 class=film-title>${title}</h2><div class=film-medium>${md}</div>${html}</div>`
-			+ yt_disp + `<span class=story-date>${date}</span>` + stills_disp 
+			+ `<span class=story-date>${date}</span>` + yt_disp + stills_disp 
 	}]
 		, [IS_PHOTOGRAPHY, (html, { title, stills }) => {
 			const stills_disp = stills.length === 0
