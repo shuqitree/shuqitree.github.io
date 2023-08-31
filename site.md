@@ -2,6 +2,12 @@
 
 # photography
 
+## Final Exercise 2023
+!md: Fujifilm XT-4, FFUJINON XF16-80mm F4 R OIS WR
+!date: May 20, 2023
+!yt: 66U7PK0UW5w
+The buoyancy of the balloons mirrored the soaring spirits of the graduates, and I was reminded of the relentless passage of time. Time flies, and moments are ephemeral. But as long as I can, I'll immortalize them, one click at a time. This is a testament to endings, beginnings, and the <a href="https://www.youtube.com/watch?v=osmzwWw4RYM" target="_blank" style="color: #90538F; text-decoration: none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">_Timeless_</a> journey in between.
+
 ## My Favorite Color
 !md: Fujifilm XT-3, Fujifilm XT-4, FFUJINON XF16-80mm F4 R OIS WR
 !date: February 20 - March 30, 2023
