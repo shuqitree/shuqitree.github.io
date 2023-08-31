@@ -23,6 +23,11 @@ It was more than just a tree; it felt like a reflection of a part of me. Much li
 !date: November 24, 20<a href="https://www.youtube.com/watch?v=9boiT64sm0Q" target="_blank" style="color: #FF0000; text-decoration: none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">22</a>
 As the world slowly awakened from its COVID slumber, I found myself by the shore, feeling the familiar embrace of the sea. Its timeless waves whispered of perseverance and new beginnings. It was a reunion not just with nature, but with hope itself.
 
+## Our DAMWON Gaming
+!md: Sony Alpha 7 IV, Sony FE 35mm F1.8
+!date: June 12, 20<a href="https://www.youtube.com/watch?v=9boiT64sm0Q" target="_blank" style="color: #FF0000; text-decoration: none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">22</a>
+In the Summoner's Rift, we stood side by side. Through victories and defeats, our bond only grew. Here's to the teammates that became family, and the fleeting youth we forever cherish.
+
 # about
 
 ## About Me
