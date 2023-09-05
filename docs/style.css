@@ -317,3 +317,7 @@ details[group=photography] summary {
   padding: 0;
   z-index: 1000
 }
+
+.film-intro p {
+  margin-bottom: 16px
+}
