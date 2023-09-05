@@ -27,6 +27,7 @@ await Promise.all([minify_css(), dosite()])
 const files = await Deno.readDir("docs");
 
 for await (const file of files) {
+  const filePath = `docs/${file.name}`;
   if (file.name.endsWith(".html")) {
     const p = Deno.run({
       cmd: [
@@ -48,6 +49,18 @@ for await (const file of files) {
     });
     await p.status();
   }
+
+  if (file.name.endsWith(".css") || file.name.endsWith(".json")) {
+    const p = Deno.run({
+      cmd: [
+        "prettier",
+        "--write",
+        `docs/${file.name}`
+      ],
+    });
+    await p.status();
+  }
 }
+
 
 // This file is actually a Deno script
