@@ -1,284 +1,338 @@
-a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, body, canvas, caption, center, cite, code, dd, del, details, dfn, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, html, i, iframe, img, ins, kbd, label, legend, li, mark, menu, nav, object, ol, output, p, pre, q, ruby, s, samp, section, small, span, strike, strong, sub, summary, sup, table, tbody, td, tfoot, th, thead, time, tr, tt, u, ul, var, video {
+a,
+abbr,
+acronym,
+address,
+applet,
+article,
+aside,
+audio,
+b,
+big,
+blockquote,
+body,
+canvas,
+caption,
+center,
+cite,
+code,
+dd,
+del,
+details,
+dfn,
+div,
+dl,
+dt,
+em,
+embed,
+fieldset,
+figcaption,
+figure,
+footer,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+header,
+hgroup,
+html,
+i,
+iframe,
+img,
+ins,
+kbd,
+label,
+legend,
+li,
+mark,
+menu,
+nav,
+object,
+ol,
+output,
+p,
+pre,
+q,
+ruby,
+s,
+samp,
+section,
+small,
+span,
+strike,
+strong,
+sub,
+summary,
+sup,
+table,
+tbody,
+td,
+tfoot,
+th,
+thead,
+time,
+tr,
+tt,
+u,
+ul,
+var,
+video {
   margin: 0;
   padding: 0;
   border: 0;
   font: inherit;
-  vertical-align: baseline
+  vertical-align: baseline;
 }
-
-article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
-  display: block
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
 }
-
 body {
   line-height: 1.6;
   margin: 1rem;
   display: grid;
   grid-template-rows: max-content 1fr;
-  gap: 1.8rem
+  gap: 1.8rem;
 }
-
-ol, ul {
-  list-style: none
+ol,
+ul {
+  list-style: none;
 }
-
-blockquote, q {
-  quotes: none
+blockquote,
+q {
+  quotes: none;
 }
-
-blockquote:after, blockquote:before, q:after, q:before {
-  content: none
+blockquote:after,
+blockquote:before,
+q:after,
+q:before {
+  content: none;
 }
-
 table {
   border-collapse: collapse;
-  border-spacing: 0
+  border-spacing: 0;
 }
-
 @font-face {
   font-family: comic-backup;
   src: url(comic-sans.woff);
-  font-display: swap
+  font-display: swap;
 }
-
 @font-face {
   font-family: times-backup;
   src: url(times.woff);
-  font-display: swap
+  font-display: swap;
 }
-
 @font-face {
   font-family: modern-font-haha;
   src: url(latin-roboto.woff2);
-  font-display: swap
+  font-display: swap;
 }
-
-.story h2, .story-date, em, i {
-  font-style: italic
+.story h2,
+.story-date,
+em,
+i {
+  font-style: italic;
 }
-
 img {
-  max-width: 100%
+  max-width: 100%;
 }
-
-#name, h1 {
-  font-size: 2.2rem
+#name,
+h1 {
+  font-size: 2.2rem;
 }
-
 h1 {
   font-weight: 700;
-  position: relative
+  position: relative;
 }
-
 h2 {
-  font-size: 2rem
+  font-size: 2rem;
 }
-
 .story {
   display: flex;
-  flex-direction: column
+  flex-direction: column;
 }
-
 .story-date {
-  text-align: right
+  text-align: right;
 }
-
 .story hr {
-  margin: 12pt 0 12pt 0
+  margin: 12pt 0 12pt 0;
 }
-
 :root {
   --main-text-color: black;
   --idk-color: #0018a8;
   --main-bg-color: #ededed;
   font-family: "Times New Roman", times-backup, serif;
   background-image: url(background_pic.webp);
-  background-size: 100vw auto
+  background-size: 100vw auto;
 }
-
-a, html {
-  color: var(--main-text-color)
-}
-
+a,
 html {
-  background-color: var(--main-bg-color)
+  color: var(--main-text-color);
 }
-
-hr, svg {
-  width: 100%
+html {
+  background-color: var(--main-bg-color);
 }
-
+hr,
+svg {
+  width: 100%;
+}
 svg {
   height: 100%;
   overflow: visible;
-  z-index: 1
+  z-index: 1;
 }
-
 nav details li {
   font-family: modern-font-haha, monospace;
-  font-variation-settings: "wght"350;
-  font-size: .8rem;
-  margin-left: .5rem;
+  font-variation-settings: "wght" 350;
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
   text-indent: -1.6em;
-  padding-left: 1.6em
+  padding-left: 1.6em;
 }
-
 #search {
   border: 0;
   background-color: transparent;
   border-bottom: 1px solid #aaa;
-  padding: .5rem;
+  padding: 0.5rem;
   font-family: "Times New Roman";
-  font-style: italic
+  font-style: italic;
 }
-
 .story {
   font-size: 12pt;
-  line-height: 2
+  line-height: 2;
 }
-
-.story>p {
-  text-indent: 36pt
+.story > p {
+  text-indent: 36pt;
 }
-
 .stills {
   display: grid;
-  gap: 1rem
+  gap: 1rem;
 }
-
 .film-medium {
   font-style: italic;
-  margin-bottom: .6rem
+  margin-bottom: 0.6rem;
 }
-
-.film-medium, h2.film-title {
-  font-family: modern-font-haha, monospace
+.film-medium,
+h2.film-title {
+  font-family: modern-font-haha, monospace;
 }
-
 p {
-  text-align: justify
+  text-align: justify;
 }
-
 a {
-  text-decoration: none
+  text-decoration: none;
 }
-
 #about-pictures {
   padding: 0 1rem 0 1rem;
   display: grid;
-  grid-template-columns: 1fr 1fr
+  grid-template-columns: 1fr 1fr;
 }
-
 .film-yt {
   width: 100%;
-  aspect-ratio: 16/9
+  aspect-ratio: 16/9;
 }
-
 #content {
   display: grid;
   gap: 2rem;
   grid-auto-rows: max-content;
-  transition: opacity ease-in-out .3s
+  transition: opacity ease-in-out 0.3s;
 }
-
 hr {
   border: 0;
   height: 1px;
   background-color: var(--main-text-color);
-  opacity: .8
+  opacity: 0.8;
 }
-
 nav {
   font-size: 1.6rem;
   display: flex;
-  flex-direction: column
+  flex-direction: column;
 }
-
 nav summary {
   list-style: none;
-  user-select: none
+  user-select: none;
 }
-
 nav summary::marker {
-  content: ""
+  content: "";
 }
-
 nav summary::-webkit-details-marker {
-  display: none
+  display: none;
 }
-
-a[short=about-artist]::before {
-  content: "("
+a[short="about-artist"]::before {
+  content: "(";
 }
-
-a[short=about-artist]::after {
-  content: ")"
+a[short="about-artist"]::after {
+  content: ")";
 }
-
-a[short=index] {
-  color: var(--idk-color)
+a[short="index"] {
+  color: var(--idk-color);
 }
-
-a.current-page[short=about-artist], a:hover[short=about-artist], nav details[open] summary, nav summary:hover {
-  font-family: "Comic Sans MS", comic-backup, sans-serif
+a.current-page[short="about-artist"],
+a:hover[short="about-artist"],
+nav details[open] summary,
+nav summary:hover {
+  font-family: "Comic Sans MS", comic-backup, sans-serif;
 }
-
-#name.current-page, details[group=narrative] summary {
-  font-weight: 700
-}
-
-details a.current-page, details a:hover, p a:hover {
+#name.current-page,
+details[group="narrative"] summary {
   font-weight: 700;
-  font-variation-settings: "wght"600;
-  color: var(--idk-color)
 }
-
-details[group=photography] summary {
-  letter-spacing: .2rem
+details a.current-page,
+details a:hover,
+p a:hover {
+  font-weight: 700;
+  font-variation-settings: "wght" 600;
+  color: var(--idk-color);
 }
-
+details[group="photography"] summary {
+  letter-spacing: 0.2rem;
+}
 .index-content {
-  order: -1
+  order: -1;
 }
-
-@media (min-width:44rem) {
+@media (min-width: 44rem) {
   .index-content {
-    order: 0
+    order: 0;
   }
-
   body {
     grid-template-columns: 16rem 1fr;
     width: 60rem;
-    margin: 2rem
+    margin: 2rem;
   }
-
   html {
     display: flex;
-    justify-content: center
+    justify-content: center;
   }
 }
-
-@media (min-width:56rem) {
+@media (min-width: 56rem) {
   body {
     margin: 3rem;
-    gap: 10%
+    gap: 10%;
   }
 }
-
 .thumb {
-  display: none
+  display: none;
 }
-
-@media (min-width:78rem) {
+@media (min-width: 78rem) {
   nav a {
-    position: relative
+    position: relative;
   }
-
-  .thumb, nav a:hover>.thumb {
+  .thumb,
+  nav a:hover > .thumb {
     visibility: visible;
-    transition: opacity .1s ease-in-out
+    transition: opacity 0.1s ease-in-out;
   }
-
   .thumb {
     display: block;
     max-width: 10rem;
@@ -288,36 +342,32 @@ details[group=photography] summary {
     top: 50%;
     transform: translateY(-50%);
     pointer-events: none;
-    user-select: none
+    user-select: none;
   }
-
-  nav a:hover>.thumb {
-    opacity: .9
+  nav a:hover > .thumb {
+    opacity: 0.9;
   }
-
-  .thumb, nav .current-page:hover .thumb {
-    opacity: 0
+  .thumb,
+  nav .current-page:hover .thumb {
+    opacity: 0;
   }
 }
-
 #clustrmaps-container {
   margin-top: 20px;
   width: 160px;
-  height: 160px
+  height: 160px;
 }
-
 #watermark {
   position: fixed;
   bottom: 0;
   right: -50px;
   transform: translateX(-50%);
-  opacity: .8;
+  opacity: 0.8;
   width: 150px;
   margin: 0;
   padding: 0;
-  z-index: 1000
+  z-index: 1000;
 }
-
 .film-intro p {
-  margin-bottom: 16px
+  margin-bottom: 16px;
 }
