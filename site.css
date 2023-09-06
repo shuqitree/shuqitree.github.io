@@ -366,7 +366,7 @@ details[group='writing'] summary {
 /* https://clustrmaps.com */
 #clustrmaps-container {
 	margin-top: 20px;
-	width: 160px;
+	width: 180px;
 	height: 160px
 }
 
@@ -384,4 +384,22 @@ details[group='writing'] summary {
 
 .film-intro p {
 	margin-bottom: 16px;
+}
+
+#dynamicText {
+	position: fixed;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 1000;
+}
+
+#cursor {
+	display: inline-block;
+	margin-left: 5px;
+	width: 3px;
+	height: 1em;
+	background-color: black;
+	vertical-align: text-bottom;
+	animation: blink 0.7s infinite;
 }
