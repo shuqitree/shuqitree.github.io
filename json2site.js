@@ -142,7 +142,7 @@ const to_html = site => p => `<!DOCTYPE html>
 		<nav>
 			<a short=index id=name href=${short2path('index')}${p.short === 'index' ? ' class=current-page' : ''}>Shuqi🎄🌲🌳🌴</a>
 			<input id=search type=text placeholder=search autocomplete=off hidden>
-			<div id="dynamicText">All photographs are taken with my xx<span id="cursor"></span></div>
+			<div id="dynamicText">All photographs are taken with my camera<span id="cursor"></span></div>
 			<script src="./js/cameraText.js" defer></script>
 			${navstuff(site)(p)}
 		</nav>
@@ -161,12 +161,12 @@ const to_html = site => p => `<!DOCTYPE html>
 
 <script>const short_base = '${p.short}'</script>
 
-<script src="./d3.v7.min.js"></script>
-<script src="./d3-dispatch@3.js"></script>
-<script src="./d3-quadtree@3.js"></script>
-<script src="./d3-timer@3.js"></script>
-<script src="./d3-force@3.js"></script>
-<script src=script.js></script>
+<script src="./js/d3.v7.min.js"></script>
+<script src="./js/d3-dispatch@3.js"></script>
+<script src="./js/d3-quadtree@3.js"></script>
+<script src="./js/d3-timer@3.js"></script>
+<script src="./js/d3-force@3.js"></script>
+<script src="./js/script.js"></script>
 
 </html>
 `

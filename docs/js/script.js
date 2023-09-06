@@ -138,9 +138,9 @@ const images = [
 // Zero point is the top left corner of an image
 const nodes = [
 	// a在最下，b在左上，c在右上
-	{ id: "a", height: 700, x: 1000, y: 0, up: '-10%', over: '-90%' },
-	{ id: "b", height: 700, x: -1000, y: -1300, up: '-90%', over: '-90%' },
-	{ id: 'c', height: 700, x: 1000, y: -1800, up: '-10%', over: '-20%' },
+	{ id: "a", height: 700, x: 1000, y: 0, up: '-10%', over: '-90%', img:  "media/node_images/221024uva.webp"},
+	{ id: "b", height: 700, x: -1000, y: -1300, up: '-90%', over: '-90%', img: "media/node_images/221020uva.webp" },
+	{ id: 'c', height: 700, x: 1000, y: -1800, up: '-10%', over: '-20%' , img: "media/node_images/220901xbox.webp"},
 	// { id: 'd', height: 400, x: 300, y: 300, up: '-10%', over: '-60%' },
 	// { id: "e", height: 280, x: 100, y: -200, up: '-15%', over: '-80%' },
 	// { id: "f", height: 280, x: -200, y: 200, up: '-10%', over: '-90%' },
@@ -193,10 +193,10 @@ function drag(simulation) {
 }
 
 const change_images = _ => {
-	const imgs = images.randes(nodes.length)
-	for (let i = 0; i < imgs.length; i += 1) {
-		nodes[i].img = imgs[i]
-	}
+	// const imgs = images.randes(nodes.length)
+	// for (let i = 0; i < imgs.length; i += 1) {
+	// 	nodes[i].img = imgs[i]
+	// }
 }
 
 change_images()
@@ -231,7 +231,16 @@ function set_up_fun() {
 		.alphaTarget(0)
 
 
+
+
+
+
+
+		
+
+
 	const svg = d3.select('#fun')
+	
 
 	const linkBACK = svg.append("g")
 		.attr('stroke', '#000')
