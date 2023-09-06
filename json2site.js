@@ -143,7 +143,7 @@ const to_html = site => p => `<!DOCTYPE html>
 			<a short=index id=name href=${short2path('index')}${p.short === 'index' ? ' class=current-page' : ''}>Shuqi🎄🌲🌳🌴</a>
 			<input id=search type=text placeholder=search autocomplete=off hidden>
 			<div id="dynamicText">All photographs are taken with my xx<span id="cursor"></span></div>
-			<script src="cameraText.js" defer></script>
+			<script src="./js/cameraText.js" defer></script>
 			${navstuff(site)(p)}
 		</nav>
 
