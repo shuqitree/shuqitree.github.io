@@ -43,6 +43,12 @@ It was more than just a tree; it felt like a reflection of a part of me. Much li
 As the world slowly awakened from its COVID slumber, I found myself by the shore, feeling the familiar embrace of the sea. Its timeless waves whispered of perseverance and new beginnings. It was a reunion not just with nature, but with hope itself.
 
 
+## Grassroots Melody
+!md: Fujifilm XT-3, FUJINON XF18-55mm F2.8-4 R LM OIS
+!date: October 20, 20<a href="https://www.youtube.com/watch?v=9boiT64sm0Q" target="_blank" style="color: #FF0000; text-decoration: none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">22</a>
+He told me, "I'm a retired architect. These days, I just love to sit near my favorite buildings and play my guitar. It's my way of enjoying life now that I'm not working anymore."
+
+
 ## Our DAMWON Gaming
 !md: Sony Alpha 7 IV, Sony FE 35mm F1.8
 !date: June 12, 20<a href="https://www.youtube.com/watch?v=9boiT64sm0Q" target="_blank" style="color: #FF0000; text-decoration: none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">22</a>
