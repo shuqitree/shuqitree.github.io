@@ -387,11 +387,18 @@ details[group='writing'] summary {
 }
 
 #dynamicText {
-	position: fixed;
-	top: 0;
+	/* position: fixed; */
+	top: 15px;
 	left: 50%;
-	transform: translateX(-50%);
+	/* transform: translateX(-50%); */
 	z-index: 1000;
+	font-size: 20px;
+	font-family: 'Helvetica, Arial, sans-serif';
+}
+
+#dynamicText strong em {
+	font-family: 'Arial Black, sans-serif';
+	font-style: italic; 
 }
 
 #cursor {
@@ -402,4 +409,9 @@ details[group='writing'] summary {
 	background-color: black;
 	vertical-align: text-bottom;
 	animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }

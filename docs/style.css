@@ -1,3 +1,12 @@
+@keyframes blink {
+  0%,
+  to {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
 a,
 abbr,
 acronym,
@@ -357,26 +366,30 @@ details[group="photography"] summary {
   width: 180px;
   height: 160px;
 }
-#dynamicText,
 #watermark {
   position: fixed;
-  transform: translateX(-50%);
-  z-index: 1000;
-}
-#watermark {
   bottom: 0;
   right: -50px;
+  transform: translateX(-50%);
   opacity: 0.8;
   width: 150px;
   margin: 0;
   padding: 0;
+  z-index: 1000;
 }
 .film-intro p {
   margin-bottom: 16px;
 }
 #dynamicText {
-  top: 0;
+  top: 15px;
   left: 50%;
+  z-index: 1000;
+  font-size: 20px;
+  font-family: "Helvetica, Arial, sans-serif";
+}
+#dynamicText strong em {
+  font-family: "Arial Black, sans-serif";
+  font-style: italic;
 }
 #cursor {
   display: inline-block;
