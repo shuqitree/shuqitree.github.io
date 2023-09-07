@@ -22,6 +22,18 @@ const change_images = _ => {
 
 
 
+// Random color generator
+function getRandomColor() {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
+
+
 // This function helps you change images everytime you click the name title
 document.querySelector('#name').addEventListener('click', _ => {
 	if (curr_short === 'index')
@@ -74,7 +86,7 @@ const nodes = [
 	// a在最下，b在左上，c在右上
 	{ id: "a", height: 400, x: 1000, y: 0, up: '-10%', over: '-90%', type: "path",d: "M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80", img:  "media/node_images/221024uva.webp"},
 	{ id: "b", height: 400, x: -1000, y: -1300, up: '-90%', over: '-90%', img: "media/node_images/221020uva.webp" },
-	{ id: 'c', height: 400, x: 1000, y: -1800, up: '-10%', over: '-20%' , img: "media/node_images/220901xbox.webp"},
+	{ id: 'c', height: 400, x: 1000, y: -1800, up: '-90%', over: '-20%' , img: "media/node_images/220901xbox.webp"},
 	// { id: 'd', height: 400, x: 300, y: 300, up: '-10%', over: '-60%' },
 	// { id: "e", height: 280, x: 100, y: -200, up: '-15%', over: '-80%' },
 	// { id: "f", height: 280, x: -200, y: 200, up: '-10%', over: '-90%' },
@@ -82,8 +94,8 @@ const nodes = [
 ]
 
 const links = [
-	{ source: "a", target: "b", distance: 800, thick: 8, xShift: -33, back_dx: -30, back_dy: 0 },
-	{ source: "b", target: "c", distance: 700, thick: 8, xShift: 33, back_dx: -30, back_dy: 0 },
+	{ source: "a", target: "b", distance: 800, xShift: -33, back_dx: -30, back_dy: 0 },
+	{ source: "b", target: "c", distance: 700, xShift: 33, back_dx: -30, back_dy: 0 },
 	// { source: "a", target: "c", distance: 800, thick: 8, xShift: 25, back_dx: -20, back_dy: 0 },
 	// { source: "a", target: "e", distance: 500, thick: 6, xShift: 25, back_dx: -20, back_dy: 0 },
 	// { source: "f", target: "e", distance: 400, thick: 6, xShift: -15, back_dx: -10, back_dy: 0 },
@@ -122,9 +134,12 @@ function treeSimulation() {
 
 
 	// The double link between imgs
+  const randomColor_1 = getRandomColor();
   const link = svg.append("g")
-		.attr('stroke', '#0018a8') // color : dark blue
-		.attr("stroke-linecap", 'round')
+		.attr('stroke', randomColor_1) // color : dark blue
+		.attr("stroke-linecap", 'round') // shape of the end of the line
+    .attr("stroke-opacity", "1") // transparency
+    .attr("stroke-width", 10)
 		.selectAll("line")
 		.data(links)
 		.join("line")
@@ -150,9 +165,13 @@ function treeSimulation() {
 			, update => update, exit => exit.remove())
 		.call(drag(simulation))
 
+
+  const randomColor_2 = getRandomColor();
   const linkBACK = svg.append("g")
-		.attr('stroke', '#5480f4') // color : blue
-		.attr("stroke-linecap", 'round')
+		.attr('stroke', randomColor_2) // color : blue
+		.attr("stroke-linecap", 'round') // shape of the end of the line
+    .attr("stroke-opacity", "1") // transparency
+    .attr("stroke-width", 10)
 		.selectAll("line")
 		.data(links)
 		.join("line")
