@@ -72,9 +72,9 @@ const images = [
 // Zero point is the top left corner of an image
 const nodes = [
 	// a在最下，b在左上，c在右上
-	{ id: "a", height: 100, x: 1000, y: 0, up: '-10%', over: '-90%', type: "path",d: "M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80", img:  "media/node_images/221024uva.webp"},
-	{ id: "b", height: 700, x: -1000, y: -1300, up: '-90%', over: '-90%', img: "media/node_images/221020uva.webp" },
-	{ id: 'c', height: 700, x: 1000, y: -1800, up: '-10%', over: '-20%' , img: "media/node_images/220901xbox.webp"},
+	{ id: "a", height: 400, x: 1000, y: 0, up: '-10%', over: '-90%', type: "path",d: "M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80", img:  "media/node_images/221024uva.webp"},
+	{ id: "b", height: 400, x: -1000, y: -1300, up: '-90%', over: '-90%', img: "media/node_images/221020uva.webp" },
+	{ id: 'c', height: 400, x: 1000, y: -1800, up: '-10%', over: '-20%' , img: "media/node_images/220901xbox.webp"},
 	// { id: 'd', height: 400, x: 300, y: 300, up: '-10%', over: '-60%' },
 	// { id: "e", height: 280, x: 100, y: -200, up: '-15%', over: '-80%' },
 	// { id: "f", height: 280, x: -200, y: 200, up: '-10%', over: '-90%' },
@@ -98,6 +98,8 @@ const links = [
 let floati = 0
 
 function treeSimulation() {
+  // Find html element
+  const svg = d3.select('#fun')
 	document.querySelector('#content').classList.add('index-content')
 
 	const forceNode = d3.forceManyBody().strength(-Math.sin(floati) * (770 + Math.random() * 4))
@@ -106,8 +108,8 @@ function treeSimulation() {
 		.distance(x => x.distance)
 		.id(x => x.id)
 
+  // Default setting, it will influence the speed that node moves back to center
 	const forceCenter = d3.forceCenter().strength(.05)
-
 
 	const simulation = d3.forceSimulation(nodes)
 		.force("link", forceLink)
@@ -118,15 +120,15 @@ function treeSimulation() {
 		.alpha(.25)
 		.alphaTarget(0)
 
-	const svg = d3.select('#fun')
-	
-	const linkBACK = svg.append("g")
-		.attr('stroke', '#000')
+
+	// The double link between imgs
+  const link = svg.append("g")
+		.attr('stroke', '#0018a8') // color : dark blue
 		.attr("stroke-linecap", 'round')
 		.selectAll("line")
 		.data(links)
 		.join("line")
-		.attr("stroke-width", x => x.thick)
+		.attr("stroke-width", x => x.thick);
 
 	set_interval = setInterval(_ => {
 		forceNode.strength(-Math.sin(floati) * (770 + Math.random() * 7))
@@ -148,13 +150,13 @@ function treeSimulation() {
 			, update => update, exit => exit.remove())
 		.call(drag(simulation))
 
-	const link = svg.append("g")
-		.attr('stroke', '#000')
+  const linkBACK = svg.append("g")
+		.attr('stroke', '#5480f4') // color : blue
 		.attr("stroke-linecap", 'round')
 		.selectAll("line")
 		.data(links)
 		.join("line")
-		.attr("stroke-width", x => x.thick);
+		.attr("stroke-width", x => x.thick)
 
 	function ticked() {
 		umm.attr("x", d => d.x)
