@@ -1,38 +1,7 @@
 /* GRAPH STUFF */
 /* This part of codes build a funny combination of multiple photos and you can drag them for fun */
 
-const images = [
-	"221024uva.webp",
-	"221020uva.webp",
-	"221018southlawn.webp",
-	"220909uva.webp",
-	"220901xbox.webp"
-].map(x => `media/node_images/${x}`)
-
-// up is the Y, -90 move to bot, +90 move to top
-// over is the X, -90 move to right, +90 moves to left
-// It is coordinate system
-// Zero point is the top left corner of an image
-const nodes = [
-	// a在最下，b在左上，c在右上
-	{ id: "a", height: 700, x: 1000, y: 0, up: '-10%', over: '-90%', img:  "media/node_images/221024uva.webp"},
-	{ id: "b", height: 700, x: -1000, y: -1300, up: '-90%', over: '-90%', img: "media/node_images/221020uva.webp" },
-	{ id: 'c', height: 700, x: 1000, y: -1800, up: '-10%', over: '-20%' , img: "media/node_images/220901xbox.webp"},
-	// { id: 'd', height: 400, x: 300, y: 300, up: '-10%', over: '-60%' },
-	// { id: "e", height: 280, x: 100, y: -200, up: '-15%', over: '-80%' },
-	// { id: "f", height: 280, x: -200, y: 200, up: '-10%', over: '-90%' },
-	// { id: "g", height: 280, x: 0, y: 400, up: '-5%', over: '-85%' },
-]
-
-const links = [
-	{ source: "a", target: "b", distance: 800, thick: 8, xShift: -33, back_dx: -30, back_dy: 0 },
-	{ source: "b", target: "c", distance: 700, thick: 8, xShift: 33, back_dx: -30, back_dy: 0 },
-	// { source: "a", target: "c", distance: 800, thick: 8, xShift: 25, back_dx: -20, back_dy: 0 },
-	// { source: "a", target: "e", distance: 500, thick: 6, xShift: 25, back_dx: -20, back_dy: 0 },
-	// { source: "f", target: "e", distance: 400, thick: 6, xShift: -15, back_dx: -10, back_dy: 0 },
-	// { source: "e", target: "g", distance: 400, thick: 6, xShift: 15, back_dx: 10, back_dy: 0 },
-]
-
+// This part of code is used for changing images every time
 Array.prototype.rande = function () {
 	return this[Math.floor(Math.random() * this.length)]
 }
@@ -44,7 +13,24 @@ Array.prototype.randes = function (n) {
 	return [...res]
 }
 
-// i copy and pasted this from some demo
+const change_images = _ => {
+	// const imgs = images.randes(nodes.length)
+	// for (let i = 0; i < imgs.length; i += 1) {
+	// 	nodes[i].img = imgs[i]
+	// }
+}
+
+
+
+// This function helps you change images everytime you click the name title
+document.querySelector('#name').addEventListener('click', _ => {
+	if (curr_short === 'index')
+		change_images()
+})
+
+
+
+// Function to drag the element
 function drag(simulation) {
 	function dragstarted(event) {
 		if (!event.active) simulation.alphaTarget(0.3).restart();
@@ -69,24 +55,49 @@ function drag(simulation) {
 		.on("end", dragended);
 }
 
-const change_images = _ => {
-	// const imgs = images.randes(nodes.length)
-	// for (let i = 0; i < imgs.length; i += 1) {
-	// 	nodes[i].img = imgs[i]
-	// }
-}
 
-change_images()
 
-document.querySelector('#name').addEventListener('click', _ => {
-	if (curr_short === 'index')
-		change_images()
-})
+// The definition of every element in this simulation
+const images = [
+	"221024uva.webp",
+	"221020uva.webp",
+	"221018southlawn.webp",
+	"220909uva.webp",
+	"220901xbox.webp"
+].map(x => `media/node_images/${x}`)
+
+// up is the Y, -90 move to bot, +90 move to top
+// over is the X, -90 move to right, +90 moves to left
+// It is coordinate system
+// Zero point is the top left corner of an image
+const nodes = [
+	// a在最下，b在左上，c在右上
+	{ id: "a", height: 100, x: 1000, y: 0, up: '-10%', over: '-90%', type: "path",d: "M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80", img:  "media/node_images/221024uva.webp"},
+	{ id: "b", height: 700, x: -1000, y: -1300, up: '-90%', over: '-90%', img: "media/node_images/221020uva.webp" },
+	{ id: 'c', height: 700, x: 1000, y: -1800, up: '-10%', over: '-20%' , img: "media/node_images/220901xbox.webp"},
+	// { id: 'd', height: 400, x: 300, y: 300, up: '-10%', over: '-60%' },
+	// { id: "e", height: 280, x: 100, y: -200, up: '-15%', over: '-80%' },
+	// { id: "f", height: 280, x: -200, y: 200, up: '-10%', over: '-90%' },
+	// { id: "g", height: 280, x: 0, y: 400, up: '-5%', over: '-85%' },
+]
+
+const links = [
+	{ source: "a", target: "b", distance: 800, thick: 8, xShift: -33, back_dx: -30, back_dy: 0 },
+	{ source: "b", target: "c", distance: 700, thick: 8, xShift: 33, back_dx: -30, back_dy: 0 },
+	// { source: "a", target: "c", distance: 800, thick: 8, xShift: 25, back_dx: -20, back_dy: 0 },
+	// { source: "a", target: "e", distance: 500, thick: 6, xShift: 25, back_dx: -20, back_dy: 0 },
+	// { source: "f", target: "e", distance: 400, thick: 6, xShift: -15, back_dx: -10, back_dy: 0 },
+	// { source: "e", target: "g", distance: 400, thick: 6, xShift: 15, back_dx: 10, back_dy: 0 },
+]
+
+
+
+
+
 
 let floati = 0
 
-function set_up_fun() {
-	// note: should be here rn.
+function treeSimulation() {
 	document.querySelector('#content').classList.add('index-content')
 
 	const forceNode = d3.forceManyBody().strength(-Math.sin(floati) * (770 + Math.random() * 4))
@@ -107,18 +118,8 @@ function set_up_fun() {
 		.alpha(.25)
 		.alphaTarget(0)
 
-
-
-
-
-
-
-		
-
-
 	const svg = d3.select('#fun')
 	
-
 	const linkBACK = svg.append("g")
 		.attr('stroke', '#000')
 		.attr("stroke-linecap", 'round')
@@ -175,4 +176,10 @@ function set_up_fun() {
 
 }
 
-if (curr_short === 'index') set_up_fun()
+
+
+// Main logic of the script
+if (curr_short === 'index') {
+  change_images() 
+  treeSimulation()
+}

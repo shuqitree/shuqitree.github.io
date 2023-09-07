@@ -35,7 +35,7 @@ const display = short =>
 			document.title = j[short].title
 			CONTENT.innerHTML = j[short].page
 			if (short === 'index') {
-				set_up_fun()
+				treeSimulation()
 			} else {
 				document.querySelector('#content').classList.remove('index-content')
 			}
