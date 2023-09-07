@@ -167,6 +167,7 @@ const to_html = site => p => `<!DOCTYPE html>
 <script src="./js/d3-timer@3.js"></script>
 <script src="./js/d3-force@3.js"></script>
 <script src="./js/script.js"></script>
+<script src="./js/treeSimulator.js"></script>
 
 </html>
 `
