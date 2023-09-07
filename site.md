@@ -1,4 +1,4 @@
-<svg id=fun viewBox='-1200, -1000, 2000, 2000'></svg>
+<svg id=fun viewBox='-1200, -1000, 3000, 3000'></svg>
 
 # photography
 
