@@ -63,6 +63,12 @@ He told me, "I'm a retired architect. These days, I just love to sit near my fav
 In the Summoner's Rift, we stood side by side. Through victories and defeats, our bond only grew. Here's to the teammates that became family, and the fleeting youth we forever cherish.
 
 
+## Spring in Focusing Screen
+!md: Canon EOS R, RF 35mm F1.8 Macro IS STM
+!date: March 24, 2021
+One of the reasons I love the <a href="https://en.wikipedia.org/wiki/Mamiya_RB67" target="_blank" style="color: #0018a8; text-decoration: none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">_Mamiya RB67_</a> is its focusing screen. Capturing spring through its focusing screen was the first series of photos I took after acquiring it. Yes, I took photos with it, but it's more like I captured photos through it.
+
+
 
 
 # about
