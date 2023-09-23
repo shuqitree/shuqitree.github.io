@@ -116,9 +116,9 @@ const images = [
 
 
 const nodes = [
-  { id: "a", height: 300, x: -526.7114978358869, y: -27.954213546407182, up: '-12%', over: '-90%', img: "media/node_images/221024uva.webp" }
-    , { id: "b", height: 400, x: 8.059866961236306, y: -481.31970185434225, up: '-88%', over: '-50%', img: "media/node_images/221024uva.webp" }
-    , { id: 'c', height: 500, x: 519.2927754935764, y: 505.2944150332749, up: '-12%', over: '-40%', img: "media/node_images/221024uva.webp" }
+  { id: "a", height: 600, x: -526.7114978358869, y: -27.954213546407182, up: '-12%', over: '-90%', img: "media/node_images/221024uva.webp" }
+    , { id: "b", height: 500, x: 8.059866961236306, y: -481.31970185434225, up: '-88%', over: '-50%', img: "media/node_images/221024uva.webp" }
+    , { id: 'c', height: 650, x: 519.2927754935764, y: 505.2944150332749, up: '-12%', over: '-40%', img: "media/node_images/221024uva.webp" }
   ]
 
 const links =
