@@ -1,5 +1,5 @@
 // Declare an array of camera names
-let cameraArray = ["Fujifilm X-T3", "Canon EOS R", "Sony A7 IV", "Fujifilm X-T4", "Nikon Z6", "Mamiya RB67", "Hasselblad X2D"];
+let cameraArray = ["Nikon Zf", "Fujifilm X-T3", "Canon EOS R", "Nikon Z8", "Canon EOS R6", "Sony A7 IV", "Fujifilm X-T4", "Nikon Z6", "Mamiya RB67", "Hasselblad X2D"];
 
 // Index to track the current camera name from the cameraArray
 let index = 0;
