@@ -44,6 +44,9 @@ for await (const file of files) {
         "y",
         "--wrap",
         "100",
+        "--quote-ampersand", // 强制转义 `&`
+        "--quote-marks",     // 属性值强制使用引号
+        "--quote-nbsp",      // 转义不间断空格为 `&nbsp;`
         `docs/${file.name}`
       ],
     });
