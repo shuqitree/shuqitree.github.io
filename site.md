@@ -2,6 +2,22 @@
 
 # photography
 
+## Surprises Await Everywhere
+!md: Nikon Zf
+!date: 2024
+TBD
+
+## My Fav Sunset watching spot
+!md: Nikon Zf
+!date: 2024
+TBD
+
+## Final Exercise 2024
+!md: Nikon Z7II, NIKKOR Z24-70mm F4
+!date: May 19, 2024
+!yt: SResNY3ArXg
+Go to 50:50 of this video.
+
 ## The Turtle's Whisper
 !md: Fujifilm XT-4, FFUJINON XF16-80mm F4 R OIS WR
 !date: July 1, 2023
@@ -75,7 +91,7 @@ One of the reasons I love the <a href="https://en.wikipedia.org/wiki/Mamiya_RB67
 
 ## About Me
 
-<div id=about-pictures><img src=media/profile/gradpic.webp><img src=media/profile/walking.webp><img src=media/profile/sitting.webp><img src=media/profile/reading.webp></div>
+<div id=about-pictures><img src=media/profile/gradpic.webp><img src=media/profile/walking.webp></div>
 
 Hey! I'm Shuqi Jiang, currently a Software Engineer at DMV area. Before that I graduated from University of Virgina with a Master degree in Computer Science. My academic foundation is built upon a Bachelor's in Network Security from Wuhan University.  Outside the classroom, I am deeply passionate about photography. While I appreciate digital cameras and have had the privilege to work with some of the finest models like the _Hasselblad X2D_, _BMPCC 6K_, and the _Fujifilm XT-2_, I also have a profound love for film. In fact, I've nearly tried every film camera the world has to offer. My personal favorite remains the _Mamiya RB67_, especially when loaded with the 120 format _Kodak Portra 400_ film. Whether I'm behind the lens or sipping on a latte, life is a quest for beauty and moments. This quest is evident not just in my photos, but also in my loyalty to Starbucks, reflected by the over _1500_ stars I've accumulated in their rewards program. Every star is a testament to my love for their brews and my penchant for seeking out life's little pleasures!!!
 
