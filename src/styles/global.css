@@ -628,6 +628,7 @@ a {
 
 .profile-collage img {
   width: 100%;
+  height: auto;
 }
 
 .profile-collage img:nth-child(2) {
