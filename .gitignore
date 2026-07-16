@@ -1,1 +1,12 @@
 **/.DS_Store
+
+# Astro build and dependency output
+node_modules/
+.pnpm-store/
+dist/
+.astro/
+
+# Local environment files
+.env
+.env.*
+!.env.example

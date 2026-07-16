@@ -1,0 +1,67 @@
+:root {
+  color-scheme: light;
+  font-family: 'Times New Roman', Times, serif;
+  color: #171717;
+  background: #ededed;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 20rem;
+  background: #ededed;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+}
+
+img,
+picture,
+video,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+.migration-placeholder {
+  width: min(100% - 2rem, 50rem);
+  margin-inline: auto;
+  padding-block: clamp(4rem, 12vw, 10rem);
+}
+
+.migration-placeholder h1 {
+  margin: 0;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  line-height: 0.95;
+}
+
+.migration-placeholder p {
+  max-width: 38rem;
+  font-size: 1.125rem;
+  line-height: 1.65;
+}
+
+.migration-placeholder .eyebrow {
+  margin-bottom: 1rem;
+  font-family: Arial, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}

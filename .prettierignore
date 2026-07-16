@@ -1,0 +1,13 @@
+docs/
+node_modules/
+dist/
+.astro/
+
+# Legacy generator files remain untouched during migration.
+site.md
+site.css
+writing/
+csso.esm.js
+json2site.js
+md2json.js
+tool.js

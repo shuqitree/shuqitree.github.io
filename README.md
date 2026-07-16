@@ -1,5 +1,29 @@
 # website
 
+## Astro rebuild (in progress)
+
+The new site is being built alongside the current GitHub Pages output. The existing `docs/`
+directory remains the live-site source until the migration is complete.
+
+Requirements:
+
+- Node.js 20 or newer
+- pnpm 11
+
+Development commands:
+
+```sh
+pnpm install
+pnpm dev
+pnpm check
+pnpm format:check
+pnpm build
+pnpm preview
+```
+
+Astro source lives in `src/`. A production build is written to `dist/`, which is intentionally
+ignored by Git during the migration.
+
 ## read this if u dont know where to start
 Before you start rebuild the files, remember to install
 brew install tidy-html5
