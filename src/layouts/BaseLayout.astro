@@ -1,24 +1,72 @@
 ---
+import { ClientRouter } from 'astro:transitions';
+import { getImage } from 'astro:assets';
+
+import backgroundImage from '../assets/design/background_pic.webp';
 import '../styles/global.css';
 
 interface Props {
-  title?: string;
-  description?: string;
+  title?: string | undefined;
+  description?: string | undefined;
+  image?: string | undefined;
+  jsonLd?: Record<string, unknown> | undefined;
+  noIndex?: boolean | undefined;
 }
 
-const { title = "Shuqi's Forest", description = 'Photography and stories by Shuqi Jiang.' } =
-  Astro.props;
+const {
+  title = "Shuqi's Forest",
+  description = 'Photography and stories by Shuqi Jiang.',
+  image,
+  jsonLd,
+  noIndex = false,
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+const socialImage = image ? new URL(image, Astro.site) : undefined;
+const [smallBackground, largeBackground] = await Promise.all([
+  getImage({
+    src: backgroundImage,
+    width: Math.min(backgroundImage.width, 1280),
+    format: 'webp',
+    quality: 72,
+  }),
+  getImage({
+    src: backgroundImage,
+    width: Math.min(backgroundImage.width, 2400),
+    format: 'webp',
+    quality: 78,
+  }),
+]);
+const backgroundStyle = `--background-small: url("${smallBackground.src}"); --background-large: url("${largeBackground.src}")`;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    <meta name="robots" content={noIndex ? 'noindex, follow' : 'index, follow'} />
+    <meta name="theme-color" content="#f4eff4" />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    {socialImage && <meta property="og:image" content={socialImage} />}
+    <meta name="twitter:card" content={socialImage ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {socialImage && <meta name="twitter:image" content={socialImage} />}
+    {jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
     <title>{title}</title>
+    <ClientRouter />
   </head>
-  <body>
+  <body style={backgroundStyle}>
     <slot />
   </body>
 </html>

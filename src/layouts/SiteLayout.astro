@@ -1,0 +1,30 @@
+---
+import CameraText from '../components/CameraText';
+import SiteNavigation from '../components/SiteNavigation.astro';
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title?: string | undefined;
+  description?: string | undefined;
+  image?: string | undefined;
+  jsonLd?: Record<string, unknown> | undefined;
+  noIndex?: boolean | undefined;
+}
+
+const { title, description, image, jsonLd, noIndex } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} image={image} jsonLd={jsonLd} noIndex={noIndex}>
+  <div class="site-shell">
+    <aside class="site-sidebar">
+      <SiteNavigation currentPath={Astro.url.pathname} />
+      <CameraText client:load />
+    </aside>
+
+    <main class="site-main">
+      <slot />
+    </main>
+  </div>
+
+  <img class="site-watermark" src="/logo.png" alt="" aria-hidden="true" />
+</BaseLayout>

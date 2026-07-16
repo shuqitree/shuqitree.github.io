@@ -1,0 +1,110 @@
+---
+import { Image } from 'astro:assets';
+
+import { resolveMedia, responsiveWidths } from '../lib/images';
+
+interface Props {
+  images: string[];
+  title: string;
+}
+
+const { images, title } = Astro.props;
+---
+
+<div class="photo-sequence" data-photo-gallery>
+  {
+    images.map((path, index) => {
+      const image = resolveMedia(path);
+      const alt = `${title}, photograph ${index + 1} of ${images.length}`;
+
+      return (
+        <figure class:list={['photo-frame', `photo-frame-${(index % 4) + 1}`]}>
+          <button
+            class="photo-open"
+            type="button"
+            data-gallery-index={index}
+            data-full-src={image.src}
+            data-alt={alt}
+            aria-label={`Open photograph ${index + 1} in full-screen viewer`}
+          >
+            <Image
+              src={image}
+              format="webp"
+              widths={responsiveWidths(image)}
+              sizes="(max-width: 48rem) 92vw, (max-width: 78rem) 72vw, 64rem"
+              alt={alt}
+              loading={index === 0 ? 'eager' : 'lazy'}
+              decoding="async"
+              quality={78}
+            />
+          </button>
+          <figcaption>{String(index + 1).padStart(2, '0')}</figcaption>
+        </figure>
+      );
+    })
+  }
+
+  <dialog class="photo-lightbox" aria-label={`${title} photograph viewer`}>
+    <div class="lightbox-toolbar">
+      <p class="lightbox-count" aria-live="polite"></p>
+      <button class="lightbox-close" type="button" aria-label="Close photograph viewer"
+        >Close</button
+      >
+    </div>
+    <button class="lightbox-previous" type="button" aria-label="Previous photograph">←</button>
+    <img class="lightbox-image" alt="" />
+    <button class="lightbox-next" type="button" aria-label="Next photograph">→</button>
+  </dialog>
+</div>
+
+<script>
+  function prepareGalleries() {
+    document.querySelectorAll<HTMLElement>('[data-photo-gallery]').forEach((gallery) => {
+      if (gallery.dataset.ready === 'true') return;
+      gallery.dataset.ready = 'true';
+
+      const dialog = gallery.querySelector<HTMLDialogElement>('.photo-lightbox');
+      const lightboxImage = gallery.querySelector<HTMLImageElement>('.lightbox-image');
+      const count = gallery.querySelector<HTMLElement>('.lightbox-count');
+      const items = Array.from(gallery.querySelectorAll<HTMLButtonElement>('[data-gallery-index]'));
+      if (!dialog || !lightboxImage || !count || items.length === 0) return;
+
+      let currentIndex = 0;
+
+      const showImage = (index: number) => {
+        currentIndex = (index + items.length) % items.length;
+        const item = items[currentIndex];
+        if (!item) return;
+        lightboxImage.src = item.dataset.fullSrc ?? '';
+        lightboxImage.alt = item.dataset.alt ?? '';
+        count.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(items.length).padStart(2, '0')}`;
+      };
+
+      items.forEach((item, index) => {
+        item.addEventListener('click', () => {
+          showImage(index);
+          dialog.showModal();
+        });
+      });
+
+      gallery.querySelector('.lightbox-close')?.addEventListener('click', () => dialog.close());
+      gallery
+        .querySelector('.lightbox-previous')
+        ?.addEventListener('click', () => showImage(currentIndex - 1));
+      gallery
+        .querySelector('.lightbox-next')
+        ?.addEventListener('click', () => showImage(currentIndex + 1));
+
+      dialog.addEventListener('click', (event) => {
+        if (event.target === dialog) dialog.close();
+      });
+
+      dialog.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowLeft') showImage(currentIndex - 1);
+        if (event.key === 'ArrowRight') showImage(currentIndex + 1);
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', prepareGalleries);
+</script>

@@ -1,27 +1,47 @@
 ---
 import { getCollection } from 'astro:content';
+import { getImage } from 'astro:assets';
 
-import BaseLayout from '../layouts/BaseLayout.astro';
+import PhotoTree from '../components/PhotoTree';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { resolveMedia } from '../lib/images';
 
 const photography = await getCollection('photography');
-const pages = await getCollection('pages');
-const publishedProjects = photography.filter(({ data }) => data.status === 'published');
-const draftProjects = photography.filter(({ data }) => data.status === 'draft');
+const publishedProjects = photography
+  .filter(({ data }) => data.status === 'published' && data.cover)
+  .sort((a, b) => a.data.order - b.data.order);
+const treeEntries = await Promise.all(
+  publishedProjects.map(async (entry) => ({
+    id: entry.id,
+    title: entry.data.title,
+    href: `/${entry.id}`,
+    image: (
+      await getImage({
+        src: resolveMedia(entry.data.cover!),
+        width: 420,
+        format: 'webp',
+        quality: 76,
+      })
+    ).src,
+  })),
+);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: "Shuqi's Forest",
+  url: Astro.site,
+  author: {
+    '@type': 'Person',
+    name: 'Shuqi Jiang',
+  },
+};
 ---
 
-<BaseLayout>
-  <main class="migration-placeholder">
-    <p class="eyebrow">Astro migration workspace</p>
-    <h1>Shuqi's Forest</h1>
-    <p>
-      The new static site foundation is ready. Photography content and the existing visual design
-      will be migrated in the next stages.
-    </p>
-    <p class="content-status">
-      {publishedProjects.length} published projects, {draftProjects.length} drafts, and {
-        pages.length
-      }
-      profile page are now validated by the content model.
-    </p>
-  </main>
-</BaseLayout>
+<SiteLayout jsonLd={jsonLd}>
+  <section class="home-tree" aria-labelledby="home-title">
+    <h1 id="home-title" class="visually-hidden">Shuqi's Forest</h1>
+    <p class="tree-instruction">Drag a photograph. Follow a branch.</p>
+    <PhotoTree entries={treeEntries} client:load />
+  </section>
+</SiteLayout>

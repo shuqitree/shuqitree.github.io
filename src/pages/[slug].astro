@@ -1,0 +1,145 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getCollection, render } from 'astro:content';
+import { getImage, Image } from 'astro:assets';
+
+import PhotoSequence from '../components/PhotoSequence.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { resolveMedia, responsiveWidths } from '../lib/images';
+
+type PageProps =
+  | { kind: 'photography'; entry: CollectionEntry<'photography'> }
+  | { kind: 'page'; entry: CollectionEntry<'pages'> };
+
+export async function getStaticPaths() {
+  const [photography, pages] = await Promise.all([
+    getCollection('photography'),
+    getCollection('pages'),
+  ]);
+
+  return [
+    ...photography
+      .filter(({ data }) => data.status === 'published')
+      .map((entry) => ({ params: { slug: entry.id }, props: { kind: 'photography', entry } })),
+    ...pages
+      .filter(({ data }) => data.status === 'published')
+      .map((entry) => ({ params: { slug: entry.data.path }, props: { kind: 'page', entry } })),
+  ];
+}
+
+const props = Astro.props as PageProps;
+const rendered =
+  props.kind === 'photography' ? await render(props.entry) : await render(props.entry);
+const { Content } = rendered;
+const title = props.entry.data.title;
+const description = props.entry.data.seoDescription ?? 'Photography and stories by Shuqi Jiang.';
+const cover = props.kind === 'photography' ? props.entry.data.cover : undefined;
+const socialImage = cover
+  ? (
+      await getImage({
+        src: resolveMedia(cover),
+        width: 1200,
+        format: 'webp',
+        quality: 80,
+      })
+    ).src
+  : undefined;
+const jsonLd =
+  props.kind === 'photography'
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'CreativeWork',
+        name: title,
+        description,
+        dateCreated: props.entry.data.date,
+        url: new URL(Astro.url.pathname, Astro.site),
+        image: socialImage ? new URL(socialImage, Astro.site) : undefined,
+        creator: { '@type': 'Person', name: 'Shuqi Jiang' },
+      }
+    : {
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        name: 'Shuqi Jiang',
+        url: new URL(Astro.url.pathname, Astro.site),
+        description,
+        email: props.entry.data.email,
+      };
+---
+
+<SiteLayout
+  title={`${title} — Shuqi Jiang`}
+  description={description}
+  image={socialImage}
+  jsonLd={jsonLd}
+>
+  {
+    props.kind === 'photography' ? (
+      <article class="project-page">
+        <header class="project-header">
+          <p class="section-label">
+            Photography / {String(props.entry.data.order).padStart(2, '0')}
+          </p>
+          <h1>{props.entry.data.title}</h1>
+          <div class="project-meta">
+            <p>{props.entry.data.equipmentDisplay}</p>
+            {props.entry.data.dateHtml ? (
+              <p class="project-date" set:html={props.entry.data.dateHtml} />
+            ) : (
+              <p class="project-date">{props.entry.data.dateDisplay}</p>
+            )}
+          </div>
+        </header>
+
+        <div class="project-story prose">
+          <Content />
+        </div>
+
+        {props.entry.data.youtubeId && (
+          <div class="video-frame">
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${props.entry.data.youtubeId}`}
+              title={`Video for ${props.entry.data.title}`}
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+            />
+          </div>
+        )}
+
+        {props.entry.data.images.length > 0 && (
+          <PhotoSequence images={props.entry.data.images} title={props.entry.data.title} />
+        )}
+      </article>
+    ) : (
+      <article class="about-page">
+        <header class="about-header">
+          <p class="section-label">Profile</p>
+          <h1>{props.entry.data.title}</h1>
+        </header>
+
+        <div class="profile-collage">
+          {props.entry.data.profileImages.map((src, index) => {
+            const image = resolveMedia(src);
+
+            return (
+              <Image
+                src={image}
+                format="webp"
+                widths={responsiveWidths(image, [480, 900])}
+                sizes="(max-width: 48rem) 58vw, 34rem"
+                alt={`Portrait of Shuqi Jiang ${index + 1}`}
+                loading={index === 0 ? 'eager' : 'lazy'}
+                decoding="async"
+                quality={80}
+              />
+            );
+          })}
+        </div>
+
+        <div class="about-copy prose">
+          <Content />
+        </div>
+      </article>
+    )
+  }
+</SiteLayout>

@@ -14,29 +14,47 @@ const publicationStatus = z.enum(['published', 'draft', 'hidden']);
 
 const photography = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/photography' }),
-  schema: z.object({
-    title: z.string().min(1),
-    navTitle: z.string().min(1).optional(),
-    order: z.number().int().nonnegative(),
-    status: publicationStatus.default('published'),
-    date: partialDate,
-    dateEnd: partialDate.optional(),
-    dateDisplay: z.string().min(1),
-    dateHtml: z.string().min(1).optional(),
-    equipment: z.object({
-      cameras: z.array(z.string().min(1)).min(1),
-      lenses: z.array(z.string().min(1)).default([]),
+  schema: z
+    .object({
+      title: z.string().min(1),
+      navTitle: z.string().min(1).optional(),
+      order: z.number().int().nonnegative(),
+      status: publicationStatus.default('published'),
+      date: partialDate,
+      dateEnd: partialDate.optional(),
+      dateDisplay: z.string().min(1),
+      dateHtml: z.string().min(1).optional(),
+      equipment: z.object({
+        cameras: z.array(z.string().min(1)).min(1),
+        lenses: z.array(z.string().min(1)).default([]),
+      }),
+      equipmentDisplay: z.string().min(1),
+      youtubeId: z
+        .string()
+        .regex(/^[A-Za-z0-9_-]{11}$/)
+        .optional(),
+      cover: mediaPath.optional(),
+      images: z.array(mediaPath).default([]),
+      featured: z.boolean().default(false),
+      seoDescription: z.string().max(180).optional(),
+    })
+    .superRefine((project, context) => {
+      if (project.cover && !project.images.includes(project.cover)) {
+        context.addIssue({
+          code: 'custom',
+          path: ['cover'],
+          message: 'The cover must also appear in the project image list.',
+        });
+      }
+
+      if (project.status === 'published' && project.images.length === 0 && !project.youtubeId) {
+        context.addIssue({
+          code: 'custom',
+          path: ['images'],
+          message: 'A published project needs photographs or a video.',
+        });
+      }
     }),
-    equipmentDisplay: z.string().min(1),
-    youtubeId: z
-      .string()
-      .regex(/^[A-Za-z0-9_-]{11}$/)
-      .optional(),
-    cover: mediaPath.optional(),
-    images: z.array(mediaPath).default([]),
-    featured: z.boolean().default(false),
-    seoDescription: z.string().max(180).optional(),
-  }),
 });
 
 const pages = defineCollection({

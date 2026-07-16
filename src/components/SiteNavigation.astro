@@ -1,0 +1,87 @@
+---
+import { getCollection } from 'astro:content';
+import { getImage } from 'astro:assets';
+
+import { resolveMedia } from '../lib/images';
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+const [allProjects, allPages] = await Promise.all([
+  getCollection('photography'),
+  getCollection('pages'),
+]);
+
+const publishedProjects = allProjects
+  .filter(({ data }) => data.status === 'published')
+  .sort((a, b) => a.data.order - b.data.order);
+const projects = await Promise.all(
+  publishedProjects.map(async (project) => ({
+    entry: project,
+    preview: project.data.cover
+      ? (
+          await getImage({
+            src: resolveMedia(project.data.cover),
+            width: 320,
+            format: 'webp',
+            quality: 70,
+          })
+        ).src
+      : undefined,
+  })),
+);
+const about = allPages.find(({ data }) => data.path === 'about-me');
+
+const normalizePath = (path: string) => (path === '/' ? path : path.replace(/\/$/, ''));
+const activePath = normalizePath(currentPath);
+---
+
+<nav class="site-navigation" aria-label="Primary navigation">
+  <a class:list={['site-name', { active: activePath === '/' }]} href="/">Shuqi Jiang</a>
+
+  <details class="site-index">
+    <summary>
+      <span>Photography — {projects.length}</span>
+      <span class="index-toggle" aria-hidden="true">+</span>
+    </summary>
+
+    <ol class="project-index">
+      {
+        projects.map(({ entry: project, preview }, index) => {
+          const href = `/${project.id}`;
+          const isActive = activePath === href;
+
+          return (
+            <li>
+              <a
+                class:list={['project-link', { active: isActive }]}
+                href={href}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                <span class="project-number">{String(index + 1).padStart(2, '0')}</span>
+                <span>{project.data.navTitle ?? project.data.title}</span>
+                {preview && (
+                  <img class="nav-preview" src={preview} alt="" loading="lazy" decoding="async" />
+                )}
+              </a>
+            </li>
+          );
+        })
+      }
+    </ol>
+  </details>
+
+  {
+    about && (
+      <a
+        class:list={['about-link', { active: activePath === `/${about.data.path}` }]}
+        href={`/${about.data.path}`}
+        aria-current={activePath === `/${about.data.path}` ? 'page' : undefined}
+      >
+        About
+      </a>
+    )
+  }
+</nav>

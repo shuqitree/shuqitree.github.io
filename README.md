@@ -1,9 +1,10 @@
 # website
 
-## Astro rebuild (in progress)
+## Astro site
 
-The new site is being built alongside the current GitHub Pages output. The existing `docs/`
-directory remains the live-site source until the migration is complete.
+The site is built with Astro and a small React/D3 island for the interactive photograph tree. The
+output is entirely static. The existing `docs/` directory is retained temporarily as a rollback
+copy until the Astro deployment has been verified in production.
 
 Requirements:
 
@@ -22,9 +23,15 @@ pnpm preview
 ```
 
 Astro source lives in `src/`. A production build is written to `dist/`, which is intentionally
-ignored by Git during the migration.
+ignored by Git. See `src/content/README.md` for the current project and photograph editing guide.
 
-## read this if u dont know where to start
+The workflow in `.github/workflows/deploy.yml` builds and deploys the site from `main` with GitHub
+Pages. In the repository settings, Pages must use **GitHub Actions** as its source.
+
+## Legacy generator guide (kept for rollback)
+
+The instructions below describe the old `docs/` generator. Use the Astro guide above for new work.
+
 Before you start rebuild the files, remember to install
 brew install tidy-html5
 brew install pandoc
@@ -33,6 +40,7 @@ brew install deno
 hello friend. do u need to edit the website now? no problem. let's step through the process!
 
 here are the essential tools you will need:
+
 1. terminal
 2. text editor
 
@@ -43,6 +51,7 @@ then, you will need to know how to open this folder in your terminal, and your t
 great! now you can view and use the folders in the website folder!.
 
 There are now two major things that you probably would do when editing the website:
+
 1. add a page to the website
 2. add stills to that page if it is a film
 
@@ -53,10 +62,11 @@ after adding the film by editing `site.md` appropriately i would recommend that 
 (slightly important note: if you get a message like `zsh: permission denied: ./run.sh`, you can likely resolve the problem by running `chmod +x run.sh`. this goes for other files that u run like `tool.js`. i would recommend running `chmod +x *.js *.sh` to quickly resolve all these problems [this makes all `.js` and all `.sh` files 'executable'.]).
 
 after you regenerated the site by running `./run.sh` in the website folder, you can verify that the site actually changed by viewing a locally-hosted copy of the website. you can do this by
+
 1. running `./tool.js host_local`
 2. navigating to whereever it says it is locally hosting the website thing -- it should be `http://localhost:8000/`.
 3. navigate to whatever page u just created and verify that it is there and stuff.
-	- Please Look At The URL Thing Of It And Note It. I Will CAll This The "ID" Of A Page. For Example The ID Of "Me and My Babysitter" Is `me-and-my-babysitter` (you can verify this by going to the me and my babysitter page and seeing that the url is `http://localhost:8000/me-and-my-babysitter`).
+   - Please Look At The URL Thing Of It And Note It. I Will CAll This The "ID" Of A Page. For Example The ID Of "Me and My Babysitter" Is `me-and-my-babysitter` (you can verify this by going to the me and my babysitter page and seeing that the url is `http://localhost:8000/me-and-my-babysitter`).
 4. Now If YOu Want you can stop the local web server by press control+c in the terminal. because otherwise you can't really continue on, unless you open a new terminal and continue from there, which is also a great option!.
 
 Congratulations Now YOu Created the page! Now all you Need To Do Probably Is Add Stills To The Page If It Is A Film.
@@ -67,7 +77,7 @@ Great Now YOu Have a folder TO PUt your stills in. Now, Put The Stills Inside Th
 
 OK Now you made your folder. And you put unprocessed stills into it. Now, I Recommend: RENAME THE STILLS TO NUMERIC FILE NAMES. Currently the order that the stills is displayed on the website is by numeric file name order. So Please Rename all files to integers, e.g. `1.jpg`, `2.jpg`, `123.jpg`, etc. TO FACILITATE THIS PROCESS it may be helpful to use `./tool.js rename_stills` which does exactly this. It Will rename all the stills that is not numeric name to a numeric name.
 
-- ALSO, IF YOU WANT TO REORDER THE STILLS, `./tool.js rename_stills` RENAMES EVERYTHING TO INTEGER NUMERIC NAMES WHILE TRYING TO MAINTAIN THE (potentially non-integer) NUMERIC NAMES OF THE ORIGINAL FILE NAMES. SO IF YOU HAVE E.G. `1.jpg`, `2.jpg`, AND `3.jpg` AND YOU WANT TO MOVE `3.jpg` TO THE MIDDLE (BETWEEN 	`1.jpg` and `2.jpg`), YOU CAN RENAME `3.jpg` TO A NUMERIC VALUE BETWEEN 1 AND 2, E.G. `1.5.jpg` OR `1.4.jpg` OR WHATEVER ELSE AND RUN `./tool.js rename_stills` AND IT WILL RENORMALIZE EVERYTHING TO `1.jpg`, `2.jpg`, AND `3.jpg` (WHERE NOW `2.jpg` is the old `3.jpg` and `3.jpg` is the new `2.jpg`). see the section on `./tool.js rename_stills` for maybe more detail.
+- ALSO, IF YOU WANT TO REORDER THE STILLS, `./tool.js rename_stills` RENAMES EVERYTHING TO INTEGER NUMERIC NAMES WHILE TRYING TO MAINTAIN THE (potentially non-integer) NUMERIC NAMES OF THE ORIGINAL FILE NAMES. SO IF YOU HAVE E.G. `1.jpg`, `2.jpg`, AND `3.jpg` AND YOU WANT TO MOVE `3.jpg` TO THE MIDDLE (BETWEEN `1.jpg` and `2.jpg`), YOU CAN RENAME `3.jpg` TO A NUMERIC VALUE BETWEEN 1 AND 2, E.G. `1.5.jpg` OR `1.4.jpg` OR WHATEVER ELSE AND RUN `./tool.js rename_stills` AND IT WILL RENORMALIZE EVERYTHING TO `1.jpg`, `2.jpg`, AND `3.jpg` (WHERE NOW `2.jpg` is the old `3.jpg` and `3.jpg` is the new `2.jpg`). see the section on `./tool.js rename_stills` for maybe more detail.
 
 great now u have STILLS THAT ARE NUMERICALLY NAMED IN A FOLDER NAMED THE ID OF THE PAGE. ok now the only thing i would recommend to do is CONVERT EVERYTHING TO `.webp` and then u are basically done.
 
@@ -101,7 +111,7 @@ if you have none of these i would recommend taking the following steps:
 1. install text editor
 2. install homebrew (mac package manager thing)
 3. run `brew install deno pandoc imagemagick` to install the rest
-	- note: I have never actually ran this exact command so I am not sure if it will actually work properly. I also don't know if the package names will randomly change in the near future (though I doubt they will?).
+   - note: I have never actually ran this exact command so I am not sure if it will actually work properly. I also don't know if the package names will randomly change in the near future (though I doubt they will?).
 
 ## how to set up ssh keys for github authenitcation!!!!
 
@@ -129,11 +139,11 @@ each film has a short code thing based on its title. for example `1:11 film` the
 you can see exactly what short code a film has by browsing to its generated page and looking at its url.
 
 1. go to `docs/media/<code>` (e.g. `docs/media/111-film`)
-	- you will likely have to make the folder yourself if it is not already there
+   - you will likely have to make the folder yourself if it is not already there
 2. copy any pictures you like into it
-	- note: the site will display the stills based on numeric file names, so make sure that your file names are numbers!! (e.g. `1.webp`, `2.webp`, etc.)
-		- see `./tool.js rename_stills` for helpful renaming tips!!
-		- i would recommend converting everything to `webp` files for optimal compression and stuff. see `./tool.js stills2webp` for helpful tool thing!
+   - note: the site will display the stills based on numeric file names, so make sure that your file names are numbers!! (e.g. `1.webp`, `2.webp`, etc.)
+     - see `./tool.js rename_stills` for helpful renaming tips!!
+     - i would recommend converting everything to `webp` files for optimal compression and stuff. see `./tool.js stills2webp` for helpful tool thing!
 3. regenerate website (by running `./run.sh`) and you are done!!
 
 ## how to push changes to github
@@ -150,12 +160,15 @@ after you have made some changes to website and regenerated it how can you push 
 this is a tool with helpful things for modifying website!!
 
 ### `./tool.js clean`
+
 deletes all files that are generated by `./run.sh`
 
 ### `./tool.js host_local`
+
 runs local web server that hosts `docs/`
 
 ### `./tool.js rename_stills`
+
 this will numerify all stills to follow the naming convention `1`, `2`, `3`, etc.
 
 it numerifies them based on their current numeric values and also puts non-numeric values at the end of the current scheme.
