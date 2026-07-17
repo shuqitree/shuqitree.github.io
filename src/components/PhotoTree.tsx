@@ -110,6 +110,41 @@ const christmasLights = [
   { x: 780, y: 314 },
 ];
 
+const sakuraBlossoms = [
+  { x: 158, y: 397, scale: 0.82 },
+  { x: 205, y: 258, scale: 1.05 },
+  { x: 274, y: 188, scale: 0.78 },
+  { x: 334, y: 148, scale: 1.08 },
+  { x: 405, y: 112, scale: 0.88 },
+  { x: 475, y: 82, scale: 1.18 },
+  { x: 542, y: 108, scale: 0.8 },
+  { x: 611, y: 132, scale: 1.08 },
+  { x: 680, y: 161, scale: 0.84 },
+  { x: 735, y: 184, scale: 1.14 },
+  { x: 808, y: 238, scale: 0.76 },
+  { x: 850, y: 300, scale: 1.05 },
+  { x: 772, y: 424, scale: 0.9 },
+  { x: 684, y: 390, scale: 1.08 },
+  { x: 585, y: 340, scale: 0.8 },
+  { x: 500, y: 292, scale: 1.02 },
+  { x: 408, y: 292, scale: 0.75 },
+  { x: 320, y: 344, scale: 1.08 },
+  { x: 230, y: 360, scale: 0.82 },
+];
+
+const sakuraPetals = [
+  { x: 255, y: 150, drift: -38, delay: -0.8 },
+  { x: 362, y: 95, drift: 24, delay: -2.6 },
+  { x: 455, y: 165, drift: -18, delay: -4.2 },
+  { x: 550, y: 88, drift: 42, delay: -1.7 },
+  { x: 645, y: 148, drift: -27, delay: -3.5 },
+  { x: 735, y: 220, drift: 33, delay: -5.1 },
+  { x: 300, y: 290, drift: 45, delay: -4.8 },
+  { x: 420, y: 355, drift: -32, delay: -2.1 },
+  { x: 580, y: 300, drift: 22, delay: -5.6 },
+  { x: 690, y: 370, drift: -44, delay: -3.1 },
+];
+
 function mulberry32(seed: number) {
   return () => {
     let value = (seed += 0x6d2b79f5);
@@ -263,9 +298,11 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
   const [tornadoBurst, setTornadoBurst] = useState(0);
   const [isWindy, setIsWindy] = useState(false);
   const [isTornado, setIsTornado] = useState(false);
-  const [isChristmas, setIsChristmas] = useState(false);
+  const [treeTheme, setTreeTheme] = useState<'christmas' | 'sakura' | null>(null);
   const [wind, setWind] = useState<WindProfile>(stillAir);
   const [tornado, setTornado] = useState<TornadoProfile>(quietTornado);
+  const isChristmas = treeTheme === 'christmas';
+  const isSakura = treeTheme === 'sakura';
 
   useEffect(() => {
     const values = new Uint32Array(1);
@@ -415,17 +452,27 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
         <button
           className="weather-button christmas-button"
           type="button"
-          onClick={() => setIsChristmas((current) => !current)}
+          onClick={() => setTreeTheme((current) => (current === 'christmas' ? null : 'christmas'))}
           aria-label={isChristmas ? 'Turn off Christmas tree' : 'Turn on Christmas tree'}
           aria-pressed={isChristmas}
           title={isChristmas ? 'Turn off Christmas tree' : 'Turn on Christmas tree'}
         >
           <span aria-hidden="true">🎄</span>
         </button>
+        <button
+          className="weather-button sakura-button"
+          type="button"
+          onClick={() => setTreeTheme((current) => (current === 'sakura' ? null : 'sakura'))}
+          aria-label={isSakura ? 'Turn off cherry blossom tree' : 'Turn on cherry blossom tree'}
+          aria-pressed={isSakura}
+          title={isSakura ? 'Turn off cherry blossom tree' : 'Turn on cherry blossom tree'}
+        >
+          <span aria-hidden="true">🌸</span>
+        </button>
       </div>
       <svg
         ref={svgRef}
-        className={`photo-tree${isChristmas ? ' photo-tree--christmas' : ''}`}
+        className={`photo-tree${isChristmas ? ' photo-tree--christmas' : ''}${isSakura ? ' photo-tree--sakura' : ''}`}
         viewBox={`0 0 ${width} ${height}`}
         role="img"
         aria-labelledby="photo-tree-title photo-tree-description"
@@ -445,6 +492,11 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
             <stop offset="0" stopColor="#173f32" />
             <stop offset="0.58" stopColor="#24644d" />
             <stop offset="1" stopColor="#d2a746" />
+          </linearGradient>
+          <linearGradient id="sakura-tree-gradient" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0" stopColor="#392c3a" />
+            <stop offset="0.52" stopColor="#70445f" />
+            <stop offset="1" stopColor="#c26f91" />
           </linearGradient>
           <filter id="christmas-glow" x="-80%" y="-80%" width="260%" height="260%">
             <feGaussianBlur stdDeviation="4" result="glow" />
@@ -547,6 +599,64 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
               </g>
               <g className="christmas-star" transform="translate(475 51)">
                 <path d="M 0 -24 L 6 -8 L 23 -8 L 9 3 L 14 20 L 0 10 L -14 20 L -9 3 L -23 -8 L -6 -8 Z" />
+              </g>
+            </g>
+          )}
+
+          {isSakura && (
+            <g className="sakura-decorations" aria-hidden="true">
+              <g className="sakura-blossoms">
+                {sakuraBlossoms.map((blossom, index) => (
+                  <g
+                    key={`${blossom.x}-${blossom.y}`}
+                    transform={`translate(${blossom.x} ${blossom.y})`}
+                  >
+                    <g
+                      className="sakura-blossom"
+                      style={
+                        {
+                          '--blossom-scale': blossom.scale,
+                          '--blossom-delay': `${index * -0.17}s`,
+                        } as CSSProperties
+                      }
+                    >
+                      <ellipse cx="0" cy="-9" rx="5.7" ry="9" />
+                      <ellipse cx="8.6" cy="-2.7" rx="5.7" ry="9" transform="rotate(72 8.6 -2.7)" />
+                      <ellipse cx="5.3" cy="7.3" rx="5.7" ry="9" transform="rotate(144 5.3 7.3)" />
+                      <ellipse
+                        cx="-5.3"
+                        cy="7.3"
+                        rx="5.7"
+                        ry="9"
+                        transform="rotate(216 -5.3 7.3)"
+                      />
+                      <ellipse
+                        cx="-8.6"
+                        cy="-2.7"
+                        rx="5.7"
+                        ry="9"
+                        transform="rotate(288 -8.6 -2.7)"
+                      />
+                      <circle r="3.4" />
+                    </g>
+                  </g>
+                ))}
+              </g>
+              <g className="sakura-falling-petals">
+                {sakuraPetals.map((petal, index) => (
+                  <g key={`${petal.x}-${petal.y}`} transform={`translate(${petal.x} ${petal.y})`}>
+                    <path
+                      d="M 0 -7 C 7 -6, 8 2, 0 8 C -6 5, -7 -3, 0 -7 Z"
+                      style={
+                        {
+                          '--petal-drift': `${petal.drift}px`,
+                          '--petal-delay': `${petal.delay}s`,
+                          '--petal-turn': `${index % 2 === 0 ? 210 : -190}deg`,
+                        } as CSSProperties
+                      }
+                    />
+                  </g>
+                ))}
               </g>
             </g>
           )}
