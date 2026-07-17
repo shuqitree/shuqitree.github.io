@@ -63,6 +63,15 @@ const backgroundStyle = `--background-small: url("${smallBackground.src}"); --ba
     <meta name="twitter:description" content={description} />
     {socialImage && <meta name="twitter:image" content={socialImage} />}
     {jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-5RJJVBLRBV"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-5RJJVBLRBV');
+    </script>
     <title>{title}</title>
     <ClientRouter />
   </head>
