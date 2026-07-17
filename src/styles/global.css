@@ -385,15 +385,16 @@ a {
 .tree-crown {
   transform-box: fill-box;
   transform-origin: 50% 100%;
-  animation: crown-breathe 12s ease-in-out infinite alternate;
+  animation: crown-breathe 10.8s ease-in-out infinite;
 }
 
 .tree-crown--windy {
-  animation: crown-gust 1.9s var(--wind-delay, 0s) cubic-bezier(0.22, 0.72, 0.22, 1) both;
+  animation: crown-gust var(--wind-duration, 1.9s) cubic-bezier(0.22, 0.72, 0.22, 1) both;
 }
 
 .tree-crown--windy .photo-leaf {
-  animation: leaf-gust 1.9s var(--wind-leaf-delay, 0s) cubic-bezier(0.22, 0.72, 0.22, 1) both;
+  animation: leaf-gust var(--wind-duration, 1.9s) var(--wind-leaf-delay, 0s)
+    cubic-bezier(0.22, 0.72, 0.22, 1) both;
 }
 
 .tree-branches path {
@@ -422,7 +423,7 @@ a {
   transform: rotate(var(--leaf-rotation)) scale(var(--leaf-scale, 1));
   transform-box: fill-box;
   transform-origin: 50% 100%;
-  animation: leaf-sway 9.5s ease-in-out var(--leaf-delay) infinite alternate;
+  animation: leaf-sway var(--idle-duration, 9.5s) ease-in-out var(--leaf-delay) infinite;
 }
 
 .photo-mat {
@@ -773,20 +774,32 @@ a {
 }
 
 @keyframes leaf-sway {
-  from {
-    transform: rotate(calc(var(--leaf-rotation) - 0.45deg)) scale(var(--leaf-scale, 1));
+  0%,
+  100% {
+    transform: translateY(0) rotate(calc(var(--leaf-rotation) - var(--idle-sway, 0.45deg)))
+      scale(var(--leaf-scale, 1));
   }
-  to {
-    transform: rotate(calc(var(--leaf-rotation) + 0.45deg)) scale(var(--leaf-scale, 1));
+  46% {
+    transform: translateY(calc(var(--idle-lift, 1px) * -1))
+      rotate(calc(var(--leaf-rotation) + var(--idle-sway, 0.45deg))) scale(var(--leaf-scale, 1));
+  }
+  72% {
+    transform: translateY(var(--idle-lift-settle, -0.35px))
+      rotate(calc(var(--leaf-rotation) + var(--idle-sway-settle, 0.16deg)))
+      scale(var(--leaf-scale, 1));
   }
 }
 
 @keyframes crown-breathe {
-  from {
-    transform: rotate(-0.16deg) translateX(-1px);
+  0%,
+  100% {
+    transform: rotate(-0.24deg) translate3d(-1.8px, 0.5px, 0);
   }
-  to {
-    transform: rotate(0.2deg) translateX(1.5px);
+  48% {
+    transform: rotate(0.31deg) translate3d(2.6px, -1px, 0);
+  }
+  73% {
+    transform: rotate(0.08deg) translate3d(0.7px, -0.3px, 0);
   }
 }
 
@@ -795,16 +808,20 @@ a {
     transform: rotate(0deg) skewX(0deg) translateX(0);
   }
   18% {
-    transform: rotate(2.8deg) skewX(-1.8deg) translateX(13px);
+    transform: rotate(var(--wind-rotate-peak, 2.8deg)) skewX(var(--wind-skew-peak, -1.8deg))
+      translateX(var(--wind-shift-peak, 13px));
   }
   43% {
-    transform: rotate(1.4deg) skewX(-0.7deg) translateX(7px);
+    transform: rotate(var(--wind-rotate-mid, 1.4deg)) skewX(var(--wind-skew-mid, -0.7deg))
+      translateX(var(--wind-shift-mid, 7px));
   }
   64% {
-    transform: rotate(-0.65deg) skewX(0.35deg) translateX(-3px);
+    transform: rotate(var(--wind-rotate-rebound, -0.65deg)) skewX(var(--wind-skew-rebound, 0.35deg))
+      translateX(var(--wind-shift-rebound, -3px));
   }
   82% {
-    transform: rotate(0.25deg) skewX(-0.12deg) translateX(1px);
+    transform: rotate(var(--wind-rotate-settle, 0.25deg)) skewX(var(--wind-skew-settle, -0.12deg))
+      translateX(var(--wind-shift-settle, 1px));
   }
   100% {
     transform: rotate(0deg) skewX(0deg) translateX(0);
@@ -816,16 +833,20 @@ a {
     transform: rotate(var(--leaf-rotation)) scale(var(--leaf-scale, 1));
   }
   22% {
-    transform: rotate(calc(var(--leaf-rotation) + 8deg)) scale(var(--leaf-scale, 1));
+    transform: rotate(calc(var(--leaf-rotation) + var(--wind-leaf-peak, 8deg)))
+      scale(var(--leaf-scale, 1));
   }
   48% {
-    transform: rotate(calc(var(--leaf-rotation) + 3deg)) scale(var(--leaf-scale, 1));
+    transform: rotate(calc(var(--leaf-rotation) + var(--wind-leaf-mid, 3deg)))
+      scale(var(--leaf-scale, 1));
   }
   68% {
-    transform: rotate(calc(var(--leaf-rotation) - 2deg)) scale(var(--leaf-scale, 1));
+    transform: rotate(calc(var(--leaf-rotation) + var(--wind-leaf-rebound, -2deg)))
+      scale(var(--leaf-scale, 1));
   }
   84% {
-    transform: rotate(calc(var(--leaf-rotation) + 0.8deg)) scale(var(--leaf-scale, 1));
+    transform: rotate(calc(var(--leaf-rotation) + var(--wind-leaf-settle, 0.8deg)))
+      scale(var(--leaf-scale, 1));
   }
   100% {
     transform: rotate(var(--leaf-rotation)) scale(var(--leaf-scale, 1));

@@ -37,9 +37,49 @@ interface DragState {
   moved: boolean;
 }
 
+interface WindProfile {
+  duration: number;
+  rotatePeak: number;
+  rotateMid: number;
+  rotateRebound: number;
+  rotateSettle: number;
+  skewPeak: number;
+  skewMid: number;
+  skewRebound: number;
+  skewSettle: number;
+  shiftPeak: number;
+  shiftMid: number;
+  shiftRebound: number;
+  shiftSettle: number;
+  leafPeak: number;
+  leafMid: number;
+  leafRebound: number;
+  leafSettle: number;
+}
+
 const width = 1000;
 const height = 760;
 const forestSeed = 0x5eed1234;
+
+const stillAir: WindProfile = {
+  duration: 1900,
+  rotatePeak: 2.8,
+  rotateMid: 1.4,
+  rotateRebound: -0.65,
+  rotateSettle: 0.25,
+  skewPeak: -1.8,
+  skewMid: -0.7,
+  skewRebound: 0.35,
+  skewSettle: -0.12,
+  shiftPeak: 13,
+  shiftMid: 7,
+  shiftRebound: -3,
+  shiftSettle: 1,
+  leafPeak: 8,
+  leafMid: 3,
+  leafRebound: -2,
+  leafSettle: 0.8,
+};
 
 function mulberry32(seed: number) {
   return () => {
@@ -192,6 +232,7 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
   const [seed, setSeed] = useState(forestSeed);
   const [windBurst, setWindBurst] = useState(0);
   const [isWindy, setIsWindy] = useState(false);
+  const [wind, setWind] = useState<WindProfile>(stillAir);
 
   useEffect(() => {
     const values = new Uint32Array(1);
@@ -262,12 +303,37 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
 
   const summonWind = () => {
     if (windTimerRef.current !== null) window.clearTimeout(windTimerRef.current);
+
+    const strength = 0.58 + Math.random() * 0.92;
+    const direction = Math.random() < 0.26 ? -1 : 1;
+    const duration = Math.round(1450 + Math.random() * 850);
+    const nextWind: WindProfile = {
+      duration,
+      rotatePeak: direction * (1.55 + strength * 1.65),
+      rotateMid: direction * (0.7 + strength * 0.8),
+      rotateRebound: -direction * (0.28 + strength * 0.38),
+      rotateSettle: direction * (0.13 + strength * 0.1),
+      skewPeak: -direction * (0.85 + strength * 0.72),
+      skewMid: -direction * (0.34 + strength * 0.29),
+      skewRebound: direction * (0.17 + strength * 0.14),
+      skewSettle: -direction * (0.06 + strength * 0.05),
+      shiftPeak: direction * (6 + strength * 7.2),
+      shiftMid: direction * (3.2 + strength * 3.9),
+      shiftRebound: -direction * (1.4 + strength * 1.65),
+      shiftSettle: direction * (0.5 + strength * 0.52),
+      leafPeak: direction * (3.8 + strength * 4.5),
+      leafMid: direction * (1.4 + strength * 1.8),
+      leafRebound: -direction * (0.9 + strength * 1.15),
+      leafSettle: direction * (0.36 + strength * 0.48),
+    };
+
+    setWind(nextWind);
     setWindBurst((current) => current + 1);
     setIsWindy(true);
     windTimerRef.current = window.setTimeout(() => {
       setIsWindy(false);
       windTimerRef.current = null;
-    }, 1900);
+    }, duration + 220);
   };
 
   if (entries.length === 0) return null;
@@ -311,7 +377,23 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
         <g
           key={windBurst}
           className={`tree-crown${isWindy ? ' tree-crown--windy' : ''}`}
-          style={{ '--wind-delay': `${(windBurst % 3) * 0.02}s` } as CSSProperties}
+          style={
+            {
+              '--wind-duration': `${wind.duration}ms`,
+              '--wind-rotate-peak': `${wind.rotatePeak}deg`,
+              '--wind-rotate-mid': `${wind.rotateMid}deg`,
+              '--wind-rotate-rebound': `${wind.rotateRebound}deg`,
+              '--wind-rotate-settle': `${wind.rotateSettle}deg`,
+              '--wind-skew-peak': `${wind.skewPeak}deg`,
+              '--wind-skew-mid': `${wind.skewMid}deg`,
+              '--wind-skew-rebound': `${wind.skewRebound}deg`,
+              '--wind-skew-settle': `${wind.skewSettle}deg`,
+              '--wind-shift-peak': `${wind.shiftPeak}px`,
+              '--wind-shift-mid': `${wind.shiftMid}px`,
+              '--wind-shift-rebound': `${wind.shiftRebound}px`,
+              '--wind-shift-settle': `${wind.shiftSettle}px`,
+            } as CSSProperties
+          }
         >
           <g className="tree-branches" aria-hidden="true">
             {organicTree.boughs.map((bough) => (
@@ -351,6 +433,8 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
               const { photo } = leaf;
               const point = positioned(leaf);
               const labelWidth = Math.min(210, Math.max(90, photo.title.length * 6.4 + 20));
+              const windRandom = mulberry32(windBurst * 991 + index * 47 + 17);
+              const leafWindVariation = 0.76 + windRandom() * 0.5;
 
               return (
                 <g
@@ -376,7 +460,17 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
                           '--leaf-rotation': `${leaf.rotation}deg`,
                           '--leaf-scale': leaf.scale,
                           '--leaf-delay': `${index * -0.63}s`,
-                          '--wind-leaf-delay': `${index * 0.025}s`,
+                          '--idle-sway': `${0.58 + ((index * 7) % 5) * 0.11}deg`,
+                          '--idle-lift': `${0.8 + ((index * 11) % 4) * 0.35}px`,
+                          '--idle-sway-settle': `${(0.58 + ((index * 7) % 5) * 0.11) * 0.35}deg`,
+                          '--idle-lift-settle': `${(0.8 + ((index * 11) % 4) * 0.35) * -0.35}px`,
+                          '--idle-duration': `${7.6 + ((index * 13) % 6) * 0.72}s`,
+                          '--wind-duration': `${wind.duration}ms`,
+                          '--wind-leaf-delay': `${windRandom() * 0.14}s`,
+                          '--wind-leaf-peak': `${wind.leafPeak * leafWindVariation}deg`,
+                          '--wind-leaf-mid': `${wind.leafMid * leafWindVariation}deg`,
+                          '--wind-leaf-rebound': `${wind.leafRebound * leafWindVariation}deg`,
+                          '--wind-leaf-settle': `${wind.leafSettle * leafWindVariation}deg`,
                         } as CSSProperties
                       }
                     >
