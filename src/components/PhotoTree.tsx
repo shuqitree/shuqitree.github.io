@@ -187,14 +187,24 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
   const svgRef = useRef<SVGSVGElement>(null);
   const dragRef = useRef<DragState | null>(null);
   const suppressClickRef = useRef<string | null>(null);
+  const windTimerRef = useRef<number | null>(null);
   const [offsets, setOffsets] = useState<Record<string, Point>>({});
   const [seed, setSeed] = useState(forestSeed);
+  const [windBurst, setWindBurst] = useState(0);
+  const [isWindy, setIsWindy] = useState(false);
 
   useEffect(() => {
     const values = new Uint32Array(1);
     window.crypto.getRandomValues(values);
     setSeed(values[0] ?? Date.now());
   }, []);
+
+  useEffect(
+    () => () => {
+      if (windTimerRef.current !== null) window.clearTimeout(windTimerRef.current);
+    },
+    [],
+  );
 
   const organicTree = useMemo(() => buildOrganicTree(entries, seed), [entries, seed]);
 
@@ -250,10 +260,29 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
     dragRef.current = null;
   };
 
+  const summonWind = () => {
+    if (windTimerRef.current !== null) window.clearTimeout(windTimerRef.current);
+    setWindBurst((current) => current + 1);
+    setIsWindy(true);
+    windTimerRef.current = window.setTimeout(() => {
+      setIsWindy(false);
+      windTimerRef.current = null;
+    }, 1900);
+  };
+
   if (entries.length === 0) return null;
 
   return (
     <div className="photo-tree-frame">
+      <button
+        className="wind-button"
+        type="button"
+        onClick={summonWind}
+        aria-label="Blow through the tree"
+        title="Blow through the tree"
+      >
+        <span aria-hidden="true">🌬️</span>
+      </button>
       <svg
         ref={svgRef}
         className="photo-tree"
@@ -279,90 +308,102 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
 
         <path className="tree-trunk" d={organicTree.trunk} />
 
-        <g className="tree-branches" aria-hidden="true">
-          {organicTree.boughs.map((bough) => (
-            <path
-              key={bough.id}
-              d={bough.path}
-              className={bough.empty ? 'empty-branch' : undefined}
-              style={{ strokeWidth: bough.width }}
-            />
-          ))}
-          {organicTree.leaves.map((leaf) => {
-            const tip = positioned(leaf);
-            return (
+        <g
+          key={windBurst}
+          className={`tree-crown${isWindy ? ' tree-crown--windy' : ''}`}
+          style={{ '--wind-delay': `${(windBurst % 3) * 0.02}s` } as CSSProperties}
+        >
+          <g className="tree-branches" aria-hidden="true">
+            {organicTree.boughs.map((bough) => (
               <path
-                key={`branch-${leaf.photo.id}`}
-                d={branchPath(leaf.anchor, leaf.bend, tip)}
-                style={{ strokeWidth: Math.max(2.1, 5.4 - (610 - leaf.anchor.y) / 190) }}
+                key={bough.id}
+                d={bough.path}
+                className={bough.empty ? 'empty-branch' : undefined}
+                style={{ strokeWidth: bough.width }}
               />
-            );
-          })}
-        </g>
+            ))}
+            {organicTree.leaves.map((leaf) => {
+              const tip = positioned(leaf);
+              return (
+                <path
+                  key={`branch-${leaf.photo.id}`}
+                  d={branchPath(leaf.anchor, leaf.bend, tip)}
+                  style={{ strokeWidth: Math.max(2.1, 5.4 - (610 - leaf.anchor.y) / 190) }}
+                />
+              );
+            })}
+          </g>
 
-        <g className="branch-joints" aria-hidden="true">
-          {organicTree.leaves.map((leaf) => (
-            <circle key={`joint-${leaf.photo.id}`} cx={leaf.anchor.x} cy={leaf.anchor.y} r="3.2" />
-          ))}
-          <circle cx={organicTree.trunkTop.x} cy={organicTree.trunkTop.y} r="2.5" />
-        </g>
+          <g className="branch-joints" aria-hidden="true">
+            {organicTree.leaves.map((leaf) => (
+              <circle
+                key={`joint-${leaf.photo.id}`}
+                cx={leaf.anchor.x}
+                cy={leaf.anchor.y}
+                r="3.2"
+              />
+            ))}
+            <circle cx={organicTree.trunkTop.x} cy={organicTree.trunkTop.y} r="2.5" />
+          </g>
 
-        <g className="photo-leaves">
-          {organicTree.leaves.map((leaf, index) => {
-            const { photo } = leaf;
-            const point = positioned(leaf);
-            const labelWidth = Math.min(210, Math.max(90, photo.title.length * 6.4 + 20));
+          <g className="photo-leaves">
+            {organicTree.leaves.map((leaf, index) => {
+              const { photo } = leaf;
+              const point = positioned(leaf);
+              const labelWidth = Math.min(210, Math.max(90, photo.title.length * 6.4 + 20));
 
-            return (
-              <g
-                key={photo.id}
-                className="photo-leaf-position"
-                transform={`translate(${point.x} ${point.y})`}
-                onPointerDown={(event) => onPointerDown(event, photo.id)}
-                onPointerMove={onPointerMove}
-                onPointerUp={onPointerUp}
-                onPointerCancel={onPointerUp}
-              >
-                <a
-                  href={photo.href}
-                  aria-label={`Open ${photo.title}`}
-                  onClick={(event) => {
-                    if (suppressClickRef.current === photo.id) event.preventDefault();
-                  }}
+              return (
+                <g
+                  key={photo.id}
+                  className="photo-leaf-position"
+                  transform={`translate(${point.x} ${point.y})`}
+                  onPointerDown={(event) => onPointerDown(event, photo.id)}
+                  onPointerMove={onPointerMove}
+                  onPointerUp={onPointerUp}
+                  onPointerCancel={onPointerUp}
                 >
-                  <g
-                    className="photo-leaf"
-                    style={
-                      {
-                        '--leaf-rotation': `${leaf.rotation}deg`,
-                        '--leaf-scale': leaf.scale,
-                        '--leaf-delay': `${index * -0.63}s`,
-                      } as CSSProperties
-                    }
+                  <a
+                    href={photo.href}
+                    aria-label={`Open ${photo.title}`}
+                    onClick={(event) => {
+                      if (suppressClickRef.current === photo.id) event.preventDefault();
+                    }}
                   >
-                    <rect className="photo-mat" x="-55" y="-42" width="110" height="84" rx="1" />
-                    <image
-                      href={photo.image}
-                      x="-50"
-                      y="-37"
-                      width="100"
-                      height="70"
-                      preserveAspectRatio="xMidYMid slice"
-                    />
-                    <text className="leaf-number" x="48" y="39" textAnchor="end">
-                      {String(leaf.number).padStart(2, '0')}
-                    </text>
-                    <g className="leaf-label" transform="translate(0 52)">
-                      <rect x={-labelWidth / 2} y="-12" width={labelWidth} height="24" rx="12" />
-                      <text textAnchor="middle" dominantBaseline="middle">
-                        {photo.title}
+                    <g
+                      className="photo-leaf"
+                      style={
+                        {
+                          '--leaf-rotation': `${leaf.rotation}deg`,
+                          '--leaf-scale': leaf.scale,
+                          '--leaf-delay': `${index * -0.63}s`,
+                          '--wind-leaf-delay': `${index * 0.025}s`,
+                        } as CSSProperties
+                      }
+                    >
+                      <rect className="photo-mat" x="-55" y="-42" width="110" height="84" rx="1" />
+                      <image
+                        href={photo.image}
+                        x="-50"
+                        y="-37"
+                        width="100"
+                        height="70"
+                        preserveAspectRatio="xMidYMid slice"
+                      />
+                      <text className="leaf-number" x="48" y="39" textAnchor="end">
+                        {String(leaf.number).padStart(2, '0')}
                       </text>
+                      <g className="leaf-label" transform="translate(0 52)">
+                        <rect x={-labelWidth / 2} y="-12" width={labelWidth} height="24" rx="12" />
+                        <text textAnchor="middle" dominantBaseline="middle">
+                          {photo.title}
+                        </text>
+                      </g>
                     </g>
-                  </g>
-                </a>
-              </g>
-            );
-          })}
+                  </a>
+                </g>
+              );
+            })}
+          </g>
         </g>
       </svg>
     </div>

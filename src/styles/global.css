@@ -314,8 +314,54 @@ a {
 }
 
 .photo-tree-frame {
+  position: relative;
   width: 100%;
   min-height: 32rem;
+}
+
+.wind-button {
+  position: absolute;
+  z-index: 6;
+  top: 2rem;
+  right: 0;
+  display: grid;
+  width: 2.7rem;
+  height: 2.7rem;
+  padding: 0;
+  border: 1px solid rgba(48, 48, 92, 0.18);
+  border-radius: 50%;
+  color: var(--ink);
+  background: rgba(248, 247, 244, 0.62);
+  box-shadow: 0 0.45rem 1.4rem rgba(39, 35, 68, 0.08);
+  cursor: pointer;
+  place-items: center;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease;
+  backdrop-filter: blur(8px);
+}
+
+.wind-button span {
+  display: block;
+  font-size: 1.35rem;
+  line-height: 1;
+  transform: translateX(-0.03rem);
+}
+
+.wind-button:hover {
+  background: rgba(248, 247, 244, 0.9);
+  box-shadow: 0 0.65rem 1.8rem rgba(39, 35, 68, 0.14);
+  transform: rotate(-7deg) scale(1.06);
+}
+
+.wind-button:active {
+  transform: rotate(6deg) scale(0.94);
+}
+
+.wind-button:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
 }
 
 .photo-tree {
@@ -334,6 +380,20 @@ a {
 
 .tree-trunk {
   stroke-width: 18;
+}
+
+.tree-crown {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: crown-breathe 12s ease-in-out infinite alternate;
+}
+
+.tree-crown--windy {
+  animation: crown-gust 1.9s var(--wind-delay, 0s) cubic-bezier(0.22, 0.72, 0.22, 1) both;
+}
+
+.tree-crown--windy .photo-leaf {
+  animation: leaf-gust 1.9s var(--wind-leaf-delay, 0s) cubic-bezier(0.22, 0.72, 0.22, 1) both;
 }
 
 .tree-branches path {
@@ -718,6 +778,57 @@ a {
   }
   to {
     transform: rotate(calc(var(--leaf-rotation) + 0.45deg)) scale(var(--leaf-scale, 1));
+  }
+}
+
+@keyframes crown-breathe {
+  from {
+    transform: rotate(-0.16deg) translateX(-1px);
+  }
+  to {
+    transform: rotate(0.2deg) translateX(1.5px);
+  }
+}
+
+@keyframes crown-gust {
+  0% {
+    transform: rotate(0deg) skewX(0deg) translateX(0);
+  }
+  18% {
+    transform: rotate(2.8deg) skewX(-1.8deg) translateX(13px);
+  }
+  43% {
+    transform: rotate(1.4deg) skewX(-0.7deg) translateX(7px);
+  }
+  64% {
+    transform: rotate(-0.65deg) skewX(0.35deg) translateX(-3px);
+  }
+  82% {
+    transform: rotate(0.25deg) skewX(-0.12deg) translateX(1px);
+  }
+  100% {
+    transform: rotate(0deg) skewX(0deg) translateX(0);
+  }
+}
+
+@keyframes leaf-gust {
+  0% {
+    transform: rotate(var(--leaf-rotation)) scale(var(--leaf-scale, 1));
+  }
+  22% {
+    transform: rotate(calc(var(--leaf-rotation) + 8deg)) scale(var(--leaf-scale, 1));
+  }
+  48% {
+    transform: rotate(calc(var(--leaf-rotation) + 3deg)) scale(var(--leaf-scale, 1));
+  }
+  68% {
+    transform: rotate(calc(var(--leaf-rotation) - 2deg)) scale(var(--leaf-scale, 1));
+  }
+  84% {
+    transform: rotate(calc(var(--leaf-rotation) + 0.8deg)) scale(var(--leaf-scale, 1));
+  }
+  100% {
+    transform: rotate(var(--leaf-rotation)) scale(var(--leaf-scale, 1));
   }
 }
 
