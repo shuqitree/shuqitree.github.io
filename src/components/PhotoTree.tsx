@@ -19,13 +19,14 @@ interface OrganicLeaf {
   anchor: Point;
   bend: Point;
   rotation: number;
+  scale: number;
 }
 
 interface OrganicTree {
   trunk: string;
   trunkTop: Point;
   leaves: OrganicLeaf[];
-  shoots: Array<{ id: string; path: string; width: number }>;
+  boughs: Array<{ id: string; path: string; width: number; empty?: boolean }>;
 }
 
 interface DragState {
@@ -58,69 +59,124 @@ function shuffled<T>(items: T[], random: () => number) {
   return result;
 }
 
+interface BoughGeometry {
+  id: string;
+  start: Point;
+  controlA: Point;
+  controlB: Point;
+  end: Point;
+  width: number;
+}
+
+function cubicPoint(bough: BoughGeometry, t: number): Point {
+  const inverse = 1 - t;
+  return {
+    x:
+      inverse ** 3 * bough.start.x +
+      3 * inverse ** 2 * t * bough.controlA.x +
+      3 * inverse * t ** 2 * bough.controlB.x +
+      t ** 3 * bough.end.x,
+    y:
+      inverse ** 3 * bough.start.y +
+      3 * inverse ** 2 * t * bough.controlA.y +
+      3 * inverse * t ** 2 * bough.controlB.y +
+      t ** 3 * bough.end.y,
+  };
+}
+
+function boughPath(bough: BoughGeometry) {
+  return `M ${bough.start.x} ${bough.start.y} C ${bough.controlA.x} ${bough.controlA.y}, ${bough.controlB.x} ${bough.controlB.y}, ${bough.end.x} ${bough.end.y}`;
+}
+
 function buildOrganicTree(entries: PhotoTreeEntry[], seed: number): OrganicTree {
   const random = mulberry32(seed);
   const jitter = (amount: number) => (random() - 0.5) * amount * 2;
-  const center = 500 + jitter(32);
-  const trunkTop = { x: center + jitter(42), y: 205 + jitter(25) };
-  const trunk = `M ${center + jitter(16)} 765 C ${center - 52 + jitter(28)} 650, ${center + 62 + jitter(34)} 555, ${center + jitter(28)} 455 C ${center - 38 + jitter(28)} 365, ${trunkTop.x + 24 + jitter(24)} 285, ${trunkTop.x} ${trunkTop.y}`;
+  const center = 505 + jitter(14);
+  const trunkTop = { x: center + 22 + jitter(15), y: 205 + jitter(12) };
+  const trunk = `M ${center + jitter(7)} 765 C ${center - 42 + jitter(12)} 650, ${center + 48 + jitter(14)} 545, ${center + jitter(11)} 442 C ${center - 25 + jitter(12)} 355, ${trunkTop.x + 15 + jitter(10)} 275, ${trunkTop.x} ${trunkTop.y}`;
 
-  const slots = shuffled(
-    [
-      { x: 135, y: 420 },
-      { x: 195, y: 245 },
-      { x: 330, y: 125 },
-      { x: 500, y: 78 },
-      { x: 675, y: 128 },
-      { x: 820, y: 240 },
-      { x: 880, y: 410 },
-      { x: 305, y: 385 },
-      { x: 700, y: 365 },
-      { x: 470, y: 300 },
-      { x: 590, y: 475 },
-    ].slice(0, entries.length),
-    random,
-  );
+  const boughGeometry: BoughGeometry[] = [
+    {
+      id: 'left-bough',
+      start: { x: center - 4, y: 520 },
+      controlA: { x: center - 110 + jitter(12), y: 470 },
+      controlB: { x: 285 + jitter(14), y: 365 },
+      end: { x: 175 + jitter(12), y: 245 + jitter(10) },
+      width: 8.2,
+    },
+    {
+      id: 'crown-bough',
+      start: { x: center + 2, y: 448 },
+      controlA: { x: center + 58 + jitter(10), y: 350 },
+      controlB: { x: center - 30 + jitter(12), y: 225 },
+      end: trunkTop,
+      width: 6.8,
+    },
+    {
+      id: 'right-bough',
+      start: { x: center + 8, y: 475 },
+      controlA: { x: center + 125 + jitter(12), y: 430 },
+      controlB: { x: 725 + jitter(14), y: 330 },
+      end: { x: 825 + jitter(12), y: 275 + jitter(10) },
+      width: 7.6,
+    },
+  ];
 
-  const leaves = entries.map((photo, index) => {
-    const slot = slots[index] ?? { x: center + jitter(360), y: 130 + random() * 340 };
-    const point = { x: slot.x + jitter(38), y: slot.y + jitter(32) };
-    const side = point.x < center ? -1 : 1;
-    const anchorY = Math.min(610, Math.max(245, point.y + 105 + random() * 125));
-    const progress = (610 - anchorY) / 365;
-    const anchor = {
-      x: center + Math.sin(progress * Math.PI * 1.7) * 27 + jitter(15),
-      y: anchorY,
+  const slots = [
+    { x: 145, y: 405, bough: 0, t: 0.56 },
+    { x: 205, y: 255, bough: 0, t: 0.82 },
+    { x: 330, y: 145, bough: 0, t: 0.96 },
+    { x: 475, y: 82, bough: 1, t: 0.88 },
+    { x: 610, y: 130, bough: 1, t: 0.63 },
+    { x: 730, y: 175, bough: 2, t: 0.72 },
+    { x: 850, y: 295, bough: 2, t: 0.93 },
+    { x: 770, y: 425, bough: 2, t: 0.48 },
+    { x: 585, y: 340, bough: 1, t: 0.34 },
+  ];
+  const orderedEntries = shuffled(entries, random);
+
+  const leaves = orderedEntries.map((photo, index) => {
+    const slot = slots[index] ?? {
+      x: center + jitter(280),
+      y: 180 + random() * 250,
+      bough: 1,
+      t: 0.5,
     };
+    const point = { x: slot.x + jitter(16), y: slot.y + jitter(14) };
+    const anchor = cubicPoint(boughGeometry[slot.bough]!, slot.t + jitter(0.025));
     const bend = {
-      x: anchor.x + (point.x - anchor.x) * (0.4 + random() * 0.18) + side * jitter(38),
-      y: anchor.y + (point.y - anchor.y) * (0.33 + random() * 0.22) + jitter(24),
+      x: anchor.x + (point.x - anchor.x) * (0.48 + jitter(0.04)),
+      y: anchor.y + (point.y - anchor.y) * (0.42 + jitter(0.05)),
     };
 
     return {
       photo,
-      number: index + 1,
+      number: entries.indexOf(photo) + 1,
       point,
       anchor,
       bend,
-      rotation: jitter(8),
+      rotation: jitter(3.5),
+      scale: index === 3 ? 1.1 : index % 3 === 0 ? 1.02 : 0.94 + random() * 0.06,
     };
   });
 
-  const shoots = Array.from({ length: 5 }, (_, index) => {
-    const side = index % 2 === 0 ? -1 : 1;
-    const startY = 330 + index * 55 + jitter(22);
-    const startX = center + jitter(22);
-    const endX = startX + side * (95 + random() * 95);
-    const endY = startY - 70 - random() * 85;
-    return {
-      id: `shoot-${index}`,
-      path: `M ${startX} ${startY} C ${startX + side * 24} ${startY - 28}, ${endX - side * 35} ${endY + 24}, ${endX} ${endY}`,
-      width: 3.4 - index * 0.32,
-    };
-  });
+  const boughs = [
+    ...boughGeometry.map((bough) => ({ id: bough.id, path: boughPath(bough), width: bough.width })),
+    {
+      id: 'empty-left',
+      path: `M ${center - 65} 430 C ${center - 145} 380, ${center - 205} 305, ${center - 245} 220`,
+      width: 2.25,
+      empty: true,
+    },
+    {
+      id: 'empty-right',
+      path: `M ${center + 115} 392 C ${center + 185} 330, ${center + 220} 250, ${center + 205} 190`,
+      width: 1.8,
+      empty: true,
+    },
+  ];
 
-  return { trunk, trunkTop, leaves, shoots };
+  return { trunk, trunkTop, leaves, boughs };
 }
 
 function branchPath(anchor: Point, bend: Point, tip: Point) {
@@ -224,8 +280,13 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
         <path className="tree-trunk" d={organicTree.trunk} />
 
         <g className="tree-branches" aria-hidden="true">
-          {organicTree.shoots.map((shoot) => (
-            <path key={shoot.id} d={shoot.path} style={{ strokeWidth: shoot.width }} />
+          {organicTree.boughs.map((bough) => (
+            <path
+              key={bough.id}
+              d={bough.path}
+              className={bough.empty ? 'empty-branch' : undefined}
+              style={{ strokeWidth: bough.width }}
+            />
           ))}
           {organicTree.leaves.map((leaf) => {
             const tip = positioned(leaf);
@@ -274,6 +335,7 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
                     style={
                       {
                         '--leaf-rotation': `${leaf.rotation}deg`,
+                        '--leaf-scale': leaf.scale,
                         '--leaf-delay': `${index * -0.63}s`,
                       } as CSSProperties
                     }

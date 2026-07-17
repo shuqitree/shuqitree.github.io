@@ -337,7 +337,11 @@ a {
 }
 
 .tree-branches path {
-  opacity: 0.86;
+  opacity: 0.78;
+}
+
+.tree-branches .empty-branch {
+  opacity: 0.34;
 }
 
 .branch-joints circle {
@@ -355,10 +359,10 @@ a {
 }
 
 .photo-leaf {
-  transform: rotate(var(--leaf-rotation));
+  transform: rotate(var(--leaf-rotation)) scale(var(--leaf-scale, 1));
   transform-box: fill-box;
   transform-origin: 50% 100%;
-  animation: leaf-sway 7.5s ease-in-out var(--leaf-delay) infinite alternate;
+  animation: leaf-sway 9.5s ease-in-out var(--leaf-delay) infinite alternate;
 }
 
 .photo-mat {
@@ -710,10 +714,10 @@ a {
 
 @keyframes leaf-sway {
   from {
-    transform: rotate(calc(var(--leaf-rotation) - 0.8deg));
+    transform: rotate(calc(var(--leaf-rotation) - 0.45deg)) scale(var(--leaf-scale, 1));
   }
   to {
-    transform: rotate(calc(var(--leaf-rotation) + 0.8deg));
+    transform: rotate(calc(var(--leaf-rotation) + 0.45deg)) scale(var(--leaf-scale, 1));
   }
 }
 
