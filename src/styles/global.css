@@ -317,6 +317,23 @@ a {
   position: relative;
   width: 100%;
   min-height: 32rem;
+  border-radius: 1.1rem;
+  transition:
+    background 700ms ease,
+    box-shadow 700ms ease;
+}
+
+.photo-tree-frame--night {
+  background:
+    radial-gradient(circle at 15% 17%, rgba(104, 121, 184, 0.22), transparent 25%),
+    radial-gradient(circle at 72% 36%, rgba(68, 57, 127, 0.18), transparent 38%),
+    linear-gradient(
+      165deg,
+      rgba(14, 19, 42, 0.97),
+      rgba(26, 27, 57, 0.94) 57%,
+      rgba(36, 27, 50, 0.9)
+    );
+  box-shadow: inset 0 0 5rem rgba(8, 11, 29, 0.36);
 }
 
 .weather-controls {
@@ -325,6 +342,9 @@ a {
   top: 2rem;
   right: 0;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  width: min(100%, 26rem);
   gap: 0.55rem;
 }
 
@@ -376,7 +396,11 @@ a {
 }
 
 .christmas-button::after,
-.sakura-button::after {
+.sakura-button::after,
+.night-button::after,
+.rain-button::after,
+.water-button::after,
+.magic-button::after {
   position: absolute;
   right: 0.12rem;
   bottom: 0.12rem;
@@ -430,11 +454,125 @@ a {
   animation: sakura-button-bloom 1.9s ease-in-out infinite alternate;
 }
 
+.night-button[aria-pressed='true'] {
+  border-color: rgba(182, 196, 255, 0.66);
+  background: rgba(39, 46, 91, 0.94);
+  box-shadow:
+    0 0 0 3px rgba(132, 151, 226, 0.16),
+    0 0.7rem 2rem rgba(31, 35, 82, 0.3);
+}
+
+.night-button[aria-pressed='true']::after {
+  background: #d9ddff;
+  box-shadow: 0 0 0.6rem rgba(217, 221, 255, 0.9);
+}
+
+.rain-button[aria-pressed='true'] {
+  border-color: rgba(92, 142, 185, 0.72);
+  background: rgba(189, 219, 236, 0.94);
+  box-shadow: 0 0 0 3px rgba(92, 142, 185, 0.14);
+}
+
+.rain-button[aria-pressed='true']::after {
+  background: #4e91bd;
+  box-shadow: 0 0 0.55rem rgba(78, 145, 189, 0.78);
+}
+
+.water-button[aria-pressed='true'] {
+  border-color: rgba(64, 157, 187, 0.72);
+  background: rgba(202, 241, 244, 0.96);
+  box-shadow: 0 0 0 4px rgba(83, 192, 198, 0.16);
+}
+
+.water-button[aria-pressed='true']::after {
+  background: #47bcc6;
+  box-shadow: 0 0 0.55rem rgba(71, 188, 198, 0.85);
+}
+
+.magic-button[aria-pressed='true'] {
+  border-color: rgba(157, 111, 205, 0.72);
+  background: rgba(232, 215, 248, 0.96);
+  box-shadow: 0 0 0 4px rgba(157, 111, 205, 0.15);
+}
+
+.magic-button[aria-pressed='true']::after {
+  background: #9c64cf;
+  box-shadow: 0 0 0.6rem rgba(156, 100, 207, 0.84);
+}
+
+:where(.photo-tree-frame--night) .weather-button {
+  border-color: rgba(214, 220, 255, 0.25);
+  background: rgba(24, 30, 63, 0.7);
+  box-shadow: 0 0.45rem 1.4rem rgba(4, 6, 20, 0.22);
+}
+
 .photo-tree {
   width: 100%;
   height: auto;
   min-height: 32rem;
   overflow: visible;
+}
+
+.moonlight-scene {
+  opacity: 0;
+  animation: moonlight-arrive 1.1s ease-out forwards;
+}
+
+.moon-halo {
+  fill: rgba(188, 201, 255, 0.1);
+  filter: url('#christmas-glow');
+}
+
+.moon-disc {
+  fill: #e4e5ff;
+  filter: url('#christmas-glow');
+}
+
+.moon-shadow {
+  fill: #11162f;
+}
+
+.night-stars circle {
+  fill: #e6e8ff;
+  filter: url('#christmas-glow');
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: night-star-twinkle 2.6s ease-in-out infinite alternate;
+}
+
+.night-stars circle:nth-child(3n + 2) {
+  animation-delay: -0.9s;
+}
+
+.night-stars circle:nth-child(3n) {
+  animation-delay: -1.8s;
+}
+
+.photo-tree--night:not(.photo-tree--christmas):not(.photo-tree--sakura) .tree-trunk,
+.photo-tree--night:not(.photo-tree--christmas):not(.photo-tree--sakura) .tree-branches path {
+  stroke: url('#sakura-tree-gradient');
+}
+
+.photo-tree--night:not(.photo-tree--christmas):not(.photo-tree--sakura) .photo-mat {
+  fill: rgba(235, 236, 249, 0.95);
+  stroke: rgba(174, 188, 240, 0.68);
+}
+
+.photo-tree--night .leaf-number {
+  fill: #393b61;
+}
+
+.fireflies {
+  pointer-events: none;
+}
+
+.fireflies circle {
+  fill: #f3dd77;
+  filter: url('#christmas-glow');
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: firefly-drift var(--firefly-duration, 4s) ease-in-out var(--firefly-delay, 0s) infinite;
 }
 
 .tree-trunk,
@@ -652,6 +790,106 @@ a {
   opacity: 0.38;
   stroke-width: 1.2;
   animation-direction: reverse;
+}
+
+.rain-curtain {
+  pointer-events: none;
+}
+
+.rain-curtain line {
+  stroke: rgba(115, 168, 207, var(--rain-opacity, 0.5));
+  stroke-linecap: round;
+  stroke-width: 2.2;
+  animation: rain-fall var(--rain-duration, 0.9s) linear var(--rain-delay, 0s) infinite;
+}
+
+.rain-puddle {
+  fill: rgba(91, 148, 190, 0.08);
+  stroke: rgba(91, 148, 190, 0.38);
+  stroke-width: 1.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: rain-puddle-ripple 2.4s ease-out infinite;
+}
+
+.photo-tree--rain .photo-mat {
+  stroke-width: 2;
+  filter: url('#leaf-shadow') saturate(0.88) contrast(1.06);
+}
+
+.growth-flow,
+.magic-sparkles {
+  pointer-events: none;
+}
+
+.growth-trunk-flow,
+.growth-branch-flow path {
+  fill: none;
+  stroke: #63d2c3;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  stroke-linecap: round;
+  filter: url('#christmas-glow');
+}
+
+.growth-trunk-flow {
+  stroke-width: 8;
+  animation: growth-line-rise 1.25s ease-out forwards;
+}
+
+.growth-branch-flow path {
+  stroke-width: 4;
+  animation: growth-line-rise 1.2s ease-out var(--growth-branch-delay, 0.8s) forwards;
+}
+
+.growth-buds circle {
+  fill: rgba(142, 231, 192, 0.25);
+  filter: url('#christmas-glow');
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: growth-bud-pop 1.15s ease-out var(--growth-bud-delay, 1.4s) both;
+}
+
+.water-splash ellipse {
+  fill: rgba(86, 193, 205, 0.18);
+  stroke: rgba(86, 193, 205, 0.55);
+  stroke-width: 2;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: water-puddle 2.2s ease-out both;
+}
+
+.water-splash path {
+  fill: none;
+  stroke: #62c8d1;
+  stroke-linecap: round;
+  stroke-width: 3;
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: water-splash-up 850ms ease-out both;
+}
+
+.tree-crown--growing .photo-leaf {
+  animation: leaf-grow 2.5s ease-out var(--growth-delay, 1s) both;
+}
+
+.tree-crown--floating .photo-leaf {
+  animation: leaf-zero-gravity 4.1s ease-in-out var(--magic-delay, 0s) both;
+}
+
+.tree-crown--floating .tree-branches,
+.tree-crown--floating .branch-joints {
+  animation: magic-branches-dim 4.1s ease-in-out both;
+}
+
+.magic-sparkles path {
+  fill: #d8b8f4;
+  filter: url('#christmas-glow');
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: magic-sparkle 1.8s ease-in-out var(--spark-delay, 0s) 2;
 }
 
 .tree-branches path {
@@ -1287,6 +1525,203 @@ a {
   100% {
     opacity: 0;
     transform: translate(var(--petal-drift, 25px), 180px) rotate(var(--petal-turn, 210deg));
+  }
+}
+
+@keyframes moonlight-arrive {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes night-star-twinkle {
+  from {
+    opacity: 0.35;
+    transform: scale(0.72);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes firefly-drift {
+  0%,
+  100% {
+    opacity: 0.16;
+    transform: translate(0, 5px) scale(0.68);
+  }
+  32% {
+    opacity: 1;
+    transform: translate(var(--firefly-drift, 16px), -11px) scale(1.12);
+  }
+  68% {
+    opacity: 0.5;
+    transform: translate(-9px, -18px) scale(0.84);
+  }
+}
+
+@keyframes rain-fall {
+  from {
+    opacity: 0;
+    transform: translate(70px, -120px);
+  }
+  12% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.2;
+    transform: translate(-80px, 880px);
+  }
+}
+
+@keyframes rain-puddle-ripple {
+  0% {
+    opacity: 0;
+    transform: scaleX(0.65) scaleY(0.4);
+  }
+  35% {
+    opacity: 0.65;
+  }
+  100% {
+    opacity: 0;
+    transform: scaleX(1.08) scaleY(1.3);
+  }
+}
+
+@keyframes growth-line-rise {
+  0% {
+    opacity: 0;
+    stroke-dashoffset: 1;
+  }
+  14% {
+    opacity: 1;
+  }
+  76% {
+    opacity: 1;
+    stroke-dashoffset: 0;
+  }
+  100% {
+    opacity: 0;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes growth-bud-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  48% {
+    opacity: 0.92;
+    transform: scale(1.25);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+}
+
+@keyframes water-puddle {
+  0% {
+    opacity: 0;
+    transform: scaleX(0.35) scaleY(0.5);
+  }
+  32% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scaleX(1.35) scaleY(1.5);
+  }
+}
+
+@keyframes water-splash-up {
+  0% {
+    opacity: 0;
+    transform: scaleY(0.1);
+  }
+  42% {
+    opacity: 1;
+    transform: scaleY(1.15);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleY(0.7) translateY(8px);
+  }
+}
+
+@keyframes leaf-grow {
+  0% {
+    opacity: 0.42;
+    transform: translateY(18px) rotate(var(--leaf-rotation)) scale(var(--growth-scale-start, 0.72));
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(-5px) rotate(var(--leaf-rotation)) scale(var(--growth-scale-peak, 1.08));
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(var(--leaf-rotation)) scale(var(--leaf-scale, 1));
+  }
+}
+
+@keyframes leaf-zero-gravity {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(var(--leaf-rotation)) scale(var(--leaf-scale, 1));
+  }
+  19% {
+    transform: translate(var(--magic-x1), var(--magic-y1))
+      rotate(calc(var(--leaf-rotation) + var(--magic-r1))) scale(var(--leaf-scale, 1));
+  }
+  48% {
+    opacity: 0.94;
+    transform: translate(var(--magic-x2), var(--magic-y2))
+      rotate(calc(var(--leaf-rotation) + var(--magic-r2))) scale(var(--leaf-scale, 1));
+  }
+  76% {
+    transform: translate(var(--magic-x3), var(--magic-y3))
+      rotate(calc(var(--leaf-rotation) + var(--magic-r3))) scale(var(--leaf-scale, 1));
+  }
+}
+
+@keyframes magic-branches-dim {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  35% {
+    opacity: 0.12;
+  }
+  72% {
+    opacity: 0.34;
+  }
+}
+
+@keyframes magic-sparkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: rotate(0deg) scale(0.25);
+  }
+  46% {
+    opacity: 0.95;
+    transform: rotate(45deg) scale(1.2);
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .weather-controls {
+    width: 13.1rem;
+  }
+
+  .photo-tree {
+    margin-top: 3.4rem;
   }
 }
 

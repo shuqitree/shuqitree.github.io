@@ -145,6 +145,21 @@ const sakuraPetals = [
   { x: 690, y: 370, drift: -44, delay: -3.1 },
 ];
 
+const fireflies = Array.from({ length: 18 }, (_, index) => ({
+  x: 125 + ((index * 137) % 750),
+  y: 85 + ((index * 83) % 470),
+  delay: index * -0.41,
+  duration: 3.2 + (index % 5) * 0.55,
+}));
+
+const rainDrops = Array.from({ length: 42 }, (_, index) => ({
+  x: 20 + ((index * 89) % 960),
+  y: -80 + ((index * 137) % 690),
+  length: 22 + (index % 5) * 7,
+  delay: index * -0.09,
+  duration: 0.72 + (index % 4) * 0.11,
+}));
+
 function mulberry32(seed: number) {
   return () => {
     let value = (seed += 0x6d2b79f5);
@@ -292,12 +307,19 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
   const dragRef = useRef<DragState | null>(null);
   const suppressClickRef = useRef<string | null>(null);
   const windTimerRef = useRef<number | null>(null);
+  const specialTimerRef = useRef<number | null>(null);
   const [offsets, setOffsets] = useState<Record<string, Point>>({});
   const [seed, setSeed] = useState(forestSeed);
   const [windBurst, setWindBurst] = useState(0);
   const [tornadoBurst, setTornadoBurst] = useState(0);
+  const [growthBurst, setGrowthBurst] = useState(0);
+  const [magicBurst, setMagicBurst] = useState(0);
   const [isWindy, setIsWindy] = useState(false);
   const [isTornado, setIsTornado] = useState(false);
+  const [isGrowing, setIsGrowing] = useState(false);
+  const [isFloating, setIsFloating] = useState(false);
+  const [isNight, setIsNight] = useState(false);
+  const [isRaining, setIsRaining] = useState(false);
   const [treeTheme, setTreeTheme] = useState<'christmas' | 'sakura' | null>(null);
   const [wind, setWind] = useState<WindProfile>(stillAir);
   const [tornado, setTornado] = useState<TornadoProfile>(quietTornado);
@@ -313,6 +335,7 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
   useEffect(
     () => () => {
       if (windTimerRef.current !== null) window.clearTimeout(windTimerRef.current);
+      if (specialTimerRef.current !== null) window.clearTimeout(specialTimerRef.current);
     },
     [],
   );
@@ -373,6 +396,12 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
 
   const summonWind = () => {
     if (windTimerRef.current !== null) window.clearTimeout(windTimerRef.current);
+    if (specialTimerRef.current !== null) {
+      window.clearTimeout(specialTimerRef.current);
+      specialTimerRef.current = null;
+    }
+    setIsGrowing(false);
+    setIsFloating(false);
 
     const strength = 0.58 + Math.random() * 0.92;
     const direction = Math.random() < 0.26 ? -1 : 1;
@@ -409,6 +438,12 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
 
   const summonTornado = () => {
     if (windTimerRef.current !== null) window.clearTimeout(windTimerRef.current);
+    if (specialTimerRef.current !== null) {
+      window.clearTimeout(specialTimerRef.current);
+      specialTimerRef.current = null;
+    }
+    setIsGrowing(false);
+    setIsFloating(false);
 
     const nextTornado: TornadoProfile = {
       duration: Math.round(2850 + Math.random() * 950),
@@ -426,10 +461,44 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
     }, nextTornado.duration + 260);
   };
 
+  const waterTree = () => {
+    if (windTimerRef.current !== null) {
+      window.clearTimeout(windTimerRef.current);
+      windTimerRef.current = null;
+    }
+    if (specialTimerRef.current !== null) window.clearTimeout(specialTimerRef.current);
+    setIsWindy(false);
+    setIsTornado(false);
+    setIsFloating(false);
+    setGrowthBurst((current) => current + 1);
+    setIsGrowing(true);
+    specialTimerRef.current = window.setTimeout(() => {
+      setIsGrowing(false);
+      specialTimerRef.current = null;
+    }, 3600);
+  };
+
+  const releaseGravity = () => {
+    if (windTimerRef.current !== null) {
+      window.clearTimeout(windTimerRef.current);
+      windTimerRef.current = null;
+    }
+    if (specialTimerRef.current !== null) window.clearTimeout(specialTimerRef.current);
+    setIsWindy(false);
+    setIsTornado(false);
+    setIsGrowing(false);
+    setMagicBurst((current) => current + 1);
+    setIsFloating(true);
+    specialTimerRef.current = window.setTimeout(() => {
+      setIsFloating(false);
+      specialTimerRef.current = null;
+    }, 4400);
+  };
+
   if (entries.length === 0) return null;
 
   return (
-    <div className="photo-tree-frame">
+    <div className={`photo-tree-frame${isNight ? ' photo-tree-frame--night' : ''}`}>
       <div className="weather-controls" aria-label="Tree controls">
         <button
           className="weather-button wind-button"
@@ -469,10 +538,50 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
         >
           <span aria-hidden="true">🌸</span>
         </button>
+        <button
+          className="weather-button night-button"
+          type="button"
+          onClick={() => setIsNight((current) => !current)}
+          aria-label={isNight ? 'Turn off moonlight' : 'Turn on moonlight and fireflies'}
+          aria-pressed={isNight}
+          title={isNight ? 'Turn off moonlight' : 'Turn on moonlight and fireflies'}
+        >
+          <span aria-hidden="true">🌙</span>
+        </button>
+        <button
+          className="weather-button rain-button"
+          type="button"
+          onClick={() => setIsRaining((current) => !current)}
+          aria-label={isRaining ? 'Stop the rain' : 'Make it rain'}
+          aria-pressed={isRaining}
+          title={isRaining ? 'Stop the rain' : 'Make it rain'}
+        >
+          <span aria-hidden="true">🌧️</span>
+        </button>
+        <button
+          className="weather-button water-button"
+          type="button"
+          onClick={waterTree}
+          aria-label="Water the tree"
+          aria-pressed={isGrowing}
+          title="Water the tree"
+        >
+          <span aria-hidden="true">💧</span>
+        </button>
+        <button
+          className="weather-button magic-button"
+          type="button"
+          onClick={releaseGravity}
+          aria-label="Release gravity"
+          aria-pressed={isFloating}
+          title="Release gravity"
+        >
+          <span aria-hidden="true">🪄</span>
+        </button>
       </div>
       <svg
         ref={svgRef}
-        className={`photo-tree${isChristmas ? ' photo-tree--christmas' : ''}${isSakura ? ' photo-tree--sakura' : ''}`}
+        className={`photo-tree${isChristmas ? ' photo-tree--christmas' : ''}${isSakura ? ' photo-tree--sakura' : ''}${isNight ? ' photo-tree--night' : ''}${isRaining ? ' photo-tree--rain' : ''}`}
         viewBox={`0 0 ${width} ${height}`}
         role="img"
         aria-labelledby="photo-tree-title photo-tree-description"
@@ -510,11 +619,29 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
           </filter>
         </defs>
 
+        {isNight && (
+          <g className="moonlight-scene" aria-hidden="true">
+            <circle className="moon-halo" cx="118" cy="102" r="64" />
+            <circle className="moon-disc" cx="118" cy="102" r="38" />
+            <circle className="moon-shadow" cx="137" cy="87" r="36" />
+            <g className="night-stars">
+              <circle cx="235" cy="76" r="2.2" />
+              <circle cx="318" cy="118" r="1.5" />
+              <circle cx="565" cy="63" r="1.8" />
+              <circle cx="685" cy="97" r="2.3" />
+              <circle cx="812" cy="142" r="1.6" />
+              <circle cx="905" cy="88" r="2" />
+              <circle cx="92" cy="236" r="1.4" />
+              <circle cx="884" cy="284" r="1.7" />
+            </g>
+          </g>
+        )}
+
         <path className="tree-trunk" d={organicTree.trunk} />
 
         <g
-          key={`${windBurst}-${tornadoBurst}`}
-          className={`tree-crown${isWindy ? ' tree-crown--windy' : ''}${isTornado ? ' tree-crown--tornado' : ''}`}
+          key={`${windBurst}-${tornadoBurst}-${growthBurst}-${magicBurst}`}
+          className={`tree-crown${isWindy ? ' tree-crown--windy' : ''}${isTornado ? ' tree-crown--tornado' : ''}${isGrowing ? ' tree-crown--growing' : ''}${isFloating ? ' tree-crown--floating' : ''}`}
           style={
             {
               '--wind-duration': `${wind.duration}ms`,
@@ -671,6 +798,8 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
               const tornadoRandom = mulberry32(tornadoBurst * 1877 + index * 83 + 29);
               const tornadoReach = tornado.strength * (0.78 + tornadoRandom() * 0.44);
               const tornadoDirection = tornado.direction;
+              const magicRandom = mulberry32(magicBurst * 2081 + index * 101 + 43);
+              const magicDirection = magicRandom() < 0.5 ? -1 : 1;
 
               return (
                 <g
@@ -718,6 +847,19 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
                           '--tornado-x3': `${tornadoDirection * tornadoReach * (22 + tornadoRandom() * 46)}px`,
                           '--tornado-y3': `${tornadoReach * (-28 - tornadoRandom() * 46)}px`,
                           '--tornado-r3': `${tornadoDirection * (330 + tornadoRandom() * 220)}deg`,
+                          '--growth-delay': `${0.95 + index * 0.1}s`,
+                          '--growth-scale-start': leaf.scale * 0.72,
+                          '--growth-scale-peak': leaf.scale * 1.08,
+                          '--magic-delay': `${index * 0.045}s`,
+                          '--magic-x1': `${magicDirection * (38 + magicRandom() * 74)}px`,
+                          '--magic-y1': `${-52 - magicRandom() * 78}px`,
+                          '--magic-r1': `${magicDirection * (12 + magicRandom() * 24)}deg`,
+                          '--magic-x2': `${-magicDirection * (30 + magicRandom() * 60)}px`,
+                          '--magic-y2': `${-92 - magicRandom() * 90}px`,
+                          '--magic-r2': `${-magicDirection * (18 + magicRandom() * 34)}deg`,
+                          '--magic-x3': `${magicDirection * (18 + magicRandom() * 38)}px`,
+                          '--magic-y3': `${-38 - magicRandom() * 54}px`,
+                          '--magic-r3': `${magicDirection * (7 + magicRandom() * 16)}deg`,
                         } as CSSProperties
                       }
                     >
@@ -747,6 +889,87 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
           </g>
         </g>
 
+        {isGrowing && (
+          <g key={`growth-${growthBurst}`} className="growth-flow" aria-hidden="true">
+            <path className="growth-trunk-flow" d={organicTree.trunk} pathLength="1" />
+            <g className="growth-branch-flow">
+              {organicTree.boughs.map((bough, index) => (
+                <path
+                  key={`growth-${bough.id}`}
+                  d={bough.path}
+                  pathLength="1"
+                  style={{ '--growth-branch-delay': `${0.72 + index * 0.11}s` } as CSSProperties}
+                />
+              ))}
+              {organicTree.leaves.map((leaf, index) => (
+                <path
+                  key={`growth-leaf-${leaf.photo.id}`}
+                  d={branchPath(leaf.anchor, leaf.bend, positioned(leaf))}
+                  pathLength="1"
+                  style={{ '--growth-branch-delay': `${0.94 + index * 0.07}s` } as CSSProperties}
+                />
+              ))}
+            </g>
+            <g className="growth-buds">
+              {organicTree.leaves.map((leaf, index) => {
+                const point = positioned(leaf);
+                return (
+                  <circle
+                    key={`bud-${leaf.photo.id}`}
+                    cx={point.x}
+                    cy={point.y}
+                    r="8"
+                    style={{ '--growth-bud-delay': `${1.35 + index * 0.1}s` } as CSSProperties}
+                  />
+                );
+              })}
+            </g>
+            <g className="water-splash" transform="translate(505 716)">
+              <ellipse cx="0" cy="16" rx="54" ry="9" />
+              <path d="M -35 6 Q -25 -20, -14 4" />
+              <path d="M 2 4 Q 12 -28, 22 5" />
+              <path d="M 28 8 Q 39 -15, 46 7" />
+            </g>
+          </g>
+        )}
+
+        {isNight && (
+          <g className="fireflies" aria-hidden="true">
+            {fireflies.map((firefly, index) => (
+              <circle
+                key={`${firefly.x}-${firefly.y}`}
+                cx={firefly.x}
+                cy={firefly.y}
+                r={index % 4 === 0 ? 3.6 : 2.5}
+                style={
+                  {
+                    '--firefly-delay': `${firefly.delay}s`,
+                    '--firefly-duration': `${firefly.duration}s`,
+                    '--firefly-drift': `${index % 2 === 0 ? 18 : -16}px`,
+                  } as CSSProperties
+                }
+              />
+            ))}
+          </g>
+        )}
+
+        {isFloating && (
+          <g key={`magic-${magicBurst}`} className="magic-sparkles" aria-hidden="true">
+            {organicTree.leaves.map((leaf, index) => {
+              const point = positioned(leaf);
+              return (
+                <g
+                  key={`spark-${leaf.photo.id}`}
+                  transform={`translate(${point.x + (index % 2 === 0 ? 38 : -42)} ${point.y - 28})`}
+                  style={{ '--spark-delay': `${index * 0.13}s` } as CSSProperties}
+                >
+                  <path d="M 0 -10 L 2 -2 L 10 0 L 2 2 L 0 10 L -2 2 L -10 0 L -2 -2 Z" />
+                </g>
+              );
+            })}
+          </g>
+        )}
+
         {isTornado && (
           <g
             key={`vortex-${tornadoBurst}`}
@@ -763,6 +986,28 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
             <path d="M 285 340 C 410 275, 660 285, 750 370" />
             <path d="M 350 430 C 455 390, 620 400, 680 475" />
             <path d="M 420 510 C 490 485, 575 490, 615 535" />
+          </g>
+        )}
+
+        {isRaining && (
+          <g className="rain-curtain" aria-hidden="true">
+            {rainDrops.map((drop, index) => (
+              <line
+                key={`${drop.x}-${drop.y}`}
+                x1={drop.x}
+                y1={drop.y}
+                x2={drop.x - 9}
+                y2={drop.y + drop.length}
+                style={
+                  {
+                    '--rain-delay': `${drop.delay}s`,
+                    '--rain-duration': `${drop.duration}s`,
+                    '--rain-opacity': 0.28 + (index % 4) * 0.1,
+                  } as CSSProperties
+                }
+              />
+            ))}
+            <ellipse className="rain-puddle" cx="510" cy="728" rx="205" ry="15" />
           </g>
         )}
       </svg>
