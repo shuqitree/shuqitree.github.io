@@ -93,6 +93,23 @@ const quietTornado: TornadoProfile = {
   strength: 1,
 };
 
+const christmasLights = [
+  { x: 292, y: 188 },
+  { x: 360, y: 211 },
+  { x: 432, y: 226 },
+  { x: 505, y: 229 },
+  { x: 578, y: 224 },
+  { x: 650, y: 207 },
+  { x: 716, y: 184 },
+  { x: 224, y: 316 },
+  { x: 312, y: 348 },
+  { x: 405, y: 367 },
+  { x: 500, y: 374 },
+  { x: 596, y: 368 },
+  { x: 690, y: 348 },
+  { x: 780, y: 314 },
+];
+
 function mulberry32(seed: number) {
   return () => {
     let value = (seed += 0x6d2b79f5);
@@ -246,6 +263,7 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
   const [tornadoBurst, setTornadoBurst] = useState(0);
   const [isWindy, setIsWindy] = useState(false);
   const [isTornado, setIsTornado] = useState(false);
+  const [isChristmas, setIsChristmas] = useState(false);
   const [wind, setWind] = useState<WindProfile>(stillAir);
   const [tornado, setTornado] = useState<TornadoProfile>(quietTornado);
 
@@ -375,7 +393,7 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
 
   return (
     <div className="photo-tree-frame">
-      <div className="weather-controls" aria-label="Tree weather controls">
+      <div className="weather-controls" aria-label="Tree controls">
         <button
           className="weather-button wind-button"
           type="button"
@@ -394,10 +412,20 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
         >
           <span aria-hidden="true">🌪️</span>
         </button>
+        <button
+          className="weather-button christmas-button"
+          type="button"
+          onClick={() => setIsChristmas((current) => !current)}
+          aria-label={isChristmas ? 'Turn off Christmas tree' : 'Turn on Christmas tree'}
+          aria-pressed={isChristmas}
+          title={isChristmas ? 'Turn off Christmas tree' : 'Turn on Christmas tree'}
+        >
+          <span aria-hidden="true">🎄</span>
+        </button>
       </div>
       <svg
         ref={svgRef}
-        className="photo-tree"
+        className={`photo-tree${isChristmas ? ' photo-tree--christmas' : ''}`}
         viewBox={`0 0 ${width} ${height}`}
         role="img"
         aria-labelledby="photo-tree-title photo-tree-description"
@@ -413,6 +441,18 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
             <stop offset="0.55" stopColor="#303b92" />
             <stop offset="1" stopColor="#b56ba9" />
           </linearGradient>
+          <linearGradient id="christmas-tree-gradient" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0" stopColor="#173f32" />
+            <stop offset="0.58" stopColor="#24644d" />
+            <stop offset="1" stopColor="#d2a746" />
+          </linearGradient>
+          <filter id="christmas-glow" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="4" result="glow" />
+            <feMerge>
+              <feMergeNode in="glow" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
           <filter id="leaf-shadow" x="-30%" y="-30%" width="160%" height="170%">
             <feDropShadow dx="0" dy="5" stdDeviation="5" floodColor="#30305c" floodOpacity="0.2" />
           </filter>
@@ -481,6 +521,35 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
             ))}
             <circle cx={organicTree.trunkTop.x} cy={organicTree.trunkTop.y} r="2.5" />
           </g>
+
+          {isChristmas && (
+            <g className="christmas-decorations" aria-hidden="true">
+              <g className="christmas-garlands">
+                <path d="M 252 168 C 385 245, 615 247, 750 165" />
+                <path d="M 188 282 C 355 391, 660 397, 820 280" />
+              </g>
+              <g className="christmas-lights">
+                {christmasLights.map((light, index) => (
+                  <circle
+                    key={`${light.x}-${light.y}`}
+                    cx={light.x}
+                    cy={light.y}
+                    r={index % 3 === 0 ? 5 : 4}
+                  />
+                ))}
+              </g>
+              <g className="christmas-ornaments">
+                <circle cx="325" cy="270" r="11" />
+                <circle cx="438" cy="315" r="9" />
+                <circle cx="565" cy="280" r="12" />
+                <circle cx="676" cy="315" r="9" />
+                <circle cx="520" cy="405" r="10" />
+              </g>
+              <g className="christmas-star" transform="translate(475 51)">
+                <path d="M 0 -24 L 6 -8 L 23 -8 L 9 3 L 14 20 L 0 10 L -14 20 L -9 3 L -23 -8 L -6 -8 Z" />
+              </g>
+            </g>
+          )}
 
           <g className="photo-leaves">
             {organicTree.leaves.map((leaf, index) => {
