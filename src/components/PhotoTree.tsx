@@ -57,6 +57,12 @@ interface WindProfile {
   leafSettle: number;
 }
 
+interface TornadoProfile {
+  duration: number;
+  direction: number;
+  strength: number;
+}
+
 const width = 1000;
 const height = 760;
 const forestSeed = 0x5eed1234;
@@ -79,6 +85,12 @@ const stillAir: WindProfile = {
   leafMid: 3,
   leafRebound: -2,
   leafSettle: 0.8,
+};
+
+const quietTornado: TornadoProfile = {
+  duration: 3200,
+  direction: 1,
+  strength: 1,
 };
 
 function mulberry32(seed: number) {
@@ -231,8 +243,11 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
   const [offsets, setOffsets] = useState<Record<string, Point>>({});
   const [seed, setSeed] = useState(forestSeed);
   const [windBurst, setWindBurst] = useState(0);
+  const [tornadoBurst, setTornadoBurst] = useState(0);
   const [isWindy, setIsWindy] = useState(false);
+  const [isTornado, setIsTornado] = useState(false);
   const [wind, setWind] = useState<WindProfile>(stillAir);
+  const [tornado, setTornado] = useState<TornadoProfile>(quietTornado);
 
   useEffect(() => {
     const values = new Uint32Array(1);
@@ -329,6 +344,7 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
 
     setWind(nextWind);
     setWindBurst((current) => current + 1);
+    setIsTornado(false);
     setIsWindy(true);
     windTimerRef.current = window.setTimeout(() => {
       setIsWindy(false);
@@ -336,19 +352,49 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
     }, duration + 220);
   };
 
+  const summonTornado = () => {
+    if (windTimerRef.current !== null) window.clearTimeout(windTimerRef.current);
+
+    const nextTornado: TornadoProfile = {
+      duration: Math.round(2850 + Math.random() * 950),
+      direction: Math.random() < 0.5 ? -1 : 1,
+      strength: 0.82 + Math.random() * 0.42,
+    };
+
+    setTornado(nextTornado);
+    setTornadoBurst((current) => current + 1);
+    setIsWindy(false);
+    setIsTornado(true);
+    windTimerRef.current = window.setTimeout(() => {
+      setIsTornado(false);
+      windTimerRef.current = null;
+    }, nextTornado.duration + 260);
+  };
+
   if (entries.length === 0) return null;
 
   return (
     <div className="photo-tree-frame">
-      <button
-        className="wind-button"
-        type="button"
-        onClick={summonWind}
-        aria-label="Blow through the tree"
-        title="Blow through the tree"
-      >
-        <span aria-hidden="true">🌬️</span>
-      </button>
+      <div className="weather-controls" aria-label="Tree weather controls">
+        <button
+          className="weather-button wind-button"
+          type="button"
+          onClick={summonWind}
+          aria-label="Blow through the tree"
+          title="Blow through the tree"
+        >
+          <span aria-hidden="true">🌬️</span>
+        </button>
+        <button
+          className="weather-button tornado-button"
+          type="button"
+          onClick={summonTornado}
+          aria-label="Send a tornado through the tree"
+          title="Send a tornado through the tree"
+        >
+          <span aria-hidden="true">🌪️</span>
+        </button>
+      </div>
       <svg
         ref={svgRef}
         className="photo-tree"
@@ -375,8 +421,8 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
         <path className="tree-trunk" d={organicTree.trunk} />
 
         <g
-          key={windBurst}
-          className={`tree-crown${isWindy ? ' tree-crown--windy' : ''}`}
+          key={`${windBurst}-${tornadoBurst}`}
+          className={`tree-crown${isWindy ? ' tree-crown--windy' : ''}${isTornado ? ' tree-crown--tornado' : ''}`}
           style={
             {
               '--wind-duration': `${wind.duration}ms`,
@@ -392,6 +438,14 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
               '--wind-shift-mid': `${wind.shiftMid}px`,
               '--wind-shift-rebound': `${wind.shiftRebound}px`,
               '--wind-shift-settle': `${wind.shiftSettle}px`,
+              '--tornado-duration': `${tornado.duration}ms`,
+              '--tornado-direction': tornado.direction,
+              '--tornado-twist': `${tornado.direction * tornado.strength * 6.2}deg`,
+              '--tornado-counter': `${tornado.direction * tornado.strength * -3.1}deg`,
+              '--tornado-settle': `${tornado.direction * tornado.strength * 1.05}deg`,
+              '--tornado-rebound': `${tornado.direction * tornado.strength * -0.58}deg`,
+              '--tornado-shift': `${tornado.direction * tornado.strength * 23}px`,
+              '--tornado-counter-shift': `${tornado.direction * tornado.strength * -12}px`,
             } as CSSProperties
           }
         >
@@ -435,6 +489,9 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
               const labelWidth = Math.min(210, Math.max(90, photo.title.length * 6.4 + 20));
               const windRandom = mulberry32(windBurst * 991 + index * 47 + 17);
               const leafWindVariation = 0.76 + windRandom() * 0.5;
+              const tornadoRandom = mulberry32(tornadoBurst * 1877 + index * 83 + 29);
+              const tornadoReach = tornado.strength * (0.78 + tornadoRandom() * 0.44);
+              const tornadoDirection = tornado.direction;
 
               return (
                 <g
@@ -471,6 +528,17 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
                           '--wind-leaf-mid': `${wind.leafMid * leafWindVariation}deg`,
                           '--wind-leaf-rebound': `${wind.leafRebound * leafWindVariation}deg`,
                           '--wind-leaf-settle': `${wind.leafSettle * leafWindVariation}deg`,
+                          '--tornado-duration': `${tornado.duration}ms`,
+                          '--tornado-delay': `${tornadoRandom() * 0.18}s`,
+                          '--tornado-x1': `${tornadoDirection * tornadoReach * (24 + tornadoRandom() * 38)}px`,
+                          '--tornado-y1': `${tornadoReach * (-18 - tornadoRandom() * 32)}px`,
+                          '--tornado-r1': `${tornadoDirection * (55 + tornadoRandom() * 90)}deg`,
+                          '--tornado-x2': `${-tornadoDirection * tornadoReach * (48 + tornadoRandom() * 74)}px`,
+                          '--tornado-y2': `${tornadoReach * (-70 - tornadoRandom() * 78)}px`,
+                          '--tornado-r2': `${tornadoDirection * (190 + tornadoRandom() * 170)}deg`,
+                          '--tornado-x3': `${tornadoDirection * tornadoReach * (22 + tornadoRandom() * 46)}px`,
+                          '--tornado-y3': `${tornadoReach * (-28 - tornadoRandom() * 46)}px`,
+                          '--tornado-r3': `${tornadoDirection * (330 + tornadoRandom() * 220)}deg`,
                         } as CSSProperties
                       }
                     >
@@ -499,6 +567,25 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
             })}
           </g>
         </g>
+
+        {isTornado && (
+          <g
+            key={`vortex-${tornadoBurst}`}
+            className="tornado-vortex"
+            aria-hidden="true"
+            style={
+              {
+                '--tornado-duration': `${tornado.duration}ms`,
+                '--tornado-vortex-turn': `${tornado.direction * 8}deg`,
+              } as CSSProperties
+            }
+          >
+            <path d="M 225 245 C 355 155, 665 150, 795 260" />
+            <path d="M 285 340 C 410 275, 660 285, 750 370" />
+            <path d="M 350 430 C 455 390, 620 400, 680 475" />
+            <path d="M 420 510 C 490 485, 575 490, 615 535" />
+          </g>
+        )}
       </svg>
     </div>
   );

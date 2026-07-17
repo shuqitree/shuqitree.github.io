@@ -319,11 +319,16 @@ a {
   min-height: 32rem;
 }
 
-.wind-button {
+.weather-controls {
   position: absolute;
   z-index: 6;
   top: 2rem;
   right: 0;
+  display: flex;
+  gap: 0.55rem;
+}
+
+.weather-button {
   display: grid;
   width: 2.7rem;
   height: 2.7rem;
@@ -342,26 +347,31 @@ a {
   backdrop-filter: blur(8px);
 }
 
-.wind-button span {
+.weather-button span {
   display: block;
   font-size: 1.35rem;
   line-height: 1;
   transform: translateX(-0.03rem);
 }
 
-.wind-button:hover {
+.weather-button:hover {
   background: rgba(248, 247, 244, 0.9);
   box-shadow: 0 0.65rem 1.8rem rgba(39, 35, 68, 0.14);
   transform: rotate(-7deg) scale(1.06);
 }
 
-.wind-button:active {
+.weather-button:active {
   transform: rotate(6deg) scale(0.94);
 }
 
-.wind-button:focus-visible {
+.weather-button:focus-visible {
   outline: 2px solid var(--blue);
   outline-offset: 3px;
+}
+
+.tornado-button:hover {
+  box-shadow: 0 0.65rem 1.9rem rgba(184, 94, 158, 0.19);
+  transform: rotate(15deg) scale(1.08);
 }
 
 .photo-tree {
@@ -395,6 +405,49 @@ a {
 .tree-crown--windy .photo-leaf {
   animation: leaf-gust var(--wind-duration, 1.9s) var(--wind-leaf-delay, 0s)
     cubic-bezier(0.22, 0.72, 0.22, 1) both;
+}
+
+.tree-crown--tornado {
+  animation: crown-tornado var(--tornado-duration, 3.2s) cubic-bezier(0.35, 0.05, 0.2, 1) both;
+}
+
+.tree-crown--tornado .photo-leaf {
+  animation: leaf-tornado var(--tornado-duration, 3.2s) var(--tornado-delay, 0s)
+    cubic-bezier(0.3, 0.02, 0.18, 1) both;
+}
+
+.tornado-vortex {
+  opacity: 0;
+  pointer-events: none;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: vortex-arrive var(--tornado-duration, 3.2s) ease-in-out both;
+}
+
+.tornado-vortex path {
+  fill: none;
+  stroke: url('#trunk-gradient');
+  stroke-dasharray: 26 18;
+  stroke-linecap: round;
+  stroke-width: 2.2;
+  animation: vortex-trace 0.72s linear infinite;
+}
+
+.tornado-vortex path:nth-child(2) {
+  opacity: 0.74;
+  stroke-width: 1.8;
+  animation-direction: reverse;
+}
+
+.tornado-vortex path:nth-child(3) {
+  opacity: 0.55;
+  stroke-width: 1.5;
+}
+
+.tornado-vortex path:nth-child(4) {
+  opacity: 0.38;
+  stroke-width: 1.2;
+  animation-direction: reverse;
 }
 
 .tree-branches path {
@@ -850,6 +903,85 @@ a {
   }
   100% {
     transform: rotate(var(--leaf-rotation)) scale(var(--leaf-scale, 1));
+  }
+}
+
+@keyframes crown-tornado {
+  0% {
+    transform: rotate(0deg) skewX(0deg) translateX(0) scaleX(1);
+  }
+  14% {
+    transform: rotate(var(--tornado-settle, 1deg)) skewX(-0.7deg) translateX(4px) scaleX(0.99);
+  }
+  31% {
+    transform: rotate(var(--tornado-twist, 6.2deg)) skewX(-3.4deg)
+      translateX(var(--tornado-shift, 23px)) scaleX(0.94);
+  }
+  52% {
+    transform: rotate(var(--tornado-counter, -3.1deg)) skewX(2.1deg)
+      translateX(var(--tornado-counter-shift, -12px)) scaleX(1.035);
+  }
+  70% {
+    transform: rotate(var(--tornado-settle, 1deg)) skewX(-0.8deg) translateX(5px) scaleX(0.985);
+  }
+  84% {
+    transform: rotate(var(--tornado-rebound, -0.58deg)) skewX(0.3deg) translateX(-2px) scaleX(1.008);
+  }
+  100% {
+    transform: rotate(0deg) skewX(0deg) translateX(0) scaleX(1);
+  }
+}
+
+@keyframes leaf-tornado {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(var(--leaf-rotation)) scale(var(--leaf-scale, 1));
+  }
+  18% {
+    transform: translate(var(--tornado-x1), var(--tornado-y1))
+      rotate(calc(var(--leaf-rotation) + var(--tornado-r1))) scale(var(--leaf-scale, 1));
+  }
+  39% {
+    opacity: 0.9;
+    transform: translate(var(--tornado-x2), var(--tornado-y2))
+      rotate(calc(var(--leaf-rotation) + var(--tornado-r2))) scale(var(--leaf-scale, 1));
+  }
+  60% {
+    opacity: 0.96;
+    transform: translate(var(--tornado-x3), var(--tornado-y3))
+      rotate(calc(var(--leaf-rotation) + var(--tornado-r3))) scale(var(--leaf-scale, 1));
+  }
+  78% {
+    transform: translate(var(--tornado-x1), var(--tornado-y1))
+      rotate(calc(var(--leaf-rotation) + var(--tornado-r1))) scale(var(--leaf-scale, 1));
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(var(--leaf-rotation)) scale(var(--leaf-scale, 1));
+  }
+}
+
+@keyframes vortex-arrive {
+  0%,
+  100% {
+    opacity: 0;
+    transform: rotate(0deg) scale(0.78);
+  }
+  18% {
+    opacity: 0.2;
+  }
+  46% {
+    opacity: 0.46;
+    transform: rotate(var(--tornado-vortex-turn, 8deg)) scale(1.03);
+  }
+  76% {
+    opacity: 0.22;
+  }
+}
+
+@keyframes vortex-trace {
+  to {
+    stroke-dashoffset: -88;
   }
 }
 
