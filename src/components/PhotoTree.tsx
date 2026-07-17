@@ -1,5 +1,4 @@
-import { hierarchy, tree, type HierarchyPointNode } from 'd3-hierarchy';
-import { useMemo, useRef, useState, type CSSProperties, type PointerEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent } from 'react';
 
 export interface PhotoTreeEntry {
   id: string;
@@ -8,15 +7,25 @@ export interface PhotoTreeEntry {
   image: string;
 }
 
-interface TreeDatum {
-  name: string;
-  photo?: PhotoTreeEntry;
-  children?: TreeDatum[];
-}
-
 interface Point {
   x: number;
   y: number;
+}
+
+interface OrganicLeaf {
+  photo: PhotoTreeEntry;
+  number: number;
+  point: Point;
+  anchor: Point;
+  bend: Point;
+  rotation: number;
+}
+
+interface OrganicTree {
+  trunk: string;
+  trunkTop: Point;
+  leaves: OrganicLeaf[];
+  shoots: Array<{ id: string; path: string; width: number }>;
 }
 
 interface DragState {
@@ -29,24 +38,93 @@ interface DragState {
 
 const width = 1000;
 const height = 760;
+const forestSeed = 0x5eed1234;
 
-function buildBranches(entries: PhotoTreeEntry[], branch = 'forest'): TreeDatum {
-  const [onlyEntry] = entries;
-  if (entries.length === 1 && onlyEntry) return { name: onlyEntry.id, photo: onlyEntry };
-
-  const midpoint = Math.ceil(entries.length / 2);
-  return {
-    name: branch,
-    children: [
-      buildBranches(entries.slice(0, midpoint), `${branch}-left`),
-      buildBranches(entries.slice(midpoint), `${branch}-right`),
-    ],
+function mulberry32(seed: number) {
+  return () => {
+    let value = (seed += 0x6d2b79f5);
+    value = Math.imul(value ^ (value >>> 15), value | 1);
+    value ^= value + Math.imul(value ^ (value >>> 7), value | 61);
+    return ((value ^ (value >>> 14)) >>> 0) / 4294967296;
   };
 }
 
-function branchPath(parent: Point, child: Point) {
-  const middleY = parent.y + (child.y - parent.y) * 0.52;
-  return `M ${parent.x} ${parent.y} C ${parent.x} ${middleY}, ${child.x} ${middleY}, ${child.x} ${child.y}`;
+function shuffled<T>(items: T[], random: () => number) {
+  const result = [...items];
+  for (let index = result.length - 1; index > 0; index -= 1) {
+    const swapWith = Math.floor(random() * (index + 1));
+    [result[index], result[swapWith]] = [result[swapWith]!, result[index]!];
+  }
+  return result;
+}
+
+function buildOrganicTree(entries: PhotoTreeEntry[], seed: number): OrganicTree {
+  const random = mulberry32(seed);
+  const jitter = (amount: number) => (random() - 0.5) * amount * 2;
+  const center = 500 + jitter(32);
+  const trunkTop = { x: center + jitter(42), y: 205 + jitter(25) };
+  const trunk = `M ${center + jitter(16)} 765 C ${center - 52 + jitter(28)} 650, ${center + 62 + jitter(34)} 555, ${center + jitter(28)} 455 C ${center - 38 + jitter(28)} 365, ${trunkTop.x + 24 + jitter(24)} 285, ${trunkTop.x} ${trunkTop.y}`;
+
+  const slots = shuffled(
+    [
+      { x: 135, y: 420 },
+      { x: 195, y: 245 },
+      { x: 330, y: 125 },
+      { x: 500, y: 78 },
+      { x: 675, y: 128 },
+      { x: 820, y: 240 },
+      { x: 880, y: 410 },
+      { x: 305, y: 385 },
+      { x: 700, y: 365 },
+      { x: 470, y: 300 },
+      { x: 590, y: 475 },
+    ].slice(0, entries.length),
+    random,
+  );
+
+  const leaves = entries.map((photo, index) => {
+    const slot = slots[index] ?? { x: center + jitter(360), y: 130 + random() * 340 };
+    const point = { x: slot.x + jitter(38), y: slot.y + jitter(32) };
+    const side = point.x < center ? -1 : 1;
+    const anchorY = Math.min(610, Math.max(245, point.y + 105 + random() * 125));
+    const progress = (610 - anchorY) / 365;
+    const anchor = {
+      x: center + Math.sin(progress * Math.PI * 1.7) * 27 + jitter(15),
+      y: anchorY,
+    };
+    const bend = {
+      x: anchor.x + (point.x - anchor.x) * (0.4 + random() * 0.18) + side * jitter(38),
+      y: anchor.y + (point.y - anchor.y) * (0.33 + random() * 0.22) + jitter(24),
+    };
+
+    return {
+      photo,
+      number: index + 1,
+      point,
+      anchor,
+      bend,
+      rotation: jitter(8),
+    };
+  });
+
+  const shoots = Array.from({ length: 5 }, (_, index) => {
+    const side = index % 2 === 0 ? -1 : 1;
+    const startY = 330 + index * 55 + jitter(22);
+    const startX = center + jitter(22);
+    const endX = startX + side * (95 + random() * 95);
+    const endY = startY - 70 - random() * 85;
+    return {
+      id: `shoot-${index}`,
+      path: `M ${startX} ${startY} C ${startX + side * 24} ${startY - 28}, ${endX - side * 35} ${endY + 24}, ${endX} ${endY}`,
+      width: 3.4 - index * 0.32,
+    };
+  });
+
+  return { trunk, trunkTop, leaves, shoots };
+}
+
+function branchPath(anchor: Point, bend: Point, tip: Point) {
+  return `M ${anchor.x} ${anchor.y} C ${bend.x} ${anchor.y - 18}, ${bend.x} ${bend.y}, ${tip.x} ${tip.y}`;
 }
 
 export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
@@ -54,22 +132,19 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
   const dragRef = useRef<DragState | null>(null);
   const suppressClickRef = useRef<string | null>(null);
   const [offsets, setOffsets] = useState<Record<string, Point>>({});
+  const [seed, setSeed] = useState(forestSeed);
 
-  const root = useMemo(() => {
-    if (entries.length === 0) return null;
-    const hierarchyRoot = hierarchy(buildBranches(entries));
-    return tree<TreeDatum>().size([850, 520])(hierarchyRoot);
-  }, [entries]);
+  useEffect(() => {
+    const values = new Uint32Array(1);
+    window.crypto.getRandomValues(values);
+    setSeed(values[0] ?? Date.now());
+  }, []);
 
-  const positioned = (node: HierarchyPointNode<TreeDatum>): Point => {
-    const base = {
-      x: node.x + 75,
-      y: 680 - node.y,
-    };
+  const organicTree = useMemo(() => buildOrganicTree(entries, seed), [entries, seed]);
 
-    if (!node.data.photo) return base;
-    const offset = offsets[node.data.photo.id] ?? { x: 0, y: 0 };
-    return { x: base.x + offset.x, y: base.y + offset.y };
+  const positioned = (leaf: OrganicLeaf): Point => {
+    const offset = offsets[leaf.photo.id] ?? { x: 0, y: 0 };
+    return { x: leaf.point.x + offset.x, y: leaf.point.y + offset.y };
   };
 
   const onPointerDown = (event: PointerEvent<SVGGElement>, id: string) => {
@@ -119,11 +194,7 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
     dragRef.current = null;
   };
 
-  if (!root) return null;
-
-  const descendants = root.descendants();
-  const leaves = descendants.filter((node) => node.data.photo);
-  const rootPoint = positioned(root);
+  if (entries.length === 0) return null;
 
   return (
     <div className="photo-tree-frame">
@@ -150,47 +221,36 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
           </filter>
         </defs>
 
-        <path
-          className="tree-trunk"
-          d={`M ${rootPoint.x - 8} 758 C ${rootPoint.x - 16} 730, ${rootPoint.x + 10} 710, ${rootPoint.x} ${rootPoint.y}`}
-        />
+        <path className="tree-trunk" d={organicTree.trunk} />
 
         <g className="tree-branches" aria-hidden="true">
-          {descendants.slice(1).map((node) => {
-            const parent = positioned(node.parent!);
-            const child = positioned(node);
+          {organicTree.shoots.map((shoot) => (
+            <path key={shoot.id} d={shoot.path} style={{ strokeWidth: shoot.width }} />
+          ))}
+          {organicTree.leaves.map((leaf) => {
+            const tip = positioned(leaf);
             return (
               <path
-                key={node.data.name}
-                d={branchPath(parent, child)}
-                style={{ strokeWidth: Math.max(2.2, 12 - node.depth * 2.25) }}
+                key={`branch-${leaf.photo.id}`}
+                d={branchPath(leaf.anchor, leaf.bend, tip)}
+                style={{ strokeWidth: Math.max(2.1, 5.4 - (610 - leaf.anchor.y) / 190) }}
               />
             );
           })}
         </g>
 
         <g className="branch-joints" aria-hidden="true">
-          {descendants
-            .filter((node) => !node.data.photo)
-            .map((node) => {
-              const point = positioned(node);
-              return (
-                <circle
-                  key={node.data.name}
-                  cx={point.x}
-                  cy={point.y}
-                  r={Math.max(2.5, 7 - node.depth)}
-                />
-              );
-            })}
+          {organicTree.leaves.map((leaf) => (
+            <circle key={`joint-${leaf.photo.id}`} cx={leaf.anchor.x} cy={leaf.anchor.y} r="3.2" />
+          ))}
+          <circle cx={organicTree.trunkTop.x} cy={organicTree.trunkTop.y} r="2.5" />
         </g>
 
         <g className="photo-leaves">
-          {leaves.map((node, index) => {
-            const photo = node.data.photo!;
-            const point = positioned(node);
+          {organicTree.leaves.map((leaf, index) => {
+            const { photo } = leaf;
+            const point = positioned(leaf);
             const labelWidth = Math.min(210, Math.max(90, photo.title.length * 6.4 + 20));
-            const rotation = ((index % 5) - 2) * 1.4;
 
             return (
               <g
@@ -213,7 +273,7 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
                     className="photo-leaf"
                     style={
                       {
-                        '--leaf-rotation': `${rotation}deg`,
+                        '--leaf-rotation': `${leaf.rotation}deg`,
                         '--leaf-delay': `${index * -0.63}s`,
                       } as CSSProperties
                     }
@@ -228,7 +288,7 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
                       preserveAspectRatio="xMidYMid slice"
                     />
                     <text className="leaf-number" x="48" y="39" textAnchor="end">
-                      {String(index + 1).padStart(2, '0')}
+                      {String(leaf.number).padStart(2, '0')}
                     </text>
                     <g className="leaf-label" transform="translate(0 52)">
                       <rect x={-labelWidth / 2} y="-12" width={labelWidth} height="24" rx="12" />
