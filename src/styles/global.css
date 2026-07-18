@@ -751,15 +751,15 @@ a {
 }
 
 .rain-curtain line {
-  stroke: rgba(115, 168, 207, var(--rain-opacity, 0.5));
+  stroke: rgba(54, 112, 158, var(--rain-opacity, 0.62));
   stroke-linecap: round;
   stroke-width: 2.2;
   animation: rain-fall var(--rain-duration, 0.9s) linear var(--rain-delay, 0s) infinite;
 }
 
 .rain-puddle {
-  fill: rgba(91, 148, 190, 0.08);
-  stroke: rgba(91, 148, 190, 0.38);
+  fill: rgba(54, 112, 158, 0.11);
+  stroke: rgba(54, 112, 158, 0.5);
   stroke-width: 1.5;
   transform-box: fill-box;
   transform-origin: center;

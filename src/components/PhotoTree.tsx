@@ -744,7 +744,7 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
                   {
                     '--rain-delay': `${drop.delay}s`,
                     '--rain-duration': `${drop.duration}s`,
-                    '--rain-opacity': 0.28 + (index % 4) * 0.1,
+                    '--rain-opacity': 0.42 + (index % 4) * 0.1,
                   } as CSSProperties
                 }
               />
