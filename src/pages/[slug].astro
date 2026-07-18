@@ -8,7 +8,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 import { resolveMedia, responsiveWidths } from '../lib/images';
 
 type PageProps =
-  | { kind: 'photography'; entry: CollectionEntry<'photography'> }
+  | { kind: 'photography'; entry: CollectionEntry<'photography'>; displayNumber: number }
   | { kind: 'page'; entry: CollectionEntry<'pages'> };
 
 export async function getStaticPaths() {
@@ -17,10 +17,19 @@ export async function getStaticPaths() {
     getCollection('pages'),
   ]);
 
+  const publishedPhotography = photography
+    .filter(({ data }) => data.status === 'published')
+    .sort((a, b) => a.data.order - b.data.order);
+
   return [
-    ...photography
-      .filter(({ data }) => data.status === 'published')
-      .map((entry) => ({ params: { slug: entry.id }, props: { kind: 'photography', entry } })),
+    ...publishedPhotography.map((entry, index) => ({
+      params: { slug: entry.id },
+      props: {
+        kind: 'photography',
+        entry,
+        displayNumber: publishedPhotography.length - index,
+      },
+    })),
     ...pages
       .filter(({ data }) => data.status === 'published')
       .map((entry) => ({ params: { slug: entry.data.path }, props: { kind: 'page', entry } })),
@@ -76,9 +85,7 @@ const jsonLd =
     props.kind === 'photography' ? (
       <article class="project-page">
         <header class="project-header">
-          <p class="section-label">
-            Photography / {String(props.entry.data.order).padStart(2, '0')}
-          </p>
+          <p class="section-label">Photography / {String(props.displayNumber).padStart(2, '0')}</p>
           <h1>{props.entry.data.title}</h1>
           <div class="project-meta">
             <p>{props.entry.data.equipmentDisplay}</p>

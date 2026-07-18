@@ -60,7 +60,9 @@ const activePath = normalizePath(currentPath);
                 href={href}
                 aria-current={isActive ? 'page' : undefined}
               >
-                <span class="project-number">{String(index + 1).padStart(2, '0')}</span>
+                <span class="project-number">
+                  {String(projects.length - index).padStart(2, '0')}
+                </span>
                 <span>{project.data.navTitle ?? project.data.title}</span>
                 {preview && (
                   <img class="nav-preview" src={preview} alt="" loading="lazy" decoding="async" />

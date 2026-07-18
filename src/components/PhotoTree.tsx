@@ -230,7 +230,7 @@ function buildOrganicTree(entries: PhotoTreeEntry[], seed: number): OrganicTree 
 
     return {
       photo,
-      number: entries.indexOf(photo) + 1,
+      number: entries.length - entries.indexOf(photo),
       point,
       anchor,
       bend,
