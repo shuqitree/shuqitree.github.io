@@ -33,6 +33,16 @@
   text-rendering: optimizeLegibility;
 }
 
+:root[data-site-theme='night'] {
+  color-scheme: dark;
+  --ink: #eeebf4;
+  --muted-ink: #aaa8bc;
+  --blue: #aebcff;
+  --pink: #efa7d3;
+  --paper: #0e1222;
+  --line: rgba(224, 229, 255, 0.18);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -41,6 +51,9 @@ html {
   min-width: 20rem;
   min-height: 100%;
   background: var(--paper);
+  transition:
+    color 700ms ease,
+    background-color 900ms ease;
 }
 
 body {
@@ -62,6 +75,9 @@ body::before {
   background-size: cover;
   opacity: 0.88;
   transform: scale(1.04);
+  transition:
+    opacity 900ms ease,
+    filter 900ms ease;
   animation: background-breathe 28s ease-in-out infinite alternate;
 }
 
@@ -74,6 +90,23 @@ body::after {
   background:
     linear-gradient(90deg, rgba(250, 249, 246, 0.3), transparent 38%),
     radial-gradient(circle at 54% 45%, transparent 0 36%, rgba(250, 249, 246, 0.12) 76%);
+  transition: background 900ms ease;
+}
+
+:root[data-site-theme='night'] body::before {
+  opacity: 0.3;
+  filter: brightness(0.38) saturate(0.62) hue-rotate(12deg);
+}
+
+:root[data-site-theme='night'] body::after {
+  background:
+    linear-gradient(
+      105deg,
+      rgba(6, 10, 27, 0.72),
+      rgba(10, 13, 31, 0.34) 48%,
+      rgba(20, 15, 38, 0.62)
+    ),
+    radial-gradient(circle at 72% 18%, rgba(94, 106, 176, 0.15), transparent 34%);
 }
 
 img,
@@ -282,6 +315,11 @@ a {
   transition: opacity 180ms ease;
 }
 
+:root[data-site-theme='night'] .site-watermark {
+  opacity: 0.2;
+  filter: invert(1) hue-rotate(180deg);
+}
+
 .home-tree {
   position: relative;
   min-height: min(72rem, 78vh);
@@ -321,6 +359,19 @@ a {
       rgba(36, 27, 50, 0.9)
     );
   box-shadow: inset 0 0 5rem rgba(8, 11, 29, 0.36);
+}
+
+:root[data-site-theme='night'] .photo-tree-frame--night {
+  background:
+    radial-gradient(circle at 15% 17%, rgba(104, 121, 184, 0.2), transparent 25%),
+    radial-gradient(circle at 72% 36%, rgba(68, 57, 127, 0.14), transparent 38%),
+    linear-gradient(
+      165deg,
+      rgba(14, 19, 42, 0.54),
+      rgba(26, 27, 57, 0.38) 57%,
+      rgba(36, 27, 50, 0.28)
+    );
+  box-shadow: inset 0 0 5rem rgba(4, 7, 22, 0.2);
 }
 
 .weather-controls {
@@ -828,7 +879,7 @@ a {
 }
 
 .leaf-label text {
-  fill: var(--ink);
+  fill: #17151c;
   font-family: var(--sans);
   font-size: 9px;
 }
@@ -892,7 +943,7 @@ a {
 
 .prose {
   max-width: 58ch;
-  color: #24202b;
+  color: var(--ink);
   font-size: clamp(1.05rem, 1.8vw, 1.28rem);
   line-height: 1.82;
 }
@@ -1095,6 +1146,15 @@ a {
   margin-left: clamp(0rem, 10vw, 8rem);
   padding: 1.25rem 1.4rem 0.1rem;
   background: linear-gradient(90deg, rgba(250, 249, 246, 0.64), rgba(250, 249, 246, 0.1));
+}
+
+:root[data-site-theme='night'] .project-story,
+:root[data-site-theme='night'] .about-copy {
+  background: linear-gradient(90deg, rgba(29, 34, 65, 0.72), rgba(20, 24, 49, 0.12));
+}
+
+:root[data-site-theme='night'] .photo-frame img {
+  background: rgba(167, 178, 224, 0.08);
 }
 
 .not-found {

@@ -63,6 +63,14 @@ const backgroundStyle = `--background-small: url("${smallBackground.src}"); --ba
     <meta name="twitter:description" content={description} />
     {socialImage && <meta name="twitter:image" content={socialImage} />}
     {jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    <script is:inline>
+      try {
+        if (window.localStorage.getItem('shuqi-site-theme') === 'night') {
+          document.documentElement.dataset.siteTheme = 'night';
+          document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#0e1222');
+        }
+      } catch {}
+    </script>
     <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-5RJJVBLRBV"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
