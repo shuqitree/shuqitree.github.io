@@ -258,19 +258,6 @@ a {
   font-style: italic;
 }
 
-.visitor-map {
-  width: 12.5rem;
-  height: 12.5rem;
-  margin-top: 1.25rem;
-  overflow: hidden;
-}
-
-.visitor-map canvas,
-.visitor-map iframe {
-  max-width: 100%;
-  max-height: 100%;
-}
-
 .type-cursor {
   display: inline-block;
   width: 1px;
@@ -398,9 +385,7 @@ a {
 .christmas-button::after,
 .sakura-button::after,
 .night-button::after,
-.rain-button::after,
-.water-button::after,
-.magic-button::after {
+.rain-button::after {
   position: absolute;
   right: 0.12rem;
   bottom: 0.12rem;
@@ -476,28 +461,6 @@ a {
 .rain-button[aria-pressed='true']::after {
   background: #4e91bd;
   box-shadow: 0 0 0.55rem rgba(78, 145, 189, 0.78);
-}
-
-.water-button[aria-pressed='true'] {
-  border-color: rgba(64, 157, 187, 0.72);
-  background: rgba(202, 241, 244, 0.96);
-  box-shadow: 0 0 0 4px rgba(83, 192, 198, 0.16);
-}
-
-.water-button[aria-pressed='true']::after {
-  background: #47bcc6;
-  box-shadow: 0 0 0.55rem rgba(71, 188, 198, 0.85);
-}
-
-.magic-button[aria-pressed='true'] {
-  border-color: rgba(157, 111, 205, 0.72);
-  background: rgba(232, 215, 248, 0.96);
-  box-shadow: 0 0 0 4px rgba(157, 111, 205, 0.15);
-}
-
-.magic-button[aria-pressed='true']::after {
-  background: #9c64cf;
-  box-shadow: 0 0 0.6rem rgba(156, 100, 207, 0.84);
 }
 
 :where(.photo-tree-frame--night) .weather-button {
@@ -740,15 +703,6 @@ a {
   animation: crown-breathe 10.8s ease-in-out infinite;
 }
 
-.tree-crown--windy {
-  animation: crown-gust var(--wind-duration, 1.9s) cubic-bezier(0.22, 0.72, 0.22, 1) both;
-}
-
-.tree-crown--windy .photo-leaf {
-  animation: leaf-gust var(--wind-duration, 1.9s) var(--wind-leaf-delay, 0s)
-    cubic-bezier(0.22, 0.72, 0.22, 1) both;
-}
-
 .tree-crown--tornado {
   animation: crown-tornado var(--tornado-duration, 3.2s) cubic-bezier(0.35, 0.05, 0.2, 1) both;
 }
@@ -815,81 +769,6 @@ a {
 .photo-tree--rain .photo-mat {
   stroke-width: 2;
   filter: url('#leaf-shadow') saturate(0.88) contrast(1.06);
-}
-
-.growth-flow,
-.magic-sparkles {
-  pointer-events: none;
-}
-
-.growth-trunk-flow,
-.growth-branch-flow path {
-  fill: none;
-  stroke: #63d2c3;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  stroke-linecap: round;
-  filter: url('#christmas-glow');
-}
-
-.growth-trunk-flow {
-  stroke-width: 8;
-  animation: growth-line-rise 1.25s ease-out forwards;
-}
-
-.growth-branch-flow path {
-  stroke-width: 4;
-  animation: growth-line-rise 1.2s ease-out var(--growth-branch-delay, 0.8s) forwards;
-}
-
-.growth-buds circle {
-  fill: rgba(142, 231, 192, 0.25);
-  filter: url('#christmas-glow');
-  opacity: 0;
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: growth-bud-pop 1.15s ease-out var(--growth-bud-delay, 1.4s) both;
-}
-
-.water-splash ellipse {
-  fill: rgba(86, 193, 205, 0.18);
-  stroke: rgba(86, 193, 205, 0.55);
-  stroke-width: 2;
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: water-puddle 2.2s ease-out both;
-}
-
-.water-splash path {
-  fill: none;
-  stroke: #62c8d1;
-  stroke-linecap: round;
-  stroke-width: 3;
-  transform-box: fill-box;
-  transform-origin: bottom;
-  animation: water-splash-up 850ms ease-out both;
-}
-
-.tree-crown--growing .photo-leaf {
-  animation: leaf-grow 2.5s ease-out var(--growth-delay, 1s) both;
-}
-
-.tree-crown--floating .photo-leaf {
-  animation: leaf-zero-gravity 4.1s ease-in-out var(--magic-delay, 0s) both;
-}
-
-.tree-crown--floating .tree-branches,
-.tree-crown--floating .branch-joints {
-  animation: magic-branches-dim 4.1s ease-in-out both;
-}
-
-.magic-sparkles path {
-  fill: #d8b8f4;
-  filter: url('#christmas-glow');
-  opacity: 0;
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: magic-sparkle 1.8s ease-in-out var(--spark-delay, 0s) 2;
 }
 
 .tree-branches path {
@@ -1298,56 +1177,6 @@ a {
   }
 }
 
-@keyframes crown-gust {
-  0% {
-    transform: rotate(0deg) skewX(0deg) translateX(0);
-  }
-  18% {
-    transform: rotate(var(--wind-rotate-peak, 2.8deg)) skewX(var(--wind-skew-peak, -1.8deg))
-      translateX(var(--wind-shift-peak, 13px));
-  }
-  43% {
-    transform: rotate(var(--wind-rotate-mid, 1.4deg)) skewX(var(--wind-skew-mid, -0.7deg))
-      translateX(var(--wind-shift-mid, 7px));
-  }
-  64% {
-    transform: rotate(var(--wind-rotate-rebound, -0.65deg)) skewX(var(--wind-skew-rebound, 0.35deg))
-      translateX(var(--wind-shift-rebound, -3px));
-  }
-  82% {
-    transform: rotate(var(--wind-rotate-settle, 0.25deg)) skewX(var(--wind-skew-settle, -0.12deg))
-      translateX(var(--wind-shift-settle, 1px));
-  }
-  100% {
-    transform: rotate(0deg) skewX(0deg) translateX(0);
-  }
-}
-
-@keyframes leaf-gust {
-  0% {
-    transform: rotate(var(--leaf-rotation)) scale(var(--leaf-scale, 1));
-  }
-  22% {
-    transform: rotate(calc(var(--leaf-rotation) + var(--wind-leaf-peak, 8deg)))
-      scale(var(--leaf-scale, 1));
-  }
-  48% {
-    transform: rotate(calc(var(--leaf-rotation) + var(--wind-leaf-mid, 3deg)))
-      scale(var(--leaf-scale, 1));
-  }
-  68% {
-    transform: rotate(calc(var(--leaf-rotation) + var(--wind-leaf-rebound, -2deg)))
-      scale(var(--leaf-scale, 1));
-  }
-  84% {
-    transform: rotate(calc(var(--leaf-rotation) + var(--wind-leaf-settle, 0.8deg)))
-      scale(var(--leaf-scale, 1));
-  }
-  100% {
-    transform: rotate(var(--leaf-rotation)) scale(var(--leaf-scale, 1));
-  }
-}
-
 @keyframes crown-tornado {
   0% {
     transform: rotate(0deg) skewX(0deg) translateX(0) scaleX(1);
@@ -1592,136 +1421,9 @@ a {
   }
 }
 
-@keyframes growth-line-rise {
-  0% {
-    opacity: 0;
-    stroke-dashoffset: 1;
-  }
-  14% {
-    opacity: 1;
-  }
-  76% {
-    opacity: 1;
-    stroke-dashoffset: 0;
-  }
-  100% {
-    opacity: 0;
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes growth-bud-pop {
-  0% {
-    opacity: 0;
-    transform: scale(0.2);
-  }
-  48% {
-    opacity: 0.92;
-    transform: scale(1.25);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.8);
-  }
-}
-
-@keyframes water-puddle {
-  0% {
-    opacity: 0;
-    transform: scaleX(0.35) scaleY(0.5);
-  }
-  32% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: scaleX(1.35) scaleY(1.5);
-  }
-}
-
-@keyframes water-splash-up {
-  0% {
-    opacity: 0;
-    transform: scaleY(0.1);
-  }
-  42% {
-    opacity: 1;
-    transform: scaleY(1.15);
-  }
-  100% {
-    opacity: 0;
-    transform: scaleY(0.7) translateY(8px);
-  }
-}
-
-@keyframes leaf-grow {
-  0% {
-    opacity: 0.42;
-    transform: translateY(18px) rotate(var(--leaf-rotation)) scale(var(--growth-scale-start, 0.72));
-  }
-  55% {
-    opacity: 1;
-    transform: translateY(-5px) rotate(var(--leaf-rotation)) scale(var(--growth-scale-peak, 1.08));
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) rotate(var(--leaf-rotation)) scale(var(--leaf-scale, 1));
-  }
-}
-
-@keyframes leaf-zero-gravity {
-  0%,
-  100% {
-    opacity: 1;
-    transform: translate(0, 0) rotate(var(--leaf-rotation)) scale(var(--leaf-scale, 1));
-  }
-  19% {
-    transform: translate(var(--magic-x1), var(--magic-y1))
-      rotate(calc(var(--leaf-rotation) + var(--magic-r1))) scale(var(--leaf-scale, 1));
-  }
-  48% {
-    opacity: 0.94;
-    transform: translate(var(--magic-x2), var(--magic-y2))
-      rotate(calc(var(--leaf-rotation) + var(--magic-r2))) scale(var(--leaf-scale, 1));
-  }
-  76% {
-    transform: translate(var(--magic-x3), var(--magic-y3))
-      rotate(calc(var(--leaf-rotation) + var(--magic-r3))) scale(var(--leaf-scale, 1));
-  }
-}
-
-@keyframes magic-branches-dim {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  35% {
-    opacity: 0.12;
-  }
-  72% {
-    opacity: 0.34;
-  }
-}
-
-@keyframes magic-sparkle {
-  0%,
-  100% {
-    opacity: 0;
-    transform: rotate(0deg) scale(0.25);
-  }
-  46% {
-    opacity: 0.95;
-    transform: rotate(45deg) scale(1.2);
-  }
-}
-
 @media (max-width: 47.99rem) {
   .weather-controls {
-    width: 13.1rem;
-  }
-
-  .photo-tree {
-    margin-top: 3.4rem;
+    width: 16rem;
   }
 }
 
@@ -1807,10 +1509,6 @@ a {
   }
 
   .camera-text {
-    display: none;
-  }
-
-  .visitor-map {
     display: none;
   }
 

@@ -19,15 +19,6 @@ const { title, description, image, jsonLd, noIndex } = Astro.props;
     <aside class="site-sidebar">
       <SiteNavigation currentPath={Astro.url.pathname} />
       <CameraText client:load />
-      <div class="visitor-map" aria-label="Visitor map">
-        <script
-          is:inline
-          defer
-          type="text/javascript"
-          id="mmvst_globe"
-          src="https://mapmyvisitors.com/globe.js?d=YhAtmK_EzyizJAEcuny5iol9fLWgKkdtg6jciTgzjHA"
-        ></script>
-      </div>
     </aside>
 
     <main class="site-main">
