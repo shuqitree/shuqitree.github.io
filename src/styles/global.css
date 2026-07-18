@@ -964,7 +964,6 @@ a {
   margin-left: clamp(0rem, 8vw, 7rem);
   margin-bottom: clamp(3.5rem, 9vw, 8rem);
   padding: 1.25rem 1.4rem 0.1rem;
-  background: linear-gradient(90deg, rgba(250, 249, 246, 0.62), rgba(250, 249, 246, 0.15));
 }
 
 .video-frame {
@@ -1145,12 +1144,6 @@ a {
 .about-copy {
   margin-left: clamp(0rem, 10vw, 8rem);
   padding: 1.25rem 1.4rem 0.1rem;
-  background: linear-gradient(90deg, rgba(250, 249, 246, 0.64), rgba(250, 249, 246, 0.1));
-}
-
-:root[data-site-theme='night'] .project-story,
-:root[data-site-theme='night'] .about-copy {
-  background: linear-gradient(90deg, rgba(29, 34, 65, 0.72), rgba(20, 24, 49, 0.12));
 }
 
 :root[data-site-theme='night'] .photo-frame img {
