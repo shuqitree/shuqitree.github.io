@@ -307,16 +307,26 @@ a {
 .site-watermark {
   position: fixed;
   z-index: 30;
-  right: -1.9rem;
-  bottom: -0.7rem;
-  width: clamp(6.5rem, 12vw, 10rem);
-  opacity: 0.34;
+  right: 1rem;
+  bottom: 1rem;
+  width: clamp(6.1rem, 10.5vw, 9.25rem);
+  aspect-ratio: 745 / 283;
+  overflow: hidden;
+  opacity: 0.72;
   pointer-events: none;
   transition: opacity 180ms ease;
 }
 
+.site-watermark img {
+  position: absolute;
+  top: -60.78%;
+  left: -6.44%;
+  width: 112.89%;
+  max-width: none;
+}
+
 :root[data-site-theme='night'] .site-watermark {
-  opacity: 0.2;
+  opacity: 0.58;
   filter: invert(1) hue-rotate(180deg);
 }
 
