@@ -16,7 +16,7 @@ TBD
 !md: Nikon Z7II, NIKKOR Z24-70mm F4
 !date: May 19, 2024
 !yt: SResNY3ArXg
-Go to 50:50 of this video.
+Go to 50:10 of this video.
 
 ## The Turtle's Whisper
 !md: Fujifilm XT-4, FFUJINON XF16-80mm F4 R OIS WR

@@ -16,4 +16,4 @@ featured: false
 seoDescription: A video exercise by Shuqi Jiang, filmed on a Nikon Z7II.
 ---
 
-Go to 50:50 of this video.
+Go to 50:10 of this video.
