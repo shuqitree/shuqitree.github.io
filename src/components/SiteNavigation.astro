@@ -41,7 +41,7 @@ const activePath = normalizePath(currentPath);
 <nav class="site-navigation" aria-label="Primary navigation">
   <a class:list={['site-name', { active: activePath === '/' }]} href="/">Shuqi Jiang</a>
 
-  <details class="site-index">
+  <details class="site-index" data-site-index>
     <summary>
       <span>Photography — {projects.length}</span>
       <span class="index-toggle" aria-hidden="true">+</span>
@@ -87,3 +87,31 @@ const activePath = normalizePath(currentPath);
     )
   }
 </nav>
+
+<script>
+  const indexStateKey = 'shuqi-photography-index-open';
+
+  function prepareSiteIndex() {
+    const siteIndex = document.querySelector<HTMLDetailsElement>('[data-site-index]');
+    if (!siteIndex || siteIndex.dataset.ready === 'true') return;
+
+    siteIndex.dataset.ready = 'true';
+
+    try {
+      siteIndex.open = window.sessionStorage.getItem(indexStateKey) === 'true';
+    } catch {
+      // The index still works normally when browser storage is unavailable.
+    }
+
+    siteIndex.addEventListener('toggle', () => {
+      try {
+        window.sessionStorage.setItem(indexStateKey, String(siteIndex.open));
+      } catch {
+        // Keep the native details behavior as a fallback.
+      }
+    });
+  }
+
+  document.addEventListener('astro:page-load', prepareSiteIndex);
+  prepareSiteIndex();
+</script>
