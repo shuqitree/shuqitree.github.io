@@ -474,6 +474,12 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
             <stop offset="0.52" stopColor="#70445f" />
             <stop offset="1" stopColor="#c26f91" />
           </linearGradient>
+          <radialGradient id="moon-halo-gradient">
+            <stop offset="0" stopColor="#dfe4ff" stopOpacity="0.28" />
+            <stop offset="0.38" stopColor="#bdc8ff" stopOpacity="0.15" />
+            <stop offset="0.72" stopColor="#8fa2eb" stopOpacity="0.055" />
+            <stop offset="1" stopColor="#778bdb" stopOpacity="0" />
+          </radialGradient>
           <filter id="christmas-glow" x="-80%" y="-80%" width="260%" height="260%">
             <feGaussianBlur stdDeviation="4" result="glow" />
             <feMerge>
@@ -488,7 +494,7 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
 
         {isNight && (
           <g className="moonlight-scene" aria-hidden="true">
-            <circle className="moon-halo" cx="118" cy="102" r="64" />
+            <circle className="moon-halo" cx="118" cy="102" r="118" />
             <circle className="moon-disc" cx="118" cy="102" r="38" />
             <circle className="moon-shadow" cx="137" cy="87" r="36" />
             <g className="night-stars">
