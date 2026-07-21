@@ -304,6 +304,15 @@ a {
   min-width: 0;
 }
 
+.site-theme-control {
+  position: relative;
+  z-index: 40;
+  display: flex;
+  justify-content: flex-end;
+  min-height: 2.7rem;
+  margin-bottom: 0.65rem;
+}
+
 .site-watermark {
   position: fixed;
   z-index: 30;

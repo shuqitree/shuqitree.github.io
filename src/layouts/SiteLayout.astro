@@ -1,6 +1,7 @@
 ---
 import CameraText from '../components/CameraText';
 import SiteNavigation from '../components/SiteNavigation.astro';
+import ThemeToggle from '../components/ThemeToggle';
 import BaseLayout from './BaseLayout.astro';
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const { title, description, image, jsonLd, noIndex } = Astro.props;
+const isHome = Astro.url.pathname === '/';
 ---
 
 <BaseLayout title={title} description={description} image={image} jsonLd={jsonLd} noIndex={noIndex}>
@@ -22,6 +24,13 @@ const { title, description, image, jsonLd, noIndex } = Astro.props;
     </aside>
 
     <main class="site-main">
+      {
+        !isHome && (
+          <div class="site-theme-control" aria-label="Site appearance">
+            <ThemeToggle client:load />
+          </div>
+        )
+      }
       <slot />
     </main>
   </div>

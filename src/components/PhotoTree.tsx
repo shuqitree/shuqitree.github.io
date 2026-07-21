@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent } from 'react';
 
+import ThemeToggle, { themeChangeEvent } from './ThemeToggle';
+
 export interface PhotoTreeEntry {
   id: string;
   title: string;
@@ -272,7 +274,6 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
   const [tornadoBurst, setTornadoBurst] = useState(0);
   const [isTornado, setIsTornado] = useState(false);
   const [isNight, setIsNight] = useState(false);
-  const [hasHydratedTheme, setHasHydratedTheme] = useState(false);
   const [isRaining, setIsRaining] = useState(false);
   const [treeTheme, setTreeTheme] = useState<'christmas' | 'sakura' | null>(null);
   const [tornado, setTornado] = useState<TornadoProfile>(quietTornado);
@@ -286,31 +287,13 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
   }, []);
 
   useEffect(() => {
-    setIsNight(document.documentElement.dataset.siteTheme === 'night');
-    setHasHydratedTheme(true);
-  }, []);
-
-  useEffect(() => {
-    if (!hasHydratedTheme) return;
-
     const root = document.documentElement;
-    const themeColor = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+    const syncNightState = () => setIsNight(root.dataset.siteTheme === 'night');
 
-    if (isNight) {
-      root.dataset.siteTheme = 'night';
-      themeColor?.setAttribute('content', '#0e1222');
-    } else {
-      delete root.dataset.siteTheme;
-      themeColor?.setAttribute('content', '#f4eff4');
-    }
-
-    try {
-      if (isNight) window.localStorage.setItem('shuqi-site-theme', 'night');
-      else window.localStorage.removeItem('shuqi-site-theme');
-    } catch {
-      // The visual switch still works when storage is unavailable.
-    }
-  }, [hasHydratedTheme, isNight]);
+    syncNightState();
+    root.addEventListener(themeChangeEvent, syncNightState);
+    return () => root.removeEventListener(themeChangeEvent, syncNightState);
+  }, []);
 
   useEffect(
     () => () => {
@@ -426,16 +409,6 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
           <span aria-hidden="true">🌸</span>
         </button>
         <button
-          className="weather-button night-button"
-          type="button"
-          onClick={() => setIsNight((current) => !current)}
-          aria-label={isNight ? 'Turn on daylight' : 'Turn on night mode'}
-          aria-pressed={isNight}
-          title={isNight ? 'Turn on daylight' : 'Turn on night mode'}
-        >
-          <span aria-hidden="true">🌙</span>
-        </button>
-        <button
           className="weather-button rain-button"
           type="button"
           onClick={() => setIsRaining((current) => !current)}
@@ -445,6 +418,7 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
         >
           <span aria-hidden="true">🌧️</span>
         </button>
+        <ThemeToggle />
       </div>
       <svg
         ref={svgRef}
