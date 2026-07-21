@@ -1,5 +1,6 @@
 ---
 import CameraText from '../components/CameraText';
+import RainToggle from '../components/RainToggle';
 import SiteNavigation from '../components/SiteNavigation.astro';
 import ThemeToggle from '../components/ThemeToggle';
 import BaseLayout from './BaseLayout.astro';
@@ -26,7 +27,8 @@ const isHome = Astro.url.pathname === '/';
     <main class="site-main">
       {
         !isHome && (
-          <div class="site-theme-control" aria-label="Site appearance">
+          <div class="site-theme-control" aria-label="Site weather and appearance">
+            <RainToggle client:load />
             <ThemeToggle client:load />
           </div>
         )

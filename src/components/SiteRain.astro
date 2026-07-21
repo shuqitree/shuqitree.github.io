@@ -1,0 +1,23 @@
+---
+const drops = Array.from({ length: 84 }, (_, index) => ({
+  left: (index * 37 + (index % 7) * 3) % 106,
+  length: 18 + (index % 6) * 6,
+  delay: -((index * 0.173) % 2.4),
+  duration: 0.72 + (index % 5) * 0.11,
+  opacity: 0.38 + (index % 4) * 0.12,
+  width: 1.15 + (index % 3) * 0.35,
+}));
+---
+
+<div class="site-rain" aria-hidden="true">
+  <div class="site-rain-wash"></div>
+  {
+    drops.map((drop) => (
+      <i
+        class="site-rain-drop"
+        style={`--drop-left:${drop.left}%;--drop-length:${drop.length}px;--drop-delay:${drop.delay}s;--drop-duration:${drop.duration}s;--drop-opacity:${drop.opacity};--drop-width:${drop.width}px`}
+      />
+    ))
+  }
+  <div class="site-rain-mist"></div>
+</div>

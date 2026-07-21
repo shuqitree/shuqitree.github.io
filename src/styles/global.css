@@ -311,6 +311,67 @@ a {
   justify-content: flex-end;
   min-height: 2.7rem;
   margin-bottom: 0.65rem;
+  gap: 0.55rem;
+}
+
+.site-rain {
+  position: fixed;
+  z-index: 35;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  contain: strict;
+  transition:
+    opacity 550ms ease,
+    visibility 550ms ease;
+}
+
+:root[data-site-rain='true'] .site-rain {
+  opacity: 1;
+  visibility: visible;
+}
+
+.site-rain-wash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(112deg, rgba(53, 92, 128, 0.035), rgba(73, 121, 157, 0.095));
+  backdrop-filter: saturate(0.88) contrast(1.02);
+}
+
+.site-rain-drop {
+  position: absolute;
+  top: -32vh;
+  left: var(--drop-left);
+  width: var(--drop-width);
+  height: var(--drop-length);
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(55, 104, 148, 0), rgba(43, 94, 139, 0.94));
+  opacity: var(--drop-opacity);
+  transform: rotate(12deg);
+  filter: drop-shadow(0 0 0.18rem rgba(48, 104, 151, 0.26));
+  animation: site-rain-fall var(--drop-duration) linear var(--drop-delay) infinite;
+}
+
+.site-rain-mist {
+  position: absolute;
+  right: -10vw;
+  bottom: -6rem;
+  left: -10vw;
+  height: 14rem;
+  background: radial-gradient(ellipse at center, rgba(83, 126, 158, 0.13), transparent 68%);
+  filter: blur(1.2rem);
+  animation: site-rain-mist-breathe 4.5s ease-in-out infinite alternate;
+}
+
+:root[data-site-theme='night'] .site-rain-wash {
+  background: linear-gradient(112deg, rgba(73, 99, 151, 0.035), rgba(87, 123, 174, 0.085));
+}
+
+:root[data-site-theme='night'] .site-rain-drop {
+  background: linear-gradient(180deg, rgba(143, 178, 220, 0), rgba(151, 189, 231, 0.82));
+  filter: drop-shadow(0 0 0.2rem rgba(122, 161, 211, 0.28));
 }
 
 .site-watermark {
@@ -794,27 +855,7 @@ a {
   animation-direction: reverse;
 }
 
-.rain-curtain {
-  pointer-events: none;
-}
-
-.rain-curtain line {
-  stroke: rgba(54, 112, 158, var(--rain-opacity, 0.62));
-  stroke-linecap: round;
-  stroke-width: 2.2;
-  animation: rain-fall var(--rain-duration, 0.9s) linear var(--rain-delay, 0s) infinite;
-}
-
-.rain-puddle {
-  fill: rgba(54, 112, 158, 0.11);
-  stroke: rgba(54, 112, 158, 0.5);
-  stroke-width: 1.5;
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: rain-puddle-ripple 2.4s ease-out infinite;
-}
-
-.photo-tree--rain .photo-mat {
+:root[data-site-rain='true'] .photo-mat {
   stroke-width: 2;
   filter: url('#leaf-shadow') saturate(0.88) contrast(1.06);
 }
@@ -1443,31 +1484,23 @@ a {
   }
 }
 
-@keyframes rain-fall {
+@keyframes site-rain-fall {
   from {
-    opacity: 0;
-    transform: translate(70px, -120px);
-  }
-  12% {
-    opacity: 1;
+    transform: translate3d(7vw, 0, 0) rotate(12deg);
   }
   to {
-    opacity: 0.2;
-    transform: translate(-80px, 880px);
+    transform: translate3d(-11vw, 145vh, 0) rotate(12deg);
   }
 }
 
-@keyframes rain-puddle-ripple {
-  0% {
-    opacity: 0;
-    transform: scaleX(0.65) scaleY(0.4);
+@keyframes site-rain-mist-breathe {
+  from {
+    opacity: 0.45;
+    transform: translateX(-2vw) scaleX(0.94);
   }
-  35% {
-    opacity: 0.65;
-  }
-  100% {
-    opacity: 0;
-    transform: scaleX(1.08) scaleY(1.3);
+  to {
+    opacity: 0.82;
+    transform: translateX(2vw) scaleX(1.05);
   }
 }
 

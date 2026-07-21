@@ -3,6 +3,7 @@ import { ClientRouter } from 'astro:transitions';
 import { getImage } from 'astro:assets';
 
 import backgroundImage from '../assets/design/background_pic.webp';
+import SiteRain from '../components/SiteRain.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -69,6 +70,10 @@ const backgroundStyle = `--background-small: url("${smallBackground.src}"); --ba
           document.documentElement.dataset.siteTheme = 'night';
           document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#0e1222');
         }
+
+        if (window.localStorage.getItem('shuqi-site-rain') === 'true') {
+          document.documentElement.dataset.siteRain = 'true';
+        }
       } catch {}
 
       document.addEventListener('astro:before-swap', (event) => {
@@ -77,6 +82,10 @@ const backgroundStyle = `--background-small: url("${smallBackground.src}"); --ba
           event.newDocument
             .querySelector('meta[name="theme-color"]')
             ?.setAttribute('content', '#0e1222');
+        }
+
+        if (document.documentElement.dataset.siteRain === 'true') {
+          event.newDocument.documentElement.dataset.siteRain = 'true';
         }
       });
     </script>
@@ -94,5 +103,6 @@ const backgroundStyle = `--background-small: url("${smallBackground.src}"); --ba
   </head>
   <body style={backgroundStyle}>
     <slot />
+    <SiteRain />
   </body>
 </html>

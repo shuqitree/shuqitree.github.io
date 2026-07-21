@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent } from 'react';
 
+import RainToggle from './RainToggle';
 import ThemeToggle, { themeChangeEvent } from './ThemeToggle';
 
 export interface PhotoTreeEntry {
@@ -112,14 +113,6 @@ const fireflies = Array.from({ length: 18 }, (_, index) => ({
   y: 85 + ((index * 83) % 470),
   delay: index * -0.41,
   duration: 3.2 + (index % 5) * 0.55,
-}));
-
-const rainDrops = Array.from({ length: 42 }, (_, index) => ({
-  x: 20 + ((index * 89) % 960),
-  y: -80 + ((index * 137) % 690),
-  length: 22 + (index % 5) * 7,
-  delay: index * -0.09,
-  duration: 0.72 + (index % 4) * 0.11,
 }));
 
 function mulberry32(seed: number) {
@@ -274,7 +267,6 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
   const [tornadoBurst, setTornadoBurst] = useState(0);
   const [isTornado, setIsTornado] = useState(false);
   const [isNight, setIsNight] = useState(false);
-  const [isRaining, setIsRaining] = useState(false);
   const [treeTheme, setTreeTheme] = useState<'christmas' | 'sakura' | null>(null);
   const [tornado, setTornado] = useState<TornadoProfile>(quietTornado);
   const isChristmas = treeTheme === 'christmas';
@@ -408,21 +400,12 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
         >
           <span aria-hidden="true">🌸</span>
         </button>
-        <button
-          className="weather-button rain-button"
-          type="button"
-          onClick={() => setIsRaining((current) => !current)}
-          aria-label={isRaining ? 'Stop the rain' : 'Make it rain'}
-          aria-pressed={isRaining}
-          title={isRaining ? 'Stop the rain' : 'Make it rain'}
-        >
-          <span aria-hidden="true">🌧️</span>
-        </button>
+        <RainToggle />
         <ThemeToggle />
       </div>
       <svg
         ref={svgRef}
-        className={`photo-tree${isChristmas ? ' photo-tree--christmas' : ''}${isSakura ? ' photo-tree--sakura' : ''}${isNight ? ' photo-tree--night' : ''}${isRaining ? ' photo-tree--rain' : ''}`}
+        className={`photo-tree${isChristmas ? ' photo-tree--christmas' : ''}${isSakura ? ' photo-tree--sakura' : ''}${isNight ? ' photo-tree--night' : ''}`}
         viewBox={`0 0 ${width} ${height}`}
         role="img"
         aria-labelledby="photo-tree-title photo-tree-description"
@@ -736,28 +719,6 @@ export default function PhotoTree({ entries }: { entries: PhotoTreeEntry[] }) {
             <path d="M 285 340 C 410 275, 660 285, 750 370" />
             <path d="M 350 430 C 455 390, 620 400, 680 475" />
             <path d="M 420 510 C 490 485, 575 490, 615 535" />
-          </g>
-        )}
-
-        {isRaining && (
-          <g className="rain-curtain" aria-hidden="true">
-            {rainDrops.map((drop, index) => (
-              <line
-                key={`${drop.x}-${drop.y}`}
-                x1={drop.x}
-                y1={drop.y}
-                x2={drop.x - 9}
-                y2={drop.y + drop.length}
-                style={
-                  {
-                    '--rain-delay': `${drop.delay}s`,
-                    '--rain-duration': `${drop.duration}s`,
-                    '--rain-opacity': 0.42 + (index % 4) * 0.1,
-                  } as CSSProperties
-                }
-              />
-            ))}
-            <ellipse className="rain-puddle" cx="510" cy="728" rx="205" ry="15" />
           </g>
         )}
       </svg>
