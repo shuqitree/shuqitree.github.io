@@ -70,6 +70,15 @@ const backgroundStyle = `--background-small: url("${smallBackground.src}"); --ba
           document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#0e1222');
         }
       } catch {}
+
+      document.addEventListener('astro:before-swap', (event) => {
+        if (document.documentElement.dataset.siteTheme === 'night') {
+          event.newDocument.documentElement.dataset.siteTheme = 'night';
+          event.newDocument
+            .querySelector('meta[name="theme-color"]')
+            ?.setAttribute('content', '#0e1222');
+        }
+      });
     </script>
     <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-5RJJVBLRBV"></script>
     <script is:inline>
